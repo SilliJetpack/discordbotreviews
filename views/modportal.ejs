@@ -1,0 +1,70 @@
+<!doctype html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+      <style>
+        .btn-custom {
+              color: #ffc107 !important;
+              background-color: #2f2f2f !important;
+              background-image: none;
+              border-color: #ffc107;
+        };
+        .btn-primary:not(:hover) .btn {
+          color: white !important;
+        }
+        .btn.btn-primary.btn-md.my-2.my-sm-0.ml-3.hover-active-button {
+          color: #ffffff !important;
+        }
+      </style>
+    <% include ./partials/portalHeader.ejs %>
+    <% include ./partials/nav.ejs %>
+      
+            <link rel="icon" type="image/jpg" href="https://media.discordapp.net/attachments/506425178822279168/507496898823847936/dbr.png">
+            <title>ModPortal - DBR</title>
+    </head>
+    <body>
+    
+      <div class="container">
+      <h1>
+        Moderator Portal<hr>
+      </h1><br>
+      <div class="card" width="100%" height="200px" style="color:black">
+        <div class="card-body">
+        <h5 class="card-title">Bot Queue list</h5>
+          <p class="card-text">View the queue of in queue bots.</p>
+        <a href="/modportal/queue" class="btn btn-custom">Bot Queue</a>
+        </div>
+        </div><br>
+         <div class="card" width="100%" height="200px" style="color:black">
+        <div class="card-body">
+        <h5 class="card-title">Report</h5>
+          <p class="card-text">View the reports for bots from users.</p>
+        <a href="/modportal/reports" class="btn btn-custom">Reports</a>
+        </div>
+        </div><br>
+      <% const fucktarded = bot.guilds.get("500658335217876997").members.get(req.user.id) 
+          if(fucktarded.roles.has("500658928602841099")) { %>
+          <div class="card" width="100%" height="200px" style="color:black">
+        <div class="card-body">
+        <h5 class="card-title">Certification Queue</h5>
+          <p class="card-text">View the queue of bots that are pending certification.</p>
+       <a href="/modportal/cert" class="btn btn-custom">Certification Queue</a>
+        </div>
+        </div><br>
+              <div class="card" width="100%" height="200px" style="color:black">
+        <div class="card-body">
+        <h5 class="card-title">Ban management</h5>
+          <p class="card-text">Manage blacklisted IPs/add IPs to blacklist</p>
+       <a href="/modportal/ipbans" class="btn btn-custom">Manage</a>
+        </div>
+        </div><br>
+	<div class="card" width="100%" height="200px" style="color:black">
+        <div class="card-body">
+        <h5 class="card-title">Notification Pusher</h5>
+          <p class="card-text">Push a notification to everyone.</p>
+       <a href="/modportal/notifpush" class="btn btn-custom">Notification Pusher</a>
+        </div>
+        </div><br>
+            <% } %>
+  </div>
+  </body>
+</html>

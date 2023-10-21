@@ -1,0 +1,123 @@
+<!doctype html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+    <% include ./partials/header.ejs %>
+    <% include ./partials/nav.ejs %>
+      <script src="submitter.js"></script>
+	<link rel="stylesheet" type="text/css" href=https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.43.0/codemirror.min.css />
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.43.0/codemirror.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.43.0/mode/xml/xml.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.43.0/mode/markdown/markdown.min.js"></script>
+	<script>document.addEventListener("DOMContentLoaded",()=>{var editor=CodeMirror.fromTextArea(document.getElementById("longdesc"),{mode:"markdown",lineNumbers:!0})})</script>
+
+            <link rel="icon" type="image/jpg" href="https://media.discordapp.net/attachments/506425178822279168/507496898823847936/dbr.png">
+            <title>Edit Bot - Discord Bot Review</title>
+    </head>
+    <body>
+        <noscript>
+          <div class="alert alert-danger" role="alert">
+            This website requires Javascript to work. Please enable Javascript or use a browser that supports Javascript.
+          </div>
+          </noscript>
+        <div class="container">
+        <center><h1>Edit <%=bot.users.get(botid).username %></h1><br>
+ 
+        <b style="color:red !important;">Important note: All fields that has * is required!!!</b>
+<!--         <center> -->
+          <div class="card shadow-lg" style="width:80%;background-color: #1f1f1f;">
+          <form class="bg-dark-submit" action="/api/form/edit" method="POST" id="form" enctype="application/x-www-form-urlencoded"><br><br>
+      
+            <label for="bot_prefix">Bot Prefix: <div style="color:red;display:inline-block;">*</div></label> <br>
+            <input type="text" value="<%= bot.botinfo.get(botid, "prefix") %>"name="prefix" style="width:70%;"id="bot_prefix" required="required"><br><br>
+            <% if (bot.certified.get(bot.botinfo.get(botid, "submitter")).bots.includes(botid)) { %> 
+            <label for="bot_vanityurl">Bot Vanity URL: </label><br>
+                      <input class="inputs" type="text" value="<%= bot.botinfo.get(botid, "vanityurl") %>"name="vanityurl" style="width:70%;"maxlength="32" id="bot_vanityurl"><br><br>
+            <% } %>
+            <label for="botSupportServer">Support Server: </label> <br>
+            
+            <input value="<%= bot.botinfo.get(botid, "support_url") %>"type="text" style="width:70%;"name="support" id="botSupportServer"><br><br>
+               <label for="botWebsite">Bot Website: </label> <br>
+            <input class="txtarea" type="text" value="<%= bot.botinfo.get(botid, "websiteURL") %>"name="website" style="width:70%;"id="website_url"><br><br>
+            <label for="botWebsite">Open Source site (Github, etc...): </label> <br>
+            <input class="txtarea" type="text" name="source" value="<%= bot.botinfo.get(botid, "source") %>" style="width:70%;"id="website_url"><br><br>
+            <label for="tags">Tags (serperate with ',' custom tags allowed, maximum 10 tags )</label> <br>
+            <input class="txtarea" type="text" name="tags" value="<%= bot.botinfo.get(botid, "tags") %>" style="width:70%;"id="tags"><br>
+            Common tags: <code>moderation, fun, logging, multipurpose, stats, gaming, dashboard, multilanguage, nsfw, imagemanipulation, sync, roleplay, configuration, welcoming, utility, economy, anime, memes, minecraft, fortnite, pubg</code> 
+            <br><br>
+            <label for="invite_url">Invite URL:  <br>(If not specified, we will generate one with no permissions.)</label><br>
+            
+            <input class="txtarea" type="text" value="<%= bot.botinfo.get(botid, "invite_url") %>" style="width:70%;height:40px;" name="invite_url" id="invite_url"></textarea><br><br>
+            Short Description (5-150 characters): <div style="color:red;display:inline-block;margin-bottom:0.5rem;">*</div><br>
+               Characters typed: <br>
+        <div id="charcount2">
+          <code><%= bot.botinfo.get(botid, "short_description").length %>/150</code>
+            </div>
+            <textarea class="txtarea" style="width:70%;" rows="3" id="desc" name="shortdesc" required onkeyup="charc2(this.value)"><%= bot.botinfo.get(botid, "short_description") %></textarea><br><br>
+            Long Description (100-10000 characters, Markdown is allowed) : <div style="color:red;display:inline-block;margin-bottom:0.5rem;">*</div><br>     
+            
+       Characters typed: <br>
+        <div id="charcount">
+          <code><%= bot.botinfo.get(botid, "long_description").length %>/10000</code>
+            </div>
+
+            <textarea class="txtarea" style="width:100%;height:20rem;" rows="30" id="longdesc" name="longdesc" required onkeyup="charc(this.value)"><%= bot.botinfo.get(botid, "long_description") %></textarea>
+            <br><br><br>
+            Optional Settings
+            <br><br>
+          <input id="votingoption" type="checkbox" name="votingallowed" onchange="changevalue()"<%if(bot.botinfo.get(botid, "verified")) {%>checked <% }%> value="<%if(bot.botinfo.get(botid, "verified")) {%>true<%} else {%>false<% }%>"> <code> | </code> Make my rating data private for this bot (for API only)<br>(This will require your bot's token as authorization header)
+          <br><br>
+
+          <input id="commentoption" type="checkbox" name="commentsallowed" onchange="changecomments()" <%if(bot.botinfo.get(botid, "allowcomments") && bot.botinfo.get(botid, "allowcomments") === true) {%> checked <%} else {%> <% }%>value="<%if(bot.botinfo.get(botid, "allowcomments") && bot.botinfo.get(botid, "allowcomments")) {%>true<%} else {%>false<% }%>"> <code> | </code>Disable comments <br> (Users will not be able to post reviews for your bot)
+                <input type="hidden" name="botid" value="<%= botid%>"><br>
+            <input type="hidden" name="submitter_id" value="<%= req.user.id%>"><br><br>
+            <input type="submit" value="Submit!" class="btn btn-primary hover-active-button" id="submit" onclick="prereqs()">
+            </center>
+                      <script>
+    function charc(str) {
+	var lng = str.length;
+	document.getElementById("charcount").innerHTML = "<code>" + lng + '/10000</code>';
+    }
+                         function charc2(str) {
+	var lng = str.length;
+	document.getElementById("charcount2").innerHTML = "<code>" + lng + '/150</code>';
+                         }
+          </script>
+        </form>
+      
+        </div>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        <script>
+          var longdesc = document.getElementById("longdesc")
+          var shortdesc = document.getElementById("desc")
+          function prereqs(event) {
+          if (longdesc.value.length < 100 || longdesc.value.length > 10000) {
+           event.preventDefault(); 
+           alert("Long description must be between 100 and 10000 characters long") 
+          } else if (shortdesc.value.length < 5 || shortdesc.value.length > 150) {
+           event.preventDefault(); 
+           alert("Short description must be between 5 and 150 characters.")
+          }}
+
+          function changevalue() {
+            if(document.getElementById("votingoption").checked == false) {
+document.getElementById("votingoption").setAttribute("value", "false")
+            } else {
+              document.getElementById("votingoption").setAttribute("value", "true")
+
+            }
+            
+          }
+          function changecomments() {
+            if(document.getElementById("commentoption").checked == false) {
+document.getElementById("commentoption").setAttribute("value", "false")
+            } else {
+              document.getElementById("commentoption").setAttribute("value", "true")
+
+            }
+            
+          }
+          </script>    
+  </body>
+</html>

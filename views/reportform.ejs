@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Reports - ModPortal - DBR</title>
+    <% include ./partials/portalHeader.ejs %>
+  </head>
+  <body>
+      <% include ./partials/nav.ejs %>
+    <br><br><br>
+<center>
+    <div class="txtarea" style="width:50%">
+      <h3>Report form for: <a href="/bot/<%=bot.reports.get(req.query.id).target%>" style="text-decoration:none;"><%=bot.users.get(bot.reports.get(req.query.id).target).username%></a></h3>
+      <br>
+      <h4>
+        Reporter:
+      </h4>
+      
+      <%=bot.users.get(bot.reports.get(req.query.id).reporter).tag + " (" + bot.users.get(bot.reports.get(req.query.id).reporter).id + ")"%>
+      <br><br>
+      <h4>
+        Reason:
+      </h4>
+      <%=bot.reports.get(req.query.id).subreason%>
+      <br><br>
+      <h4>
+        Comment:
+      </h4>
+      <%=bot.reports.get(req.query.id).comment%>
+      
+      <br><br>
+  </div>
+  <br>
+    <a class="btn btn-danger" href="/modportal/report/<%=req.query.id%>/action">Take action</a>
+    </center>
+      </body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Bot Queue - ModPortal - DBR</title>
+    <% include ./partials/portalHeader.ejs %>
+  </head>
+  <body>
+    <% include ./partials/nav.ejs %>
+    <div class="container">
+    <h1>
+      Certification queue (<span id="count"></span>)<hr>
+    </h1>
+    <% var i; var count = 0; while(bot.queue.array()[count]) { try { var userid = bot.queue.array()[count].cli_id; var submitter = bot.queue.array()[count].submitter; var q = bot.queue.array()[count]; %>
+    <!-- Placeholder content -->
+    <img class="queue-img">
+      <span style="display:inline-block;"><h4><span class="botname"></span></h4><%= bot.queue.array()[count].short_description %><br><span class="submitter"></span><br><br><a class="btn btn-primary" href="/bot/<%= userid %>">Bot Page</a> <a class="btn btn-primary" href="/bot/<%= userid %>/certinfo">View Certification Form</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-primary" href="/bot/<%= userid %>/cverify">Certify</a> <a class="btn btn-danger" href="/bot/<%= userid %>/cdecline">Decline</a><br><br></span>
+      <hr>
+      <script>
+        var userinfo = JSON.parse(httpGet("/api/uservalidate?id=<%= userid %>"))
+        var img = document.getElementsByClassName("queue-img")[<%= count %>]
+        img.setAttribute("src", userinfo.avatar_url)
+        img.setAttribute("title", userinfo.username)
+        document.getElementsByClassName("botname")[<%= count %>].innerHTML = userinfo.tag + " (" + userinfo.status.toUpperCase() + ")"
+        var submitter = JSON.parse(httpGet("/api/uservalidate?id=<%= submitter %>"))
+        var sign = document.getElementsByClassName("submitter")[<%= count %>]
+        sign.innerHTML = "Submitted by: " + submitter.tag
+      </script>
+    <% } catch {}; count++; } %>
+      <script>
+        if (!document.getElementsByClassName("botname").length == 0) {
+          document.title = "(" + document.getElementsByClassName("botname").length.toString() + ") " + document.title
+        }
+        document.getElementById("count").innerHTML = document.getElementsByClassName("botname").length.toString()
+        setInterval(function(){location.reload()}, 180000)
+      </script>
+      </body>
+</html>

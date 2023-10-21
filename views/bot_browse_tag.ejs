@@ -1,0 +1,72 @@
+<html prefix="og: http://ogp.me/ns#">
+
+<head>
+    <% include ./partials/header.ejs %>
+    <% include ./partials/nav.ejs %>
+
+    <title>Bots tagged with <%=tagname%> - Discord Bot Reviews</title>
+    <link rel="icon" type="image/jpg" href="https://media.discordapp.net/attachments/506425178822279168/507496898823847936/dbr.png">
+</head>
+
+<body>
+    <noscript>
+            <div class="alert alert-danger" role="alert">
+                This website requires Javascript to work. Please enable Javascript or use a browser that supports Javascript.
+            </div>
+  </noscript>
+  <div class="container">
+        <h1 align="center" style="color:#97cafd;">Bots tagged with <%=tagname.replace(tagname, function(matched){return tagnames[matched]}) == "undefined" ? tagname : tagname.replace(tagname, function(matched){return tagnames[matched]})%></h1>
+        <br>
+    <center>
+   <button class="btn btn-primary" id="all" onclick="window.location.replace('/browse')"> All bots</button>
+      <button class="btn btn-primary" name="options" id="unique" onclick="window.location.replace('/browse/unique')"> Unique bots</button>
+      <button class="btn btn-primary" type="radio" name="options" id="topliked" onclick="window.location.replace('/browse/top')"> Top Voted bots</button>
+      <button class="btn btn-primary" type="radio" name="options" id="topliked" onclick="window.location.replace('/browse/new')"> New</button>
+      <button class="btn btn-primary active" type="radio" name="options" id="tags" onclick="window.location.replace('/browse/tags')"> Browse Tags</button><br><br>
+      <div style="align:center;">
+          <ul class="pagination">
+             <%if(req.params.page == 1 || req.params.page == 0) {%>
+               <a class="btn btn-grey">Previous</a>
+               <li class="page-item"><a class="btn btn-primary" href="<%=Number(req.params.page) + 1%>">Next</a></li>
+              <% } else {%>
+             <a class="btn btn-primary" href="<%=Number(req.params.page) - 1%>">PREVIOUS</a>
+             <%if(req.params.page >= Math.ceil(bot.botinfo.filter(r=> r.tags && r.tags.includes(tagname)).size) / 15) {%>
+             <li class="page-item"><a class="btn btn-grey" style="background-color: grey;">Next</a></li>
+         <% } else {%>
+           <li class="page-item"><a class="btn btn-primary" href="<%=Number(req.params.page) + 1%>">Next</a></li>
+         <% } }%>  
+           </ul>
+         <br><br><br><br>
+         </div> 
+    
+<%var count = 0; bots = bots.filter(r=> !bot.hidden.has(r.cli_id)).map(r=> r); while(bots[count]) { %>
+	<% if (bot.guilds.get("500658335217876997").members.get(bots[count].cli_id) && bot.guilds.get("500658335217876997").members.get(bots[count].cli_id).roles.has("511069587840827402")) { var veryunique2 = true; } else { var veryunique2 = false; }%>
+        <div class="card<%if(veryunique2){%> veryunique<%}%>" style="float:left;width: 18rem;display:inline-block;margin-right:2rem;margin-bottom:2rem;height:550px;<% if (bot.certified.get(bots[count].submitter) && bot.certified.get(bots[count].submitter, "bots").includes(bots[count].cli_id)) { var veryunique = true;%> background-color: #ffb726 <% } else { var veryunique = false;%> background-color: #1f1f1f; <% } %>">
+          <img class="card-img-top img-fluid avatarImg" style="margin-top:1rem;max-width:100%;height:auto;min-width:13rem;min-height:13rem">
+          <div class="card-body" style="color:white">
+            <h5 class="card-title" style="color:<%if(veryunique){%>black<%}else{%>white<%}%>;display:inline-block"></h5> <span id="<%=bot.users.get(bots[count].cli_id).presence.status.toLowerCase()%>" style="color:black;display:inline-block;"></span> <span style="color:<%if(veryunique) {%>black<%} else {%>white<%}%>;">(<%if(bot.guilds.get("500658335217876997").members.get(bots[count].cli_id) && bot.calculated.has(bots[count].cli_id) && bot.calculated.get(bots[count].cli_id, "uptime") !== 0) {%><%=Math.round(Number(bot.uptimes.get(bots[count].cli_id, "uptime")) / Number(bot.calculated.get(bots[count].cli_id, "calculated")) * 100)%>%<%} else {%>???<%}%>)</span>     <% const asscrack2 = bot.guilds.get("500658335217876997").members.get(bots[count].cli_id);  if(asscrack2) {if(asscrack2.roles.has("500659906836168715")) {%><img src="https://cdn.discordapp.com/emojis/528968068957732865.png" width="35px" height="35px"><% }} %> <% const asscrack = bot.guilds.get("500658335217876997").members.get(bots[count].cli_id);  if(asscrack) {if(asscrack.roles.has("507628704751419393")) {%> <img src="https://cdn.discordapp.com/emojis/507958292790902795.png" width="25px" height="25px"> <% } else if (asscrack.roles.has("511069587840827402")) {%> <img class="rounded" src="https://cdn.discordapp.com/emojis/508965618855444491.png" width="25px" height="25px"> <% }} %>
+            <br>            <span style="color:chartreuse"><% if (bot.reactions.get(bots[count].cli_id) && bot.reactions.get(bots[count].cli_id, "likes")) { %> <i class="fa fa-thumbs-up"></i> <%= bot.reactions.get(bots[count].cli_id) && bot.reactions.get(bots[count].cli_id, "likes").length %> <% } else { %> <i class="fa fa-thumbs-up"></i> 0 <% } %></span>&nbsp;&nbsp;<span style="color:red"><% if (bot.reactions.get(bots[count].cli_id) && bot.reactions.get(bots[count].cli_id, "dislikes")) { %> <i class="fa fa-thumbs-down"></i> <%= bot.reactions.get(bots[count].cli_id) && bot.reactions.get(bots[count].cli_id, "dislikes").length %> <% } else { %> <i class="fa fa-thumbs-down"></i> 0 <% } %></span>&nbsp;<span style="color:<%if(veryunique) {%>black<%} else {%>white<%}%>;"> (<%=Number(Number(bot.reactions.get(bots[count].cli_id, "likes").length) + Number(bot.reactions.get(bots[count].cli_id, "dislikes").length)) >0 ? Math.round(Number(bot.reactions.get(bots[count].cli_id, "likes").length / Number(bot.reactions.get(bots[count].cli_id, "likes").length + bot.reactions.get(bots[count].cli_id, "dislikes").length) * 100)) + "%" : "---"%>)</span><br><br>
+            <% if(bot.stats.has(bots[count].cli_id)) { %>
+              Servers: <code><%=numberWithCommas(bot.stats.get(bots[count].cli_id, "server_count"))%></code> <br>
+              <% }  %>
+            <p class="card-text"><%= bots[count].short_description %></p>
+            <a href="/bot/<%= bots[count].cli_id %>" class="btn btn-primary">Go to page</a>
+          </div>
+        </div>
+        <script>
+            var avatarImg = document.getElementsByClassName("avatarImg")[<%= count %>]
+            var userinfo = JSON.parse(httpGet("/api/uservalidate?id=<%= bots[count].cli_id %>"))
+            avatarImg.setAttribute("src", userinfo.avatar_url)
+            var title = document.getElementsByClassName("card-title")[<%= count %>]
+            title.innerHTML = userinfo.tag
+          </script>
+      <%   count++; } %>
+     
+      <br><br>
+    </center>
+    <!--
+    <button id="searchnow" class="btn btn-primary btn-md my-2 my-sm-0 ml-3" style="display:inline-block" onclick="javascript:alert('Test passed')" type="submit">All Bots</button>
+        <button id="searchnow" class="btn btn-primary btn-md my-2 my-sm-0 ml-3" style="display:inline-block" onclick="javascript:alert('Test passed')" type="submit">Unique Bots</button>
+        <button id="searchnow" class="btn btn-primary btn-md my-2 my-sm-0 ml-3" style="display:inline-block" onclick="javascript:alert('Test passed')" type="submit">New Bots</button> -->
+  </div>
+  </body>

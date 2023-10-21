@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Delete a bot - ModPortal - DBR</title>
+    <% include ./partials/portalHeader.ejs %>
+  </head>
+  <body>
+    <% include ./partials/nav.ejs %>
+    <div class="container">
+      <h1>
+       Delete <%= username %> 
+      </h1>
+      <hr><br>
+      <form action="/modportal/deleteact" method="POST" enctype="application/x-www-form-urlencoded">
+        <center>Enter reason for deleting <%= username %><div style="color:red;display:inline-block;margin-bottom:0.5rem;">*</div><br></center>
+                <center><select id="newreason" name="reasonze" class="txtarea" style="width:250px;" onchange="lol()">
+      <option value="none" selected disabled>Add quick reason...</option>
+      <option value="1">Owner Banned</option>
+      <option value="2">Owner Terminated from discord</option>
+                     <option value="3">Owner Requested</option>
+                  </select></center><br>
+        <center>
+                 Characters typed: <br>
+        <div id="charcount">
+          <code>0/1967</code>
+        </div>
+        <textarea class="txtarea" style="width:500px;height:400px" maxlength="1967" rows="30" id="longdesc" name="reason" required onkeyup="charc(this.value)"></textarea> </center>
+      <br><br>
+        <input type="hidden" name="cli_id" value="<%= cli_id %>">
+      <input type="hidden" name="deleter" value="<%= user.id %>">
+      <center><input type="submit" class="btn btn-warning" title="Delete" value="Delete"></input>&nbsp;&nbsp;<a href="/" class="btn btn-warning" title="Back">Cancel</a></center>
+      </form><br><br>
+  </body>
+</html>
+          <script>
+function lol() {
+ if(document.getElementById('newreason').value === "1") {
+
+    document.getElementById('longdesc').innerText = 'Owner Banned.'
+ } else  if(document.getElementById('newreason').value === "2") {
+
+    document.getElementById('longdesc').innerText = "Owner's account was banned by discord."
+ } else if(document.getElementById('newreason').value === "3") {
+
+    document.getElementById('longdesc').innerText = "Requested by owner."
+ }
+}
+</script>
+          <script>
+    function charc(str) {
+	var lng = str.length;
+	document.getElementById("charcount").innerHTML = "<code>" + lng + '/1967</code>';
+    }
+</script>

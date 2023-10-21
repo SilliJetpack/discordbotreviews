@@ -1,0 +1,286 @@
+Old codes:
+
+base.js: Screen handler | Will be worked on later | Needs changes
+
+var searchBarWidth = document.getElementById("styledright").clientWidth
+var navmainWidth = document.getElementById("navmain").clientWidth
+var m = searchBarWidth + navmainWidth
+var l = width - m
+document.getElementById("styledright").setAttribute("style", "margin-left:" + l.toString() + "px")
+
+From Old DBR:
+
+bot_page.ejs | Like/Dislike button
+
+            <!--<h3>Reviewed by {{ reviewer_name }} <img src={{ reviewer_aurl }} width="50px" height="50px" class="rounded-circle"></h3><p>
+            <h4>Rating: {{ rating }}</h4><br>
+
+            <h5><div style="color:greenyellow;display:inline-block"><img src="/static/likeImage.png" height="20px" width="20px"> {{ likes }}</div> <div style="color:red;display:inline-block"><img src="/static/dislikeImage.png" height="20px" width="20px"> {{ dislikes }}</div></h5><br>
+
+            <form id="submitter_like" action="/bot/addreaction" style="display:inline-block;" method="POST" enctype="application/x-www-form-urlencoded">
+                <div id="likebutton"></div>
+                <input type="hidden" value="like" name="reaction">
+                <div id="like_actiontype"></div>
+                <input type="hidden" value="{{ botid }}" name="bot_id">
+                </form>
+                <form id="submitter_like" action="/bot/addreaction" style="display:inline-block;" method="POST" enctype="application/x-www-form-urlencoded">
+                <div id="dislikebutton"></div>
+                <input type="hidden" value="dislike" name="reaction">
+                <div id="dislike_actiontype"></div>
+                <input type="hidden" value="{{ botid }}" name="bot_id">
+                </form>
+            <br><br>
+            Comment by reviewer: <br>
+            <div class="card shadow-sm border" style="width: 100%;">
+                    <div class="card-body">
+                        {{ comment }}
+                    </div>
+            </div><br><br>
+            Reviewed at {{ review_time  }} [GMT+2]
+            <br><br>
+        </div>
+        <script>
+            var botid = "{{ botid }}"
+            function addReaction(id, reaction) {
+                localStorage.setItem(reaction + "-" + id, true)
+            }
+            function removeReaction(id, reaction) {
+                localStorage.removeItem(reaction + "-" + id, false)
+            }
+            function getReaction(id, reaction) {
+                return localStorage.getItem(reaction + "-" + id)
+            }
+            function checkCollision(id) {
+                if (getReaction(id, "like") === "true" && getReaction(id, "dislike") === "true"){
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            function onClickAddReaction(reaction) {
+                addReaction(botid, reaction)
+                // Switching button code
+                if (checkCollision(botid) === true) {
+                    if (reaction === "like") {
+                        removeReaction(botid, "dislike")
+                        document.getElementById("like_actiontype").innerHTML = '<input type="hidden" value="switch" name="action">'
+                    } else if (reaction === "dislike") {
+                        document.getElementById("dislike_actiontype").innerHTML = '<input type="hidden" value="switch" name="action">'
+                        removeReaction(botid, "like")
+                    } else {
+                        throw new Error("Reaction invalid.")
+                    }
+                }
+            }
+            function onClickRemoveReaction(reaction) {
+                removeReaction(botid, reaction)
+            }
+            // Code for rendering buttons
+            const likeEnabled = "<input type=\"submit\" class=\"btn btn-primary\" value=\"Like\" onclick=\"onClickAddReaction('like')\">"
+            const likedEnabled = "<input type=\"submit\" class=\"btn btn-outline-primary\" value=\"Like\" onclick=\"onClickRemoveReaction('like')\">"
+            const dislikeEnabled = "<input type=\"submit\" class=\"btn btn-primary\" value=\"Dislike\" onclick=\"onClickAddReaction('dislike')\">"
+            const dislikedEnabled = "<input type=\"submit\" class=\"btn btn-outline-primary\" value=\"Dislike\" onclick=\"onClickRemoveReaction('dislike')\">"
+            if (getReaction(botid, "dislike") == null || getReaction(botid, "dislike") === "false") { // is not disliked
+                document.getElementById("dislike_actiontype").innerHTML = '<input type="hidden" value="add" name="action">'
+                document.getElementById("dislikebutton").innerHTML = dislikeEnabled + " "
+            }
+            if (getReaction(botid, "like") == null || getReaction(botid, "like") === "false") { // is not liked
+                document.getElementById("like_actiontype").innerHTML = '<input type="hidden" value="add" name="action">'
+                document.getElementById("likebutton").innerHTML = likeEnabled + " "
+            }
+            if (getReaction(botid, "like") === "true") { // is liked
+                document.getElementById("like_actiontype").innerHTML = '<input type="hidden" value="remove" name="action">'
+                document.getElementById("likebutton").innerHTML = likedEnabled + " "
+            }
+            if (getReaction(botid, "dislike") === "true") { // is disliked
+                document.getElementById("dislike_actiontype").innerHTML = '<input type="hidden" value="remove" name="action">'
+                document.getElementById("dislikebutton").innerHTML = dislikedEnabled + " "
+            }
+        </script> -->
+
+bot_submit.ejs | CAPTCHA Modal
+
+<!--           </center>
+        <div class="modal fade" id="captchamodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">CAPTCHA</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Please solve the CAPTCHA.
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+              </div>
+            </div>
+          </div>
+        </div>
+-->
+
+index.ejs | Recommended
+
+<!--
+        <div class="card-deck ">
+            <div id="bot-listing-area "></div>
+        </div>
+    </div>
+    <script>
+        var botpath = document.getElementById("bot-listing-area ")
+
+        function httpGetAsync(theUrl, callback) {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = function() {
+                if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+                    callback(xmlHttp.responseText);
+            }
+            xmlHttp.open("GET ", theUrl, true); // true for asynchronous
+            xmlHttp.send(null);
+        }
+
+        function filter(x) {
+            str = x.bot_name
+            botname2 = str.substring(0, str.length - 5);
+            botpath.innerHTML += '<div class="card " style="width: 18rem;display:inline-block; "><img class="card-img-top " src=' + x.bot_avatar_url + ' width="286px " height="286px "><div class="card-body
+                "> <a href=https://chanonlim.pythonanywhere.com/bot/' + x.bot_id + '><h4 class="card-title ">' + botname2 + '</a><br><br><a href=https://discordapp.com/oauth2/authorize?client_id=' + x.bot_id + '&scope=bot&permissions=0 class="btn btn-primary " target="_blank ">Add to your server</a></h4><br><p class="card-text "> Submitted by: ' + x.owner + '<br> Rating: ' + x.rating + '</p></div>'
+        }
+
+        function parseData(rtext) {
+            var botlist = JSON.parse(rtext);
+            var c = 0
+            var m = 0
+            var nto = botlist.bots.reverse()
+            while (nto[m]) {
+                if (c < 6) {
+                    if (Number(nto[m].rating.replace("/5 ", " ")) >= 3.5) {
+                        filter(nto[m]);
+                        c++;
+                        m++;
+                    } else {
+                        m++;
+                        continue;
+                    }
+                } else {
+                    break;
+                }
+            }
+        }
+        httpGetAsync("/bot/api/getallbots ", parseData)
+    </script>
+    </div>
+-->
+
+index.ejs | Main card placeholder
+
+    <div class="card-deck">
+        <!-- Card Dark -->
+        <div class="card" style="max-width:35rem">
+            <!-- Card content -->
+            <div class="view overlay card-body elegant-color white-text solid-bottom" style="width:35rem">
+
+                <!-- Avatar Of Bot-->
+                <img class="card-img-top " src="https://media.discordapp.net/attachments/506425178822279168/507496898823847936/dbr.png" alt="Bot Image" align="left">
+                <!-- Title -->
+                <h4 class="card-title">DBR BOT</h4>
+                <hr class="hr-light ">
+                <!-- Text -->
+                <p class="card-text white-text mb-4 ">Hello World
+                    <!--Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text
+                to build on the card title and make up the bulk of the card's content.Some quick example text to build on the card
+                title
+                and make up the bulk of the card's content. Some quick example text to build on the card title and make up the bulk of
+                the card's content.Some quick example text to build on the card title and make up the bulk of the card's content.
+                Some quick example text to build on the card title and make up the bulk of the card's content.-->
+                </p>
+                <!-- Link -->
+                <!-- <a class="btn-floating btn-action ml-auto mr-4 mdb-color lighten-3 waves-effect waves-light "> -->
+                <i class="fas fa-chevron-right"></i>
+                <!-- </a> -->
+
+            </div>
+            <!-- Card footer -->
+            <div class="rounded-bottom mdb-color darken-3 text-center pt-3" style="width: 35rem;">
+                <ul class="list-unstyled list-inline font-small">
+                    <li class="list-inline-item pr-2 white-text"><i class="far fa-clock"></i> 05/10/2015</li>
+                    <li class="list-inline-item pr-2"><a href="#" class="white-text"><i class="far fa-comments"></i> 12</a></li>
+                    <li class="list-inline-item pr-2"><a href="#" class="white-text"><i class="fab fa-facebook-f"></i> 21</a></li>
+                    <li class="list-inline-item"><a href="#" class="white-text"><i class="fab fa-twitter"></i> 5</a></li>
+                </ul>
+            </div>
+        </div><br><br>
+        <!-- Card Dark -->
+
+        <!-- Card Dark -->
+        <div class="card" style="max-width:30rem;">
+            <!-- Card content -->
+            <div class="view overlay card-body elegant-color white-text solid-bottom" style="width: 35rem;">
+
+                <!-- Avatar Of Bot-->
+                <img class=" card-img-top " src="https://media.discordapp.net/attachments/473373985556660225/506991730185469952/avatar.jpg" alt="Bot Image " align="left">
+                <!-- Title -->
+                <h4 class="card-title">Valk#2495</h4>
+                <hr class="hr-light">
+                <!-- Text -->
+                <p class="card-text white-text mb-4 ">Valk is a discord bot that has multiple functions including moderation commands, fun commands, a music player, image commands, and much more. As it is currently under development, any criticism/suggestions/bug reports would help greatly.
+                    You can join the discord support server by clicking here. Updates roll out daily, even though there is only one person working on the bot. Enjoy! Creator Deni
+                    <!--Some quick example text to build on the card title and make up the bulk of the card's content. Some quick example text
+                to build on the card title and make up the bulk of the card's content.Some quick example text to build on the card
+                title
+                and make up the bulk of the card's content. Some quick example text to build on the card title and make up the bulk of
+                the card's content.Some quick example text to build on the card title and make up the bulk of the card's content.
+                Some quick example text to build on the card title and make up the bulk of the card's content.-->
+                </p>
+                <!-- Link -->
+                <!-- <a class="btn-floating btn-action ml-auto mr-4 mdb-color lighten-3 waves-effect waves-light "> -->
+                <i class="fas fa-chevron-right "></i>
+                <!-- </a> -->
+
+            </div>
+            <!-- Card footer -->
+            <div class="rounded-bottom mdb-color darken-3 text-center pt-3" style="width: 35rem;">
+                <ul class="list-unstyled list-inline font-small">
+                    <li class="list-inline-item pr-2 white-text"><i class="far fa-clock"></i> 05/10/2015</li>
+                    <li class="list-inline-item pr-2"><a href="#" class="white-text"><i class="far fa-comments"></i> 12</a></li>
+                    <li class="list-inline-item pr-2"><a href="#" class="white-text"><i class="fab fa-facebook-f"></i> 21</a></li>
+                    <li class="list-inline-item"><a href="#" class="white-text"><i class="fab fa-twitter"></i> 5</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- Card Dark -->
+
+Delete modal : bot_page.ejs
+
+          <!-- Central Modal Small -->
+          <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+              <!-- Change class .modal-sm to change the size of the modal -->
+              <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content bg-dark">
+                  <div class="modal-header">
+                    <h4 class="modal-title w-100" id="myModalLabel">Reason To Delete Bot <%= l.username %></h4>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <input class="darkButtonDelete" type="text" id="DeleteReason" placeholder="Reason:" required>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-warning btn-md" onclick="">Save changes</button>
+                    <button type="button" class="btn btn-danger btn-md" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <!-- Central Modal Small -->
+
+index.ejs | Badge:
+<% const asscrack = bot.guilds.get("500658335217876997").members.get(bots[count].cli_id);  if(asscrack) {if(asscrack.roles.has("507628704751419393")) {%> <img src="https://cdn.discordapp.com/emojis/507958292790902795.png" width="25px" height="25px"> <% } else if (asscrack.roles.has("511069587840827402")) { %> <img class="rounded" src="https://cdn.discordapp.com/emojis/508965618855444491.png" width="25px" height="25px"> <% } else {}}} %>
+JS Load time:
+var perfData = window.performance.timing;
+var pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
+var connectTime = perfData.responseEnd - perfData.requestStart;
+var renderTime = perfData.domComplete - perfData.domLoading;

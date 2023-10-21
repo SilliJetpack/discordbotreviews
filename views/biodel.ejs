@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Delete <%= username %>'s biography - DBR</title>
+    <% include ./partials/portalHeader.ejs %>
+  </head>
+  <body>
+    <% include ./partials/nav.ejs %>
+    <div class="container">
+      <h1>
+       Delete <%= username %> 
+      </h1>
+      <hr><br>
+      <form action="/modportal/biodelete" method="POST" enctype="application/x-www-form-urlencoded">
+        <center>Are you really sure to delete <%= username %>'s biography?<div style="color:red;display:inline-block;margin-bottom:0.5rem;"></div><br></center>
+      <br><br>
+      <input type="hidden" name="cli_id" value="<%= cli_id %>">
+      <input type="hidden" name="deleter" value="<%= user.id %>">
+      <center><input type="submit" class="btn btn-warning" title="Delete" value="Delete"></input>&nbsp;&nbsp;<a href="javascript:window.history.back()" class="btn btn-warning" title="Back">Cancel</a></center>
+      </form><br><br>
+  </body>
+</html>

@@ -1,0 +1,130 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="display:inline-block;width:100%">
+  <a class="navbar-brand" style="color:#97cafd;"href="/"><img src="<%=bot.guilds.get("500658335217876997").iconURL + "?size=2048"%>" style="border-radius:50%;width:30px;height:30px;margin-bottom:5px;display:inline-block;margin-right:10px;">Discord Bot Reviews</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <div id="navmain" class="navbar-nav">
+        <a class="nav-item nav-link" href="/browse">Browse Bots</a>
+        <div class="dropdown">
+            <button style="background-color: #212121; border: none;" class="nav-item nav-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+FAQs/API/Cert
+</button>
+            <div class="dropdown-menu"  style="background-color:#2f2f2f;width:15rem;"aria-labelledby="dropdownMenuButton">
+               
+              <div class="trashpekt">
+        <a style="color:white;" href="/faq"><li class="fa fa-comments">&nbsp;</li> FAQs</a>
+        </div>
+        <div class="trashpekt">
+            <a style="color:white;" href="/api/docs"><li class="fa fa-file">&nbsp;</li> API</a>
+            </div>
+            <div class="trashpekt">
+                <a style="color:white;" href="/certification"><li class="fa fa-certificate">&nbsp;</li> Certification</a>
+                </div>
+                <div class="dropdown-divider"></div>
+              <div class="trashpekt">
+                    <a style="color:white;" href="/commentrules"><li class="fa fa-list-ol">&nbsp;</li> Comment Rules</a>
+                    </div>
+                    <div class="trashpekt">
+                        <a style="color:white;" href="/badges"><li class="fa fa-star">&nbsp;</li> Badges</a>
+                        </div>
+                        <div class="trashpekt">
+                            <a style="color:white;" href="/requirements"><li class="fa fa-check-circle">&nbsp;</li> Bot Requirements</a>
+                            </div>
+</div>
+        </div>
+        <a class="nav-item nav-link" href="https://discord.gg/A2BYrj8">Discord Server</a>
+  <% if (user) { %>
+        <script>
+          var loggedIn = true
+          var userID = <%= req.user.id %>
+        </script>
+        <div class="dropdown">
+            <button style="background-color: #212121; border: none;" class="nav-item nav-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <img class="rounded" style="width:20px;height:20px" src="<%=bot.users.get(req.user.id).avatarURL || bot.users.get(req.user.id).defaultAvatarURL || async(function() {bot.fetchUser(req.user.id).then(e=>e.avatarURL) }) %>"> <!-- src="https://cdn.discordapp.com/avatars/%= req.user.id %>/%= req.user.avatar %>.png"> -->
+          <%= req.user.username + "#" + req.user.discriminator%></a>
+            </button>
+          <div class="dropdown-menu"  style="background-color:#2f2f2f;width:15rem;"aria-labelledby="dropdownMenuButton"> 
+              <div class="trashpekt">           
+                  <a style="color:white;" href="/user/<%=req.user.id%>"><li class="fa fa-user">&nbsp;</li> Profile</a>
+                  </div>
+                  <div class="trashpekt">           
+                      <a style="color:white;" href="/submit"><li class="fa fa-plus-circle">&nbsp;</li> Add a bot</a>
+                </div>
+                  <% 
+                  const lmfao = bot.guilds.get("500658335217876997").members.get(req.user.id)
+                  if(lmfao) {
+                  if(lmfao.roles.has("500662148561764352") || lmfao.roles.has("500658928602841099")) { %>
+                    <div class="trashpekt">           
+                  <a style="color:white;" href="/modportal"><li class="fa fa-wrench">&nbsp;</li>Moderation</a>
+            </div>
+          <% } %> 
+          <%} %>
+            <div class="trashpekt">           
+           <a style="color:white;" href="/logout"><li class="fa fa-paper-plane">&nbsp;</li>Log Out</a>
+           </div>
+           </div>
+      
+           </div>
+           </div>
+	<div class="dropdown">
+ 		 	<button style="background-color: #212121; border: none;" class="nav-item nav-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    			<i class="fas fa-bell" <%var checkme = bot.notis.get(req.user.id).notis.filter(r=>r.read == false); if(checkme.length >0) {%>style="color:red"<% }%>><%if(checkme.length >0) {%> <%=checkme.length%><%}%></i>
+  		</button>
+  		<div class="dropdown-menu" style="width:15rem;background-color:#2f2f2f;" aria-labelledby="dropdownMenuButton">
+			<% var f = 0; var moment = bot.require("moment-timezone"); var notifs = (req.user ? bot.notis.get(req.user.id).notis.filter(r=>r.read == false).map(r=> r).reverse() : null); if (notifs && notifs.length !== 0) { while (notifs[f] && f <= 2) { %>
+			<div class="trashpekt">
+			<b style="font-weight: bold; color: #FFFFFF;"><%= notifs[f].subject%></b><br>
+			<%if(notifs[f].read == false) {%><b style="color: #CCCCCC;"><%= notifs[f].message.length > 20 ? notifs[f].message.slice(0, 20) + "..." : notifs[f].message %></b><%} else {%><%= notifs[f].message.length > 20 ? notifs[f].message.slice(0, 20) + "..." : notifs[f].message %><% }%><br>
+			<span class="text-muted" <%if(notifs[f].read == false) {%>style="font-weight: bold;"<% }%>><%= moment(notifs[f].date).fromNow() %></span>
+			</div>
+			<% f++; } %>
+			<% } else { %>
+			<b><div style="color:white;" class="ashpekt">No notifications.</a></b></div>
+			<% } %>
+      <div class="dropdown-divider"></div>
+      <div style="color:white;" class="trashpekt">
+    			<b><a style="color: white;padding-left: 23% !important;" href="/user/<%= req.user.id %>/notifications">View Notifications</a></b> <!-- Mark as read -->
+      </div>
+  		</div>
+	</div>
+
+  <% } else { %>
+        <script>
+        var loggedIn = false
+        var userID = null
+        </script>
+        <a class="nav-item nav-link" href="/auth">Login</a>
+  <% } %>
+    
+        </div>
+
+  
+<!--         <div id="styledright"> -->
+<!--         <form id="search-form" class="search-bar form-inline my-2 my-lg-0 ml-auto" action="/search">
+          <input class="form-control" type="search" name="query" id="query" placeholder="Search for a bot:" aria-label="Search">
+          <button class="btn btn-primary btn-md my-2 my-sm-0 ml-3 hover-active-button" id="search" type="submit">
+            Search
+          </button>
+        </form> -->
+<!--         </div> -->
+      </div>
+<ul class="navbar-nav ml-auto">
+        <form id="search-form" class="search-bar form-inline my-2 my-lg-0 ml-auto" action="/search">
+          <input class="form-control" type="search" name="query" id="query" placeholder="Search for a bot:" aria-label="Search">
+          <button class="btn btn-primary btn-md my-2 my-sm-0 ml-3 hover-active-button" id="search" type="submit">
+            Search
+          </button>
+        </form>
+</ul>
+    </div>
+  </nav>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-5712170251725188",
+          enable_page_level_ads: true
+     });
+</script>

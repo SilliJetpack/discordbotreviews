@@ -1,0 +1,223 @@
+<!doctype html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+
+    <% include ./partials/header.ejs %>
+    <% include ./partials/nav.ejs %>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.css">
+            <link rel="icon" type="image/png" alt="Discord Bot Reviews" href="https://media.discordapp.net/attachments/506425178822279168/507496898823847936/dbr.png">
+            <title><%= l.username %> by <%= owner.tag %> - Discord Bot Reviews</title>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        <% if(bot.guilds.get("500658335217876997").members.get(l.id) && bot.calculated.has(l.id) && bot.calculated.get(l.id, "uptime") !== 0) {%>
+         var CSSRGBString = getColorForPercentage(<%=Number(bot.uptimes.get(l.id, "uptime")) / Number(bot.calculated.get(l.id, "calculated"))%>);
+        <%} else {%>
+         var CSSRGBString = "grey";
+         <%}%>
+        var elem = document.getElementById("onlinePercentage");
+        elem.style.backgroundColor = CSSRGBString;
+        console.log(CSSRGBString)
+      })
+    </script>
+          <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        <% if(bot.reactions.has(l.id) && Number(bot.reactions.get(l.id, "likes").length + bot.reactions.get(l.id, "dislikes").length >0)) {%>
+         var CSSRGBString = getColorForPercentage(<%=Math.round(Number(bot.reactions.get(l.id, "likes").length / Number(bot.reactions.get(l.id, "likes").length + bot.reactions.get(l.id, "dislikes").length)))%>);
+        <%} else {%>
+         var CSSRGBString = "grey";
+         <%}%>
+        var elem = document.getElementById("onlinePercentage2");
+        elem.style.backgroundColor = CSSRGBString;
+        console.log(CSSRGBString)
+      })
+    </script>
+    </head>
+    <body>
+      <style>
+      [data-title] {
+  
+  position: relative;
+  cursor: help;
+}
+
+[data-title]:hover::before {
+  content: attr(data-title);
+  position: absolute;
+  bottom: -40px;
+  display: inline-block;
+  padding: 10px;
+  border-radius: 2px;
+  background: #000;
+  color: #fff;
+  font-size: 12px;
+  font-family: sans-serif;
+  white-space: nowrap;
+}
+
+      </style>
+           <% const lmfao = bot.guilds.get("500658335217876997").members.get(b.map(r=> r.submitter)[0]);if(lmfao) { if(lmfao.roles.has("507628349707911178")) { var isUniqueDev = true } else { var isUniqueDev = false }} else { var isUniqueDev = false }; if (req.user) {const hoe = bot.guilds.get("500658335217876997").members.get(req.user.id); if(hoe) { if(hoe.roles.has("500662148561764352") || hoe.roles.has("500658928602841099")) { var hasMod = true } else { var hasMod = false }} else { var hasMod = false }} else { var hasMod = false } %> 
+        <noscript>
+            <div class="alert alert-danger" role="alert">
+                This website requires Javascript to work. Please enable Javascript or use a browser that supports Javascript.
+            </div>
+        </noscript>
+        <div class="container">
+          <center>
+            <%if(bot.hidden.has(l.id)) {%>
+            <div class="card" style="background-color:red;padding:2px;">
+              This bot is currently hidden from all bot pages
+            </div><br>
+            <%}%>
+            <div class=""><img class="rounded-circle" src="<%= l.avatarURL.replace("?size=2048", "") %>"></div><br>
+            <div style="display:inline-block"><h2 id="botname" style="display:inline-block"><%= l.username %> </h2> &nbsp;<div id="<%=l.presence.status.toLowerCase()%>" style="display:inline-block;border-radius:50%;"></div> <div id="onlinePercentage"  data-title="<%if(bot.uptimes.has(l.id)) {%><%=bot.uptimes.get(l.id, "uptime")%><% } else {%>???<%}%>/<%if(bot.calculated.has(l.id)) {%><%=bot.calculated.get(l.id, "calculated")%><%} else {%>???<%}%>" style="vertical-align: center;margin-left:5px;background-color:grey;border-radius:100px;padding:2px;width:7%;display:inline-block;">&nbsp<%if(bot.guilds.get("500658335217876997").members.get(l.id) && bot.calculated.has(l.id) && bot.calculated.get(l.id, "uptime") !== 0) {%><%=Math.round(Number(bot.uptimes.get(l.id, "uptime")) / Number(bot.calculated.get(l.id, "calculated")) * 100)%>%<%} else {%>???<%}%>&nbsp;</div><br><% const asscrack2 = bot.guilds.get("500658335217876997").members.get(l.id);  if(asscrack2) {if(asscrack2.roles.has("500659906836168715")) {%><img alt="This is an administrator bot" title="Admin Bot" src="https://cdn.discordapp.com/emojis/528968068957732865.png" width="60px" height="60px"><% }} %><% const asscrack = bot.guilds.get("500658335217876997").members.get(l.id);  if(asscrack) {if(asscrack.roles.has("507628704751419393")) {%> <img alt="This is a unique bot" title="Unique Bot" src="https://cdn.discordapp.com/emojis/507958292790902795.png" width="50px" height="50px"><br> <% } else if (asscrack.roles.has("511069587840827402")) { %> <img class="rounded verified" alt="This is a very unique bot" title="Very Unique Bot" src="https://cdn.discordapp.com/emojis/508965618855444491.png" style="width:50px !important;height:50px !important;background-color:var(--main-bg-color);"><br> <% }} %>
+              <br><span style="color:chartreuse"><% if (bot.reactions.get(l.id) && bot.reactions.get(l.id, "likes")) { %> <i class="fa fa-thumbs-up"></i> <%= bot.reactions.get(l.id) && bot.reactions.get(l.id, "likes").length %> <% } else { %> <i class="fa fa-thumbs-up"></i> 0 <% } %></span>&nbsp;&nbsp;<span style="color:red"><% if (bot.reactions.get(l.id) && bot.reactions.get(l.id, "dislikes")) { %> <i class="fa fa-thumbs-down"></i> <%= bot.reactions.get(l.id) && bot.reactions.get(l.id, "dislikes").length %> <% } else { %> <i class="fa fa-thumbs-down"></i> 0 <% } %></span> <br><div id="onlinePercentage2" style="padding:5px;display:inline-block;border-radius:5%;"> <%=bot.reactions.has(l.id) && Number(Number(bot.reactions.get(l.id, "likes").length) + Number(bot.reactions.get(l.id, "dislikes").length)) >0 ? Math.round(Number(bot.reactions.get(l.id, "likes").length / Number(bot.reactions.get(l.id, "likes").length + bot.reactions.get(l.id, "dislikes").length) * 100)) + "% positive" : "No rating yet."%></div>
+              <br><%= b.map(r=> r.short_description)[0] %><br><a id="button-primary" href="/bot/<%=l.id%>/add" class="btn btn-primary hover-active-button" target="_blank">Add to your server</a><% if (b.map(r=> r.websiteURL)[0] && !b.map(r=> r.websiteURL)[0] == "") { %> <a id="button-primary" href="<%= b.map(r=> r.websiteURL)[0] %>" class="btn btn-primary hover-active-button" target="_blank">website</a> <% if (b.map(r=> r.source)[0] && !b.map(r=> r.source)[0] == "") { %> <a id="button-primary" href="<%= b.map(r=> r.source)[0] %>" class="btn btn-primary hover-active-button" target="_blank">source</a><% }} if (b.map(r=> r.support_url)[0] && !b.map(r=> r.support_url)[0] == "") { %> <a id="button-primary" href="<%= b.map(r=> r.support_url)[0] %>" class="btn btn-primary hover-active-button" target="_blank">Support Server</a> <% } if (req.user && (hasMod || req.user.id === bot.botinfo.has(l.id) && bot.botinfo.get(l.id, "submitter")) && !bot.submission.has(l.id)) { %><a id="button-primary" class="btn btn-danger" href="/bot/<%=l.id%>/delete">Delete</a><% }%> <% if(req.user) { if(bot.botinfo.has(l.id) && req.user.id === bot.botinfo.get(l.id, "submitter") || bot.submission.has(l.id) && req.user.id === bot.submission.get(l.id, "submitter")) {%><a id="button-primary" href="/bot/<%=l.id%>/edit" class="btn btn-primary hover-active-button" target="_blank">edit</a><%}}%><% if(req.user) { if(bot.botinfo.has(l.id)) {if(req.user.id === bot.botinfo.get(l.id, "submitter")) {%><a id="button-primary" href="/bot/<%=l.id%>/token" class="btn btn-danger hover-active-button" target="_blank">API token</a><% }}}%> <%if(bot.submission.has(l.id)) { if(req.user.id === bot.submission.get(l.id, "submitter")) {%> <a id="button-primary" class="btn btn-danger" href="/bot/<%=l.id%>/revoke">Revoke approval</a> <% }}%>
+              <%if(req.user) {if(bot.guilds.get("500658335217876997").members.get(req.user.id)) { if(bot.guilds.get("500658335217876997").members.get(req.user.id).roles.has("500658928602841099")) {if(bot.guilds.get("500658335217876997").members.get(l.id)) {if(bot.guilds.get("500658335217876997").members.get(l.id).roles.has("507628704751419393") || bot.guilds.get("500658335217876997").members.get(l.id).roles.has("511069587840827402")) {%> <a href="/bot/<%=l.id%>/cdelete" class="btn btn-danger">uncertify</a><%}}}}}%><%if(req.user && bot.botinfo.has(l.id)) {if(bot.guilds.get("500658335217876997") && bot.guilds.get("500658335217876997").members.get(req.user.id) && bot.guilds.get("500658335217876997").members.get(req.user.id).roles.has("500662148561764352") || bot.guilds.get("500658335217876997") && bot.guilds.get("500658335217876997").members.get(req.user.id) && bot.guilds.get("500658335217876997").members.get(req.user.id).roles.has("500658928602841099")) {%> <a href="/bot/<%=l.id%>/hidepart" class="btn btn-warning"  target="_blank"><%if(bot.hidden.has(l.id)) {%>Unhide<%} else {%> Hide<%}%></a><%}}%>
+              <% if(req.user) { if(bot.botinfo.has(l.id)) {if(req.user.id === bot.botinfo.get(l.id, "submitter")) {%> <% } else { %><a id="button-primary" href="/bot/<%=l.id%>/report" class="btn btn-danger hover-active-button" target="_blank">report</a> <% }}} else {%> <a id="button-primary" href="/bot/<%=l.id%>/report" class="btn btn-danger hover-active-button" target="_blank">report</a> <% }%>
+              <br>Brought to you by: 
+              <br><div id="ownersarea" class="card" style="background-color: var(--main-bg-color);background-clip:content-box;background-image: linear-gradient(to top, black, #2f2f2f);width:auto;height:40px;border-radius:20px;display:inline-block;">
+               <% if (isUniqueDev) { %> <img id="owneravatar" class="certifiedavatar" src="<%= owner.avatarURL || owner.defaultAvatarURL %>"><% } else {  %><img id="owneravatar" src="<%= owner.avatarURL || owner.defaultAvatarURL %>" class="defaultavatar"><% } %><a id="ownertag" class="ownername" href="/user/<%= owner.id %>" style="color:<%if(bot.userinfo.has(owner.id) && bot.userinfo.get(owner.id, "nametag") && bot.userinfo.get(owner.id, "nametag").length >1) {%>rgb(<%=bot.userinfo.get(owner.id, "nametag")%>) <%} else {%><%if(isUniqueDev) {%>gold;"<%} else {%>white;<%}}%>"><%= owner.tag %> </a>
+                </div></div><br>
+          <% if (req.user && bot.reactions.has(l.id)) {
+             if (!bot.reactions.get(l.id, "likes") || !bot.reactions.get(l.id, "likes").includes(user.id)) { %>
+            <button onclick="window.location.replace('/bot/<%=l.id%>/react?action=like')" class="btn btn-success">Like</button>
+          <% } else { %>
+            <button onclick="window.location.replace('/bot/<%=l.id%>/react?action=rmlike')" class="btn btn-outline-success">Like</button>
+          <!-- if(!bot.botinfo.get(l.id,"likes"){bot.botinfo.set(l.id,Set(),"likes");};bot.botinfo.set(l.id,bot.botinfo.get(l.id,"likes").add(user.id),"likes") -->
+          <% } 
+            if (!bot.reactions.get(l.id, "dislikes") || !bot.reactions.get(l.id, "dislikes").includes(user.id)) { %>
+            <button onclick="window.location.replace('/bot/<%=l.id%>/react?action=dislike')" class="btn btn-danger">Dislike</button>
+            <% } else { %>
+            <button onclick="window.location.replace('/bot/<%=l.id%>/react?action=rmdislike')" class="btn btn-outline-danger">Dislike</button>
+            <% }}%>
+<% if(!req.user) {%>
+  <br>
+  <p>Please <a href="/auth">Login</a> to rate</p>
+              <% }%>
+            </center>
+          <br>
+                 <%if(bot.adds.has(l.id)) {%>
+                 Total invites: <code><%=numberWithCommas(bot.adds.get(l.id, "adds").length)%></code>
+                 <%} else {%>
+                 Total invites: <code>0</code>
+                 <%}%>
+                 <br>
+<% if (bot.stats.has(l.id)) { %> 
+<div id="servercount">Servers: <code><%=numberWithCommas(bot.stats.get(l.id, "server_count"))%></code></div>
+<% } %>
+          <div id="prefix">Prefix: <code><%= b.map(r=> r.prefix)[0] %></code></div>
+          <br>
+    <% if (b.map(r=> r.tags)[0] && b.map(r=> r.tags)[0].length !== 0 && b.map(r=> r.tags)[0].some(r=> r !== "")) { %>
+Tags:
+     <%for (var i in b.map(r=> r.tags)[0]) {%>
+	   <a href="/browse/tag/<%=b.map(r=> r.tags)[0][i]%>">
+	   <div class="box" style="margin-bottom:10px;margin-left:2px;<%var ans = b.map(r=> r.tags)[0][i]; if(ans.replace(ans, function(matched){return tagnames[matched]}) !== "undefined") { %>background-color:red;<%}%>"><div class="boxcontent" style="padding:5px"><% var ans = b.map(r=> r.tags)[0][i];%><%= ans.replace(ans, function(matched){return tagnames[matched]}) == "undefined" ? ans : ans.replace(ans, function(matched){return tagnames[matched]})%></div></div>
+	  </a>
+  <% }} %>
+  
+            <div class="card">
+            <div class="card-body markdown-body" style="color:black;">
+             <% if(bot.guilds.get("500658335217876997").members.get(l.id)) {
+              if(bot.guilds.get("500658335217876997").members.get(l.id).roles.has("532232715261444096")) {%>
+                <%- new remarkable({html: true, markdown: true}).render(b.map(r=> r.long_description)[0])%>
+                <% } else {%>
+                      <%- md.render(b.map(r=> r.long_description)[0]) %> 
+                    <%}} else {%>
+                      <%- md.render(b.map(r=> r.long_description)[0]) %> 
+<% } %>                      
+            </div>
+          </div><br><br>
+          <%if(!bot.submission.has(l.id)) {%>
+          <br>
+          <h2>
+            <hr>
+            Comments
+          </h2>
+          <%if(bot.botinfo.has(l.id) && bot.botinfo.get(l.id, "allowcomments") && bot.botinfo.get(l.id, "allowcomments")) {%>
+            <br>
+Comments are disabled on this bot.
+<br>
+            <% } else {%>
+            <%if(req.user) { %>
+            <script>var id = <%= l.id %></script>
+              <form class="bg-dark-submit" action="/api/form/postcomment" method="POST" id="comment-form" enctype="application/x-www-form-urlencoded">
+              <img class="rounded-circle badge-img fluid-img" style="heigth:100px;width:100px;margin-bottom:1rem" src="<%=bot.users.get(req.user.id).avatarURL || bot.users.get(req.user.id).defaultAvatarURL%>">
+              <textarea class="txtarea" class="d-flex-lg" style="width:85%;height:10rem;font-size: 15px;display:inline-block;margin-bottom:1rem" rows="3" id="comment" name="comment" maxlength="600" placeholder="Write a quick comment as <%=req.user.username%>... (600 characters maximum)" required="required"></textarea><br>
+              <input type="hidden" name="bot" value="<%= l.id%>">
+              
+              <input type="submit" style="position:absolute;right:9rem" value="Comment" class="btn btn-primary" id="commentclick" disabled>
+                NOTE: Read our <a href="/commentrules">rules for comments</a> before you post a comment.<br>
+                use <a style="color: blue;">@(username + tag)</a> for mentions (other person must have enabled notifications via server in order to receive the notification <br> about mentioning) <br>
+                Use mentions as replies
+            </form><br><br>
+            <script>
+              var commentBox = document.getElementById("comment")
+              var commentSubmit = document.getElementById("commentclick")
+              document.getElementById("comment").addEventListener("keydown", (event) => {
+                if (commentBox.value.replace(/ /g, "").replace(/\n/g, "").length == 0) {
+                  commentSubmit.setAttribute("disabled", "")
+                } else {
+                  commentSubmit.removeAttribute("disabled")
+                }});
+              document.getElementById("comment").addEventListener("keyup", (event) => {
+                if (commentBox.value.replace(/ /g, "").replace(/\n/g, "").length == 0)  {
+                  commentSubmit.setAttribute("disabled", "")
+                } else {
+                  commentSubmit.removeAttribute("disabled")
+                }});
+          </script>
+            <% } else {%>
+            <br><a href="/auth">Login</a> to comment.<br><br>
+            <% } %>
+              <h1>Total showing Comments: <%=bots.filter(r=> r.bot === l.id && !banned.has(r.author)).length%></h1>
+              <%if(bots.filter(r=> r.bot === l.id && banned.has(r.author)).length >0) {%>
+<p style="color:red;">NOTE: some comments are hidden <a href="/bot/<%=l.id%>/comments">click here to see all</a></p>
+                <% }%>
+              <%if(bots.filter(r=> r.bot === l.id).length <1) { %>
+              <br><br>
+              No one has commented yet.<br><br>
+                          <% } %>
+                          <%if(bot.botinfo.has(l.id)) {%>
+                               <% var count = 0; bots = bots.filter(r=> r.bot === l.id && !banned.has(r.author)).map(r=> r).slice(0, 10); while(bots[count]) { %>
+                          <br>
+                          <div id="commentbox" class="card" style="<%if(bot.userinfo.has(bots[count].author) && bot.userinfo.get(bots[count].author, "commentbubble") && bot.userinfo.get(bots[count].author, "commentbubble").length >0) {%><%if(bot.userinfo.get(bots[count].author, "commentbubble").startsWith("http")) {%>  -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover;background-size: cover;  background-repeat: no-repeat;background-attachment:fixed;background-position: center;background-image: url(<%=bot.userinfo.get(bots[count].author, "commentbubble")%>)<%} else {%>background-color: rgb(<%=bot.userinfo.get(bots[count].author, "commentbubble")%>)<%}} else {%>background-color: #2f2f2f<% }%>;border-radius:25px;padding:1rem;margin-bottom:1rem">
+                          
+                            <p style="display: inline-block;font-size: 18px;">&nbsp<img class="rounded-circle"style="height:50px;" src="<%=bot.users.get(bots[count].author).avatarURL || bot.users.get(bots[count].author).defaultAvatarURL%>"> <a style="color: <%if(bot.userinfo.has(bots[count].author) && bot.userinfo.get(bots[count].author, "nametag") && bot.userinfo.get(bots[count].author, "nametag") && bot.userinfo.get(bots[count].author, "nametag").length >1) {%>rgb(<%=bot.userinfo.get(bots[count].author, "nametag")%>) <%} else {%>white<%}%>;"href="/user/<%=bot.users.get(bots[count].author).id%>"><%=bot.users.get(bots[count].author).tag%></a><%if(bot.botinfo.get(l.id, "submitter") === bots[count].author) {%> <img title="Author is the owner of the bot"style="height: 25px;"src="https://cdn.discordapp.com/emojis/515950426181468163.png"> <% };if(bot.guilds.get("500658335217876997").members.get(bots[count].author)) { if (bot.guilds.get("500658335217876997").members.get(bots[count].author).roles.has("500658928602841099")) {%> <img title="Author is an administrator of the website" src="https://cdn.discordapp.com/emojis/507680644416012299.png" height="25px"> <%}if(bot.guilds.get("500658335217876997").members.get(bots[count].author)) { if (bot.guilds.get("500658335217876997").members.get(bots[count].author).roles.has("500662148561764352")) {%> <img title="Author is a website moderator" src="https://cdn.discordapp.com/emojis/507668351368036382.png" height="25px"> <%}if(bot.guilds.get("500658335217876997").members.get(bots[count].author)) { if (bot.guilds.get("500658335217876997").members.get(bots[count].author).roles.has("507628349707911178")) {%> <img title="Author is certified" src="https://cdn.discordapp.com/emojis/507958292790902795.png" height="25px"> <%}}}} if(bot.guilds.get("500658335217876997").members.get(bots[count].author)) { if (bot.guilds.get("500658335217876997").members.get(bots[count].author).roles.has("637796644552835083")) {%> <img title="Author is a library creator" src="https://cdn.discordapp.com/emojis/637971528792670218.png" height="25px"><%}}; if(req.user) { if(req.user.id === bots[count].author || bot.guilds.get("500658335217876997").members.get(req.user.id) && bot.guilds.get("500658335217876997").members.get(req.user.id).roles.has("500662148561764352") || bot.guilds.get("500658335217876997").members.get(req.user.id) && bot.guilds.get("500658335217876997").members.get(req.user.id).roles.has("500658928602841099")) {%> 
+                            <form action="/api/form/deletecomment" style="display:inline-block;position:absolute;right:1rem;" method="POST" id="form" enctype="application/x-www-form-urlencoded">&nbsp&nbsp&nbsp 
+                            <input type="hidden" name="commentID" value="<%= bots[count].id %>">
+                            <input type="hidden" name="bot" value="<%= bots[count].bot %>">
+                              <input style="border-radius: 25px;display:inline-block;" type="submit" value="Delete comment" class="btn btn-danger" id="asshole" name="asshole"><% }} %></form></p>
+                           <p style="display: inline-block; font-size: 18px; word-wrap:break-word"><%=bots[count].comment%> </p>
+                           <i id="<%=bots[count].id%>" style="font-size:13px;color: white;"></i>
+                           <script>
+                            var asy = new Date("<%=bots[count].time%>")
+                            var weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+                            var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+                          var datetoday = "th"
+                    if(asy.getDate() == 1 || asy.getDate() == 21 || asy.getDate() == 31) datetoday = "st" 
+                    if(asy.getDate() == 22 || asy.getDate() == 2) datetoday = "nd"
+                    if(asy.getDate() == 3 || asy.getDate() == 23) datetoday = "rd"
+var h = asy.getHours() > 12 ? asy.getHours() - 12 : asy.getHours()
+var m = asy.getMinutes()
+var s = asy.getSeconds()
+var ap = asy.getHours() / 12 < 1 ? "AM" : "PM"
+var totalanswer = h + ":" + m + " " + ap
+document.getElementById("<%=bots[count].id%>").innerText = "Posted at " +  weekday[asy.getDay()] + ", " + asy.getDate() + datetoday + " " + months[asy.getMonth()] + " " + asy.getFullYear() + " at " + totalanswer
+                            </script>
+                          </div>
+                          <% count++; } %>
+                          <% }%>
+                          <%if(bots.filter(r=> r.bot === l.id).length >0) { %>
+                            <center><a class="btn btn-primary" href="/bot/<%=l.id%>/comments%>">all comments</a></center>
+                            <% }%>
+                            <%}%>
+                            <% }%>
+                          <br><br>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        </body>
+</html>
+

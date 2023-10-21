@@ -1,0 +1,882 @@
+<!doctype html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+    <% include ./partials/header.ejs %>
+    <% include ./partials/nav.ejs %>
+      <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+
+      <style>
+      div#objectbot {
+        padding-top: 1em !important;
+      }
+      div#objectuser {
+        padding-top: 1em !important;
+      }
+      div#objectcomments {
+        padding-top: 1em !important;
+      }
+        code, kbd, pre, samp {
+          font-family: "Open Sans", sans-serif !important;
+          font-size: 1.2em !important;
+        }
+      </style>
+  <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.css">
+            <link rel="icon" type="image/jpg" href="https://media.discordapp.net/attachments/506425178822279168/507496898823847936/dbr.png">
+            <title>API Documentation - Discord Bot Reviews</title>
+    </head>
+    <body>
+          <noscript>
+            <div class="alert alert-danger" role="alert">
+                This website requires Javascript to work. Please enable Javascript or use a browser that supports Javascript.
+            </div>
+        </noscript>
+      
+      
+          <div class="container">
+           <center><h1>API Docs</h1></center>
+            <hr>
+            We provide an API for Discord Bot Reviews.<br>
+           All endpoints of this API support CORS.<br>
+            Base URL: <code>https://discordbotreviews.xyz/api</code><br>
+            Last Updated: 30/10/2019 12:40 CET (DD/MM/YYYY)<hr>
+
+            
+<div class="row">
+  <div class="col-3" style="font-weight: 500;">
+    <div class="nav flex-column nav-tabs" id="v-tabs-tab" role="tablist" aria-orientation="vertical">
+      <a class="nav-link active" id="v-tabs-intro-tab" data-toggle="pill" href="#v-tabs-intro" role="tab"
+      aria-controls="v-tabs-intro" aria-selected="false">Introduction</a>
+      <a class="nav-link" id="v-tabs-endpoints-tab" data-toggle="pill" href="#v-tabs-endpoints" role="tab"
+        aria-controls="v-tabs-endpoints" aria-selected="false">Endpoints</a>
+      <a class="nav-link" id="v-tabs-objects-tab" data-toggle="pill" href="#v-tabs-objects" role="tab"
+        aria-controls="v-tabs-objects" aria-selected="false">Objects</a>
+      <a class="nav-link" id="v-tabs-libraries-tab" data-toggle="pill" href="#v-tabs-libraries" role="tab"
+        aria-controls="v-tabs-libraries" aria-selected="false">Libraries</a>
+      <a class="nav-link" id="v-tabs-widgets-tab" data-toggle="pill" href="#v-tabs-widgets" role="tab"
+        aria-controls="v-tabs-widgets" aria-selected="false">Widgets</a>
+      <a class="nav-link" id="v-tabs-servercount-tab" data-toggle="pill" href="#v-tabs-servercount" role="tab"
+        aria-controls="v-tabs-servercount" aria-selected="false">Server Count</a>
+      <a class="nav-link" id="v-tabs-ratings-tab" data-toggle="pill" href="#v-tabs-ratings" role="tab"
+        aria-controls="v-tabs-ratings" aria-selected="false">Ratings</a>
+      <a class="nav-link" id="v-tabs-examples-tab" data-toggle="pill" href="#v-tabs-examples" role="tab"
+        aria-controls="v-tabs-examples" aria-selected="false">Examples</a>
+    </div>
+  </div>
+  <div class="col-9">
+    <div class="tab-content" id="v-tabs-tabContent">
+      <div class="tab-pane fade show active" id="v-tabs-intro" role="tabpanel" aria-labelledby="v-tabs-intro-tab">
+        <div id="intro"> 
+          <h1 class="text-center">Introduction</h1>
+          <p style="font-size:20px;font-weight: 500;">Welcome to the DBR API page!</p>
+          <p><span style="padding-left: 1em;display:flex;">Our API will provide you information about bots, users and comment and so on.</span>
+            <span style="padding-left: 1em;display:flex;padding-right: 7em;">Our API is completely free and usable by anyone, however some places may require authorization.</span>
+            <span style="padding-left: 1em;">Any bugs or help needed? Contact us in our <a href="https://discord.gg/A2BYrj8" style="font-size: 1.5em;font-weight:500;">Discord server</a></span>
+            <br>
+            <span style="padding-left: 1em;">Stuck? Hard to use, want easier ways? Check out Libraries under Libraries tab.</span></p>
+    
+         </div>
+      </div>
+
+      
+
+      
+      <div class="tab-pane fade show" id="v-tabs-endpoints" role="tabpanel" aria-labelledby="v-tabs-endpoints-tab">
+            <div id="endpoints">
+              <h2>
+                Endpoints <a style="color:white" href="#endpoints" title="Permanent Link"><i class="fas fa-link"></i></a>
+              </h2><hr>
+            <h3>Getting a bot object by ID:</h3>
+              GET <code>/bot/{bot.clientID}</code><br>
+              Returns a bot object if client ID exists in database. Otherwise returns a 404 status.<br>
+            <br><h3>Get a user object by ID:</h3>
+              GET <code>/user/{user.id}</code><br>
+              Returns a user object if client ID exists in database. Otherwise returns a 404 status.<br>
+<br><h3>Get all of the bot's comments</h3>
+GET <code>/bot/{bot.id}/comments</code><br>
+Returns all of the bot's comments in an object.
+<p style="color:red;">NOTE: This endpoint will not be usable if the bot has disabled comments.</p>
+<h3>Get a bot's widget</h3>
+GET <code>/widget/{bot.id}.png</code><br>
+ALTERNATE WIDGET<br>
+GET <code>/widget/2/{bot.id}.png</code><br>
+
+Returns .png file of the widget
+<br>
+
+<br><h3>Post server count</h3>
+POST <code>/bot/{bot.id}/stats</code>
+<br>
+Post your server count to our API. Requires Authorization header.
+<br><br>
+<h3>Get bot's ratings</h3>
+GET <code>/bot/${bot.id}/rating</code>
+<br>
+Returns who liked & disliked the bot 
+<p style="color:red;">NOTE: Rating data is publicly exposed by default, however, if only you would like to access this then check the 'voting' box on your bot's edit page</p>
+<br><br>
+<p style="color:lime;">NOTE: If you have a vanity URL active, you can use that instead of ID on all bot endpoints.</p>
+<br>
+              
+          </div></div>
+
+      <div class="tab-pane fade" id="v-tabs-objects" role="tabpanel" aria-labelledby="v-tabs-objects-tab">
+        <div id="objects"> 
+              <h2>
+                Objects <a style="color:white" href="#objects" title="Permanent Link"><i class="fas fa-link"></i></a>
+              </h2>
+              <hr>
+        <nav class="font-weight-bold nav-fill flex-column flex-sm-row">
+          <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link active" id="nav-bot-tab" data-toggle="tab" href="#nav-bot" role="tab"
+              aria-controls="nav-bot" aria-selected="true">Bot</a>
+            <a class="nav-item nav-link" id="nav-user-tab" data-toggle="tab" href="#nav-user" role="tab"
+              aria-controls="nav-user" aria-selected="false">User</a>
+            <a class="nav-item nav-link" id="nav-comment-tab" data-toggle="tab" href="#nav-comment" role="tab"
+              aria-controls="nav-comment" aria-selected="false">Comment</a>
+          </div>
+        </nav>
+        </div>
+        <div class="tab-content" id="nav-tabContent">
+          <div class="tab-pane fade show active" id="nav-bot" role="tabpanel" aria-labelledby="nav-bot-tab"><div id="objectbot">
+              <h3>
+                Bot Object
+              </h3>
+              <table class="table table-striped table-dark table-bordered table-hover table-sm" style="background-color:#0f0f0f;">
+                <thead>
+                <tr>
+                  <th>Parameter</th>
+                  <th>Type</th>
+                  <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>username</th>
+                        <th>string</th>
+                        <th>The bot's username</th>
+                      </tr>
+                    <tr>
+                        <th>discriminator</th>
+                        <th>number</th>
+                        <th>The bot's discriminator number</th>
+                      </tr>
+                    <tr>
+                        <th>avatar</th>
+                        <th>string</th>
+                        <th>The bot's avatar</th>
+                      </tr>
+                <tr>
+                  <th>clientID</th>
+                  <th>string</th>
+                  <th>The bot's Client ID.</th>
+                </tr>
+                <tr>
+                  <th>prefix</th>
+                  <th>string</th>
+                  <th>The bot's prefix.</th>
+                </tr>
+                <tr>
+                  <th>invite_url</th>
+                  <th>string</th>
+                  <th>The bot's invite URL</th>
+                </tr>
+                <tr>
+                  <th>support_url</th>
+                  <th>string</th>
+                  <th>The bot's support server invite code.</th>
+                </tr>
+                <tr>
+                  <th>short_description</th>
+                  <th>string</th>
+                  <th>The bot's short description.</th>
+                </tr>
+                <tr>
+                  <th>long_description</th>
+                  <th>string</th>
+                  <th>The bot's long description. May contain Markdown.</th>
+                </tr>
+                <tr>
+                  <th>owner</th>
+                  <th>User</th>
+                  <th>The bot's submitter user object. May not always be the actual owner and will be missing the "bots" attribute.</th>
+                </tr>
+ <tr>
+                  <th>owner.bio</th>
+                  <th>string</th>
+                  <th>The bot owner's biography.</th>
+                </tr>
+ <tr>
+                  <th>owner.id</th>
+                  <th>snowflake</th>
+                  <th>The bot owner's ID</th>
+                </tr>
+                <tr>
+                    <th>owner.username</th>
+                    <th>string</th>
+                    <th>The bot owner's username</th>
+                  </tr>
+                  <tr>
+                      <th>owner.discriminator</th>
+                      <th>number</th>
+                      <th>The bot owner's discriminator (4 numbers after #)</th>
+                    </tr>
+                    <tr>
+                        <th>owner.avatar</th>
+                        <th>string</th>
+                        <th>The bot owner's avatar URL</th>
+                      </tr>
+ <tr>
+                  <th>owner.certified</th>
+                  <th>boolean</th>
+                  <th>Returns true if owner is certified.</th>
+                </tr>
+
+                <tr>
+                  <th>likes</th>
+                  <th>integer</th>
+                  <th>The bot's amount of likes.</th>
+                </tr><tr>
+                  <th>dislikes</th>
+                  <th>integer</th>
+                  <th>The bot's amount of dislikes.</th>
+                </tr>
+                  <tr>
+                  <th>unique</th>
+                  <th>boolean</th>
+                  <th>Returns true if the bot is certified as "Unique".</th>
+                </tr>
+                  <tr>
+                  <th>veryUnique</th>
+                  <th>boolean</th>
+                  <th>Returns true if the bot is certified as "Very Unique"</th>
+                </tr>
+   <tr>
+                  <th>website</th>
+                  <th>string</th>
+                  <th>The bot's website (if there is any).</th>
+                </tr>
+                <tr>
+                    <th>source</th>
+                    <th>string</th>
+                    <th>The Bot's source code url (if there is any)</th>
+                  </tr>
+   <tr>
+                  <th>servers</th>
+                  <th>integer</th>
+                  <th>Bot's submitted server count, returns null if there isn't any.</th>
+                </tr>
+                <tr>
+                    <th>vanityURL</th>
+                    <th>string</th>
+                    <th>The bot's vanity URL if they have one.</th>
+                  </tr>
+                  <tr>
+                    <th>tags</th>
+                    <th>array of strings</th>
+                    <th>The bot's tags in an array. (returns null if they don't have any)</th>
+                  </tr>
+                  <tr>
+                    <th>comments</th>
+                    <th>number</th>
+                    <th>The total number of comments on that bot (This will show a number of total comments, including banned user's comments, since banned user's comments are hidden)</th>
+                  </tr>
+                  <tr>
+                    <th>commentsdisabled</th>
+                    <th>boolean</th>
+                    <th>Returns true if comments are disabled on this bot</th>
+                  </tr>
+                  <tr>
+                    <th>privaterating</th>
+                    <th>boolean</th>
+                    <th>Returns true if this bot's rating data is private (Requires authorization header to obtain information about who liked and disliked)</th>
+                  </tr>
+                   <tr>
+                    <th>uptime</th>
+                    <th>integer</th>
+                    <th>The bot's uptime in percentage (without % sign)</th>
+                  </tr>
+                   <tr>
+                    <th>uptimecalculated</th>
+                    <th>integer</th>
+                    <th>The bot's total online time since it started calculating. (seconds)</th>
+                  </tr>
+                   <tr>
+                    <th>uptimetotal</th>
+                    <th>integer</th>
+                    <th>Total time it passed since calculation started. (seconds)</th>
+                  </tr>
+                   <tr>
+                    <th>invites</th>
+                    <th>number</th>
+                    <th>Total times the bot was invited by users (including non-logged in-s)</th>
+                  </tr>
+                </tbody>
+              </table>
+              </div></div>
+          <div class="tab-pane fade" id="nav-user" role="tabpanel" aria-labelledby="nav-user-tab"><div id="objectuser">
+              <h3>
+                User Object
+              </h3>
+              <table class="table table-striped table-dark table-bordered table-hover table-sm" style="background-color:#0f0f0f;">                
+                <thead>
+                <tr>
+                  <th>Parameter</th>
+                  <th>Type</th>
+                  <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <th>id</th>
+                  <th>string</th>
+                  <th>The user's ID.</th>
+                </tr>
+                <tr>
+                    <tr>
+                        <th>username</th>
+                        <th>string</th>
+                        <th>The user's username</th>
+                      </tr>
+                      <tr>
+                          <th>discriminator</th>
+                          <th>number</th>
+                          <th>The user's discriminator (4 numbers after #)</th>
+                        </tr>
+                        <tr>
+                            <th>avatar</th>
+                            <th>string</th>
+                            <th>The user's avatar URL</th>
+                          </tr>
+                        <tr>
+                            <th>username</th>
+                            <th>string</th>
+                            <th>The user's username</th>
+                          </tr>
+                  <th>bio</th>
+                  <th>string</th>
+                  <th>The user's biography.</th>
+                </tr>
+                  <tr>
+                  <th>certified</th>
+                  <th>boolean</th>
+                  <th>Returns true if the user is certified</th>
+                </tr>
+                  <tr>
+                  <th>bots</th>
+                  <th>array[bot]</th>
+                  <th>An array of all bots the user owns. <b>THIS IS ONLY AVAILABLE VIA THE /user ENDPOINT AND WILL BE MISSING THE OWNER ATTRIBUTE!!!</b></th>
+                </tr>
+<tr>
+                  <th>website</th>
+                  <th>string</th>
+                  <th>The user's personal website (Will return null if they don't have one)</b></th>
+                </tr>
+  <th>background</th>
+                  <th>string</th>
+                  <th>The user's background profile image (Will return null if they don't have one)</b></th>
+                </tr>
+  <th>pulsecolor</th>
+                  <th>integer</th>
+                  <th>The user's custom pulse color (RGB) (Will return null if they don't have one)</b></th>
+                </tr>
+ </tr>
+  <th>certifiedbots</th>
+                  <th>array[snowflake]</th>
+                  <th>Returns an array of user's bots that are certified</b></th>
+                </tr>
+                <tr>
+                    <th>animationtime</th>
+                    <th>number</th>
+                    <th>The user's background animation time (in seconds)</th>
+                  </tr>
+                  <tr>
+                    <th>themecolor</th>
+                    <th>number in string </th>
+                    <th>The user's theme color</th>
+                  </tr>
+                  <tr>
+                    <th>commenttheme</th>
+                    <th>string or number </th>
+                    <th>The user's comment bubble background color/theme. Can be a number if it's color, string if it's a background URL</th>
+                  </tr>
+                      <tr>
+                    <th>badges</th>
+                    <th>Array</th>
+                    <th>The user's earned badges in an array</th>
+</tr>
+                </tbody>
+              </table>
+            </div></div>
+          <div class="tab-pane fade" id="nav-comment" role="tabpanel" aria-labelledby="nav-comment-tab"><div id="objectcomments">
+  <h3>
+                Comment Object
+              </h3>
+              <table class="table table-striped table-dark table-bordered table-hover table-sm" style="background-color:#0f0f0f;">
+                <thead>
+                <tr>
+                  <th>Parameter</th>
+                  <th>Type</th>
+                  <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <th>id</th>
+                  <th>integer</th>
+                  <th>The Comment ID</th>
+                </tr>
+  <tr>
+                  <th>author</th>
+                  <th>snowflake</th>
+                  <th>The author's ID</th>
+                </tr>
+                <tr>
+                    <th>username</th>
+                    <th>string</th>
+                    <th>The author's username</th>
+                  </tr>
+                  <tr>
+                      <th>discriminator</th>
+                      <th>number</th>
+                      <th>The author's discriminator (4 numbers after #)</th>
+                    </tr>
+                    <tr>
+                        <th>avatar</th>
+                        <th>string</th>
+                        <th>The author's avatar URL</th>
+                      </tr>
+  <tr>
+                  <th>content</th>
+                  <th>string</th>
+                  <th>The Comment's content</th>
+                </tr>
+    <th>time</th>
+                  <th>string</th>
+                  <th>The JSON date & time when the comment was posted</th>
+                </tr>
+                <th>timestamp</th>
+                <th>number</th>
+                <th>The timestamp when the comment was posted (may be inaccurate for older comments)</th>
+              </tr>
+            <tr>
+            <th>hidden</th>
+            <th>boolean</th>
+            <th>returns true if the comment is hidden from the page due to author banned</th>
+          </tr>
+</tbody>
+</thead>
+</table>
+</div></div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="v-tabs-libraries" role="tabpanel" aria-labelledby="v-tabs-libraries-tab">
+        <div id="libraries">
+            <h2>
+              Libraries <a style="color:white" href="#libraries" title="Permanent Link"><i class="fas fa-link"></i></a>
+            </h2><hr>
+<br>
+<table class="table table-striped table-dark table-bordered table-hover " style="background-color:#0f0f0f;">
+  <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Language</th>
+                  <th>Author</th>
+                  <th>Description</th>
+                  <th>Last Updated (DD/MM/YYYY)</th>
+                  <th>Download Link</th>
+                  <th>Official Library</th>
+                </tr>
+                </thead>
+              <tbody>
+                <th>dbrlib</th>
+                <th>Node.js (Javascript)</th>
+                <th><a style="color:dodgerblue" class="hover-active-link" href="/user/469716275786940416">RaZeFeiXX</a></th>
+                <th>A small library to interact with our API. Check the download link for full information.</th>
+                <th>14/6/2019</th>
+                 <th><a style="color:dodgerblue" class="hover-active-link" href="https://github.com/razefeixx/dbrlib">Github</a></th>
+                <th>Yes</th>
+              </tbody>
+
+        <tbody>
+                <th>dbrapi</th>
+                <th>Node.js (Javascript)</th>
+                <th><a style="color:dodgerblue" class="hover-active-link" href="/user/626902605905395732">ᴮᵉᵗᵗᵉʳ ᴼᶠᶠ ᴳᵒⁿᵉ</a></th>
+                <th>Unofficial DBR Api created by Better Off Gone. Used only for posting stats.</th>
+                <th>27/10/2019</th>
+                 <th><a style="color:dodgerblue" class="hover-active-link" href="https://www.npmjs.com/package/dbrapi">NPM</a></th>
+          <th>No</th>
+  </tbody>
+            </table>
+            If you want to submit your own library, please contact us on the Discord Server.
+          </div></div>
+      <div class="tab-pane fade" id="v-tabs-widgets" role="tabpanel" aria-labelledby="v-tabs-widgets-tab">
+        <div id="widgets">
+            <h2>
+              Widgets <a style="color:white" href="#widgets" title="Permanent Link"><i class="fas fa-link"></i></a>
+            </h2><hr>
+            Widgets are a way to display your bot within another page.<br>
+            URL: <code>https://discordbotreviews.xyz/api/widget/{bot.clientID}.png</code><br>
+            Widgets will display the name, the owner, amount of comments posted, bot's uptime in percentage, and the likes and dislikes of your bot.<br>
+            To put in a widget on your website, put this into your website's HTML code where you'd like to place it.<br>
+            <pre><code style="background-color:#ffffff">&lt;a href="<span class="hljs-link">https://discordbotreviews.xyz/bot/[Your bot's ID]</span>"&gt;&lt;img src="<span class="hljs-link">https://discordbotreviews.xyz/api/widget/[Your bot's ID]</span>" height=<span class="hljs-string">"175px"</span> width=<span class="hljs-string">"400px"</span>&gt;&lt;/a&gt;</code></pre>
+            <br>It should look similar to this:<br><img class="rounded shadow-lg" src="/api/widget/506213298153193483.png" height="175px" width="400px"><br>
+            <br>There's an alternate widget incase you didn't like the first one <br> URL: <code>
+            https://discordbotreviews.xyz/api/widget/2/{bot.clientID}.png</code><br><br>            <pre><code style="background-color:#ffffff">&lt;a href="<span class="hljs-link">https://discordbotreviews.xyz/bot/[Your bot's ID]</span>"&gt;&lt;img src="<span class="hljs-link">https://discordbotreviews.xyz/api/widget/2/[Your bot's ID]</span>" height=<span class="hljs-string">"175px"</span> width=<span class="hljs-string">"464px"</span>&gt;&lt;/a&gt;</code></pre>            <br><img class="rounded shadow-lg" src="/api/widget/2/506213298153193483.png" height="175px" width="464px"><br>
+            If you are getting any errors doing this, make sure that you typed in the correct Client ID. If you've confirmed that and it's still not working, please contact us on the Discord Server.
+<br><br>
+<h3>Customization</h3>
+<br>
+Widgets can be customized
+<table class="table table-striped table-dark table-bordered table-hover" style="background-color:#0f0f0f;">
+  <thead>
+  <tr>
+    <th>Query</th>
+    <th>Type</th>
+    <th>Description</th>
+    <th>Available for</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <th>header1</th>
+    <th>hexcolor (without #)</th>
+    <th>The hex color of the top header</th>
+    <th>Both widgets</th>
+  </tr>
+  <tr>
+    <th>header2</th>
+    <th>hexcolor (without #)</th>
+    <th>The hex color of the bottom header</th>
+    <th>Both widgets</th>
+  </tr>
+  <tr>
+    <th>body</th>
+    <th>hexcolor (without #)</th>
+    <th>The hex color of the center body</th>
+    <th>Both widgets</th>
+  </tr>
+  <tr>
+    <th>removeowneravatar</th>
+    <th>boolean</th>
+    <th>set to 'true' to remove the bot owner's avatar from the widget</th>
+    <th>Both widgets</th>
+  </tr>
+  <tr>
+  <th>hideicon</th>
+  <th>boolean</th>
+  <th>set to 'true' to hide the server icon from the widget</th>
+  <th>Both widgets</th>
+</tr>
+<tr>
+  <tr>
+    <th>hidelikes</th>
+    <th>boolean</th>
+    <th>set to 'true' to hide the number of likes from the widget</th>
+    <th>Both widgets</th>
+  </tr>
+  <tr>
+    <th>hidedislikes</th>
+    <th>boolean</th>
+    <th>set to 'true' to hide the number of dislikes from the widget</th>
+    <th>Both widgets</th>
+  </tr>
+  <tr>
+    <th>hidecomments</th>
+    <th>boolean</th>
+    <th>set to 'true' to hide the number of comments from the widget</th>
+    <th>Both widgets</th>
+  </tr>
+  <tr>
+    <th>hideservers</th>
+    <th>boolean</th>
+    <th>set to 'true' to hide the server count from the widget</th>
+    <th>Both widgets</th>
+  </tr>
+  <tr>
+    <th>gradient1</th>
+    <th>hexcolor (without #)</th>
+    <th>Configure the bottom gradient color of the boxes</th>
+    <th>Only for alternate widget (2)</th>
+  </tr>
+  <tr>
+    <th>gradient2</th>
+    <th>hexcolor (without #)</th>
+    <th>Configure the top gradient color of the boxes</th>
+    <th>Only for alternate widget (2)</th>
+  </tr>
+</tbody>
+</table>
+<br>
+Example code & preview of customization 
+<br>
+<code>https://discordbotreviews.xyz/api/widget/506213298153193483.png?body=0000FF&header1=2f2f2f&header2=2f2f2f&removeowneravatar=true&hideicon=true</code>
+<br>Looks like this:<br>
+<img class="rounded shadow-lg" src="/api/widget/506213298153193483.png?body=0000FF&header1=2f2f2f&header2=2f2f2f&removeowneravatar=true&hideicon=true" height="175px" width="400px">
+<br><br>
+The alternate widget would look like this:
+<br>
+<code>https://discordbotreviews.xyz/api/widget/2/506213298153193483.png?body=0000FF&header1=2f2f2f&header2=2f2f2f&removeowneravatar=true&hideicon=true</code>
+<br>
+<img class="rounded shadow-lg" src="/api/widget/2/506213298153193483.png?body=0000FF&header1=2f2f2f&header2=2f2f2f&removeowneravatar=true&hideicon=true" height="170px" width="464px">
+<br><br>
+
+</div></div>
+      <div class="tab-pane fade" id="v-tabs-servercount" role="tabpanel" aria-labelledby="v-tabs-servercount-tab">
+      <div id="servercount">
+<h2>Server Count <a style="color:white" href="#servercount" title="Permanent Link"><i class="fas fa-link"></i></a></h2>
+<hr>
+<br>
+Post your server count to our API.
+<br><br>
+<h2>Headers</h2>
+<table class="table table-striped table-dark table-bordered table-hover table-sm" style="background-color:#0f0f0f;">
+  <thead>
+                <tr>
+                  <th>Parameter</th>
+                  <th>Type</th>
+                  <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <th>Authorization</th>
+                  <th>string</th>
+                  <th>Your bot's API key <code>(REQUIRED)</code></th>
+                </tr>
+</tbody>
+</table>
+<br>
+<h2>Body</h2>
+<table class="table table-striped table-dark table-bordered table-hover table-sm" style="background-color:#0f0f0f;">
+  <thead>
+                <tr>
+                  <th>Parameter</th>
+                  <th>Type</th>
+                  <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                  <th>server_count</th>
+                  <th>number</th>
+                  <th>Server count of your bot</th>
+              </tbody>
+</table>
+        </div></div>
+      <div class="tab-pane fade" id="v-tabs-ratings" role="tabpanel" aria-labelledby="v-tabs-ratings-tab">
+<div id="ratings">
+              <h2>
+                Ratings <a style="color:white" href="#ratings" title="Permanent Link"><i class="fas fa-link"></i></a>
+              </h2><hr>
+              <br>
+              Get ratings for your bot
+              <p style="color:red;">NOTE: Authorization header is required if you set your ratings to private, votes are by default public and obtainable by anyone</p>
+              <br>
+              <h2>Headers </h2>
+              <table class="table table-striped table-dark table-bordered table-hover table-sm" style="background-color:#0f0f0f;">
+                <thead>
+                  <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                    <th>Authorization</th>
+                    <th>string</th>
+                    <th>Your bot's api token <code>(OPTIONAL)</code></th>
+                    </tr>
+                </tbody>
+              </table>
+              <br>
+              <h2>Body response </h2>
+              <table class="table table-striped table-dark table-bordered table-hover table-sm" style="background-color:#0f0f0f;">
+                <thead>
+                  <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                    <th>likers</th>
+                    <th>array of user IDs</th>
+                    <th>Shows everyone who liked the bot</th>
+                    </tr>
+                    <tr>
+                        <th>dislikers</th>
+                        <th>array of user IDs</th>
+                        <th>Shows everyone who disliked the bot</th>
+                        </tr>
+                        <tr>
+                            <th>totallikes</th>
+                            <th>number</th>
+                            <th>Total number of likes</th>
+                            </tr>
+                            <tr>
+                                <th>totaldislikers</th>
+                                <th>array of user IDs</th>
+                                <th>Total number of dislikes</th>
+                                </tr>
+                                <tr>
+                                    <th>total</th>
+                                    <th>number</th>
+                                    <th>The total counted likes and dislikes</th>
+                                    </tr>
+                                    <tr>
+                                        <th>ratiofull</th>
+                                        <th>number</th>
+                                        <th>Shows like/dislike ratio by full number (will be negative if it's blow 0)</th>
+                                        </tr>
+                                        <tr>
+                                            <th>ratio</th>
+                                            <th>number</th>
+                                            <th>Calculated like/dislike ratio in percentage</th>
+                                            </tr>
+                </tbody>
+              </table>
+              <br><br>
+              </div></div>
+      <div class="tab-pane fade" id="v-tabs-examples" role="tabpanel" aria-labelledby="v-tabs-examples-tab">
+<div id="examples">
+<h2>Examples <a style="color:white" href="#examples" title="Permanent Link"><i class="fas fa-link"></i></a></h2>
+
+<hr>
+Some response examples
+<p style="color:red;">NOTE: this hasn't been updated in a while and the response may be different</p>
+<br><br><br>
+<h2>Example of GET bot</h2>
+<table class="table table-striped table-dark table-bordered table-hover table-sm" style="background-color:#0f0f0f;">
+  <thead>
+                <tr>
+                 <th>{<br>
+<span style="color:#CC8400;">"clientID"</span>: &nbsp;<span style="color:#9bfc71">"506213298153193483"</span>,
+<br>
+<span style="color:#CC8400;">"prefix"</span>: &nbsp;<span style="color:#9bfc71">"dbr!"</span>,
+<br>
+<span style="color:#CC8400;">"invite_url"</span>: &nbsp;<span style="color:#9bfc71">"https://discordbotreviews.xyz/bot/dbr/add"</span>,
+<br>
+<span style="color:#CC8400;">"support_url"</span>: &nbsp;<span style="color:#9bfc71">"invite"</span>,
+<br>
+<span style="color:#CC8400;">"short_description"</span>: &nbsp;<span style="color:#9bfc71">"DBR is the website bot"</span>,
+<br>
+<span style="color:#CC8400;">"long_description"</span>: &nbsp;<span style="color:#9bfc71">"DBR is the website bot, it logs when someone submits a bot, edits a bot, deletes a bot, or anything about certification status."</span>,
+<br>
+<span style="color:#CC8400;">"owner"</span>: &nbsp; {
+<br>
+ &nbsp;<span style="color:#CC8400;">"bio"</span>: &nbsp;<span style="color:#9bfc71">"making bots using fart power lmao"</span>,
+<br>
+ &nbsp;<span style="color:#CC8400;">"certified"</span>:  &nbsp;<span style="color:blue;">true</span>,
+<br>
+ &nbsp;<span style="color:#CC8400;">"id"</span>: &nbsp;<span style="color:#9bfc71;">"469716275786940416"</span>
+<br>
+&nbsp },
+<br>
+<span style="color:#CC8400;">"likes"</span>:  &nbsp;<span style="color:blue">0</span>,
+<br>
+<span style="color:#CC8400;">"dislikes"</span>:  &nbsp;<span style="color:blue">0</span>,
+<br>
+<span style="color:#CC8400;">"unique"</span>:  &nbsp;<span style="color:blue">true</span>,
+<br>
+<span style="color:#CC8400;">"veryUnique"</span>:  &nbsp;<span style="color:blue">false</span>,
+<br>
+<span style="color:#CC8400;">"website"</span>: &nbsp;<span style="color:#9bfc71">"https://discordbotreviews.xyz/"</span>,
+<br>
+<span style="color:#CC8400;">"source"</span>:  &nbsp;<span style="color:#9bfc71">"https://github.com"</span>,
+<br>
+<span style="color:#CC8400;">"servers"</span>: &nbsp;<span style="color:blue">"1"</span>
+
+<br>
+}
+</th>                
+                  </tr>
+                </thead>
+    </table>
+<br>
+<h2>Example of GET user</h2>
+<br>
+<table class="table table-striped table-dark table-bordered table-hover table-sm" style="background-color:#0f0f0f;">
+  <thead>
+                <tr>
+                 <th>{<br>
+<span style="color:#CC8400;">"id"</span>: &nbsp;<span style="color:#9bfc71">"432400084706131989"</span>,
+<br>
+<span style="color:#CC8400;">"bio"</span>: &nbsp;<span style="color:#9bfc71">"One of the owners of DBR | I like trains"</span>,
+<br>
+<span style="color:#CC8400;">"certified"</span>: &nbsp;<span style="color:blue">false</span>,
+<br>
+<span style="color:#CC8400;">"bots"</span>: &nbsp; {
+<br>
+ &nbsp;<span style="color:#CC8400;">"Object of bots"</span>: &nbsp;<span style="color:#9bfc71">"Returns the same as GET bot (read above)"</span>,
+<br>
+&nbsp },
+<br>
+<span style="color:#CC8400;">"background"</span>:  &nbsp;<span style="color:#9bfc71">"https://discordbotreviews.xyz/api/icon.png"</span>,
+<br>
+<span style="color:#CC8400;">"certifiedbots"</span>:  &nbsp;[<span style="color:#9bfc71"> '506213298153193483' </span>],
+<br>
+<span style="color:#CC8400;">"pulsecolor"</span>:  &nbsp;<span style="color:#9bfc71">"0, 0, 0"</span>,
+<br>
+<span style="color:#CC8400;">"animationtime"</span>:  &nbsp;<span style="color:#9bfc71">"5"</span>
+<br>
+}
+</th>                
+                  </tr>
+</thead>
+</table>
+<br>
+<h2>Example of GET bot's comments</h2>
+<br>
+<table class="table table-striped table-dark table-bordered table-hover table-sm" style="background-color:#0f0f0f;">
+  <thead>
+                <tr>
+                 <th>[&nbsp;&nbsp;{<br>
+<span style="color:#CC8400;">"id"</span>: &nbsp;<span style="color:blue">0</span>,
+<br>
+<span style="color:#CC8400;">"author"</span>: &nbsp;<span style="color:#9bfc71">"432400084706131989"</span>,
+<br>
+<span style="color:#CC8400;">"content"</span>: &nbsp;<span style="color:#9bfc71">"Good bot! I really liked and enjoyed it!"</span>,
+<br>
+<span style="color:#CC8400;">"time"</span>:  &nbsp;<span style="color:#9bfc71">"2018-12-20T11:42:27.200Z"</span> &nbsp;}, <br>
+{<br>
+<span style="color:#CC8400;">"id"</span>: &nbsp;<span style="color:blue">1</span>,
+<br>
+<span style="color:#CC8400;">"author"</span>: &nbsp;<span style="color:#9bfc71">"469716275786940416"</span>,
+<br>
+<span style="color:#CC8400;">"content"</span>: &nbsp;<span style="color:#9bfc71">"Awesome Bot!"</span>,
+<br>
+<span style="color:#CC8400;">"time"</span>:  &nbsp;<span style="color:#9bfc71">"2018-12-20T14:42:15.200Z"</span>
+<br>
+} &nbsp; &nbsp;]
+
+</th>                
+                  </tr>
+
+                </thead>
+</table>
+<br><br>
+        </div>
+</div>
+    </div>
+  </div>
+</div>
+
+<div class="tokenLocator text-center" style="padding-top: 3em;">
+  <h4>You can find your API token in your <span style="font-weight: 600 !important;cursor:pointer;">bot's page.</span></h4>
+<code>https://discordbotreviews.xyz/bot/:id/token</code>
+</div><br><br><br>
+
+ </body>
+</html>
+
+
+
+
+
+
+
+

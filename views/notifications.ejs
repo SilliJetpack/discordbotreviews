@@ -1,0 +1,134 @@
+
+
+<!doctype html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+    <% include ./partials/header.ejs %>
+    <% include ./partials/nav.ejs %>
+            <link rel="icon" type="image/jpg" href="https://media.discordapp.net/attachments/506425178822279168/507496898823847936/dbr.png">
+            <title>Notifications</title>
+            <script src="/moment.min.js"></script>
+    </head>
+    <body>
+        <noscript>
+          <div class="alert alert-danger" role="alert">
+            This website requires Javascript to work. Please enable Javascript or use a browser that supports Javascript.
+          </div>
+          </noscript>
+        <div class="container"><center>
+    <h2>Notifications</h2><br>
+    <%if(notis.get(req.user.id, "notis").length <1) {%>
+      <p>You have no notifications.</p>
+              <%}%>
+              <%if(notis.get(req.user.id, "notis").filter(r=> r.read == false).map(r=> r).reverse().length >0) {%>
+                <br>
+<h2>Unread notifications</h2>
+                <%}%>
+              <% var count = 0; unread = notis.get(req.user.id, "notis").filter(r=> r.read == false).map(r=> r).reverse(); while(unread[count]) { %>
+                
+                      <div class="card" style="background-color: #0f0f0f; width: 50%; height:10%; border-radius:10px;">
+                  <div class="card-body">
+                        <center>
+                          <%if(unread[count].type === "declined") { %>
+                            <span class="img-align"></span><img src="https://cdn.discordapp.com/attachments/506425178822279168/542333667889119242/lmao.png" align="left" style="margin-top: 1rem; background-color: #0f0f0f" width="40px" height="40px">  
+                            <% } else if(unread[count].type === "deleted") {%>
+                              <span class="img-align"></span><img src="https://cdn.discordapp.com/attachments/506425178822279168/542336687754313729/deleted.png" align="left" style="margin-top: 1rem;background-color: #0f0f0f" width="40px" height="40px">                
+                              <% } else if(unread[count].type === "verified") {%>
+                                <span class="img-align"></span><img src="https://cdn.discordapp.com/attachments/506425178822279168/542336685191725057/accept.png" align="left" style="margin-top: 1rem;background-color: #0f0f0f" width="40px" height="40px">                                
+                                <% } else if(unread[count].type === "commented") {%>
+                                  <span class="img-align"></span><img src="https://cdn.discordapp.com/attachments/506425178822279168/542371317824094208/528255671116759050.png" align="left" style="margin-top: 1rem;background-color: #0f0f0f" width="40px" height="40px">                                
+                                  <%} else if (unread[count].type === "announcement") { %>
+				  <p style="text-align: left;"><span style="color: #212121;margin-top: 1rem;display: inline-block !important"><i class="fas fa-bullhorn fa-2x" style="text-align: left !important;"></i></span></p>
+          <%} else if (unread[count].type === "update") {%>
+            <p style="text-align: left;"><span style="color: #212121;margin-top: 1rem;display: inline-block !important"><i class="fas fa-sync fa-2x" style="text-align: left !important;"></i></span></p>            
+            <% }else if (unread[count].type === "important") {%>
+              <p style="text-align: left;"><span style="color: #212121;margin-top: 1rem;display: inline-block !important"><i class="fas fa-exclamation-circle fa-2x" style="text-align: left !important;"></i></span></p>            
+              <% } else if (unread[count].type === "other") {%>
+                <p style="text-align: left;"><span style="color: #212121;margin-top: 1rem;display: inline-block !important"><i class="fa fa-envelope fa-2x" style="text-align: left !important;"></i></span></p>            
+                <% } else if (unread[count].type === "certifiedapproved") {%>
+                                <span class="img-align"></span><img src="https://media.discordapp.net/attachments/506425178822279168/582530229038481429/newicon.png" align="left" style="margin-top: 1rem;background-color: #0f0f0f" width="40px" height="40px">                                
+                <% }     else if (unread[count].type === "certifieddeclined") {%>
+                                <span class="img-align"></span><img src="https://media.discordapp.net/attachments/506425178822279168/582530229352923137/newicondeclined.png" align="left" style="margin-top: 1rem;background-color: #0f0f0f" width="40px" height="40px">                                
+                <% } else if (unread[count].type === "ccertifiedapproved") {%>
+                                <span class="img-align"></span><img src="https://media.discordapp.net/attachments/506425178822279168/582530809529892874/newiconapprovedunique.png" align="left" style="margin-top: 1rem;background-color: #0f0f0f" width="40px" height="40px">                                
+                <% } else if (unread[count].type === "certifieddeleted") {%>
+                                <span class="img-align"></span><img src="https://media.discordapp.net/attachments/506425178822279168/582530229352923137/newicondeclined.png" align="left" style="margin-top: 1rem;background-color: #0f0f0f" width="40px" height="40px">                                
+                <% }%>
+                      
+                <p align="right" style="color: grey; margin-right: 1%;margin-top: 1%;" id="<%=count%>"></p> 
+                <hr style="background-color: #2f2f2f;">
+                <b><%=unread[count].subject%></b>
+                <br><br>
+                <p><%=unread[count].message%></p>
+                </center>
+                <script>document.getElementById("<%=count%>").innerHTML =  moment("<%=unread[count].date%>").fromNow()
+                </script>
+                      </div>
+                  </div>
+                  <br>
+                      <%count++ }%>
+
+
+<%if(notis.get(req.user.id, "notis").filter(r=> r.read == true).map(r=> r).length >0) {%>
+<br><br><br>
+<h2>Past Notifications</h2>
+<br>
+<% }%>
+          <%if(notis.get(req.user.id, "notis").filter(r=> moment(Date.now()).diff(r.date, "days") <14).length <1) {%>
+          <p>
+            There are no notifications for the past 14 days.
+          </p>
+          <% }%>
+<% var lmao = Array()
+var count = 0; roflimao = notis.get(req.user.id, "notis").map(r=> r); while(roflimao[count]) { 
+roflimao[count].read = true
+lmao.push(roflimao)
+bot.notis.set(req.user.id, {notis: roflimao})
+count++}%>
+    <% var count = 0; var notism = notis.get(req.user.id, "notis").filter(r=> r.read == true).map(r=> r).filter(r=> moment(Date.now()).diff(r.date, "days") <14).reverse(); while(notism[count]) { %>
+
+      <div class="card" style="background-color: #0f0f0f; width: 50%; height:10%; border-radius:10px;"> 
+	<div class="card-body">
+        <center>
+          <%if(notism[count].type === "declined") { %>
+            <span class="img-align"></span><img src="https://cdn.discordapp.com/attachments/506425178822279168/542333667889119242/lmao.png" align="left" style="margin-top: 1rem; background-color: #0f0f0f" width="40px" height="40px">  
+            <% } else if(notism[count].type === "deleted") {%>
+              <span class="img-align"></span><img src="https://cdn.discordapp.com/attachments/506425178822279168/542336687754313729/deleted.png" align="left" style="margin-top: 1rem;background-color: #0f0f0f" width="40px" height="40px">                
+              <% } else if(notism[count].type === "verified") {%>
+                <span class="img-align"></span><img src="https://cdn.discordapp.com/attachments/506425178822279168/542336685191725057/accept.png" align="left" style="margin-top: 1rem;background-color: #0f0f0f" width="40px" height="40px">                                
+                <% } else if(notism[count].type === "commented") {%>
+                  <span class="img-align"></span><img src="https://cdn.discordapp.com/attachments/506425178822279168/542371317824094208/528255671116759050.png" align="left" style="margin-top: 1rem;background-color: #0f0f0f" width="40px" height="40px">                                
+                  <%} else if (notism[count].type === "announcement") { %>
+				  <p style="text-align: left"><span style="color: #212121;margin-top: 1rem;display: inline-block"><i class="fas fa-bullhorn fa-2x" style="display: inline-block;text-align: left !important"></i></span></p>
+				  <%} else if (notism[count].type === "update") {%>
+            <p style="text-align: left;"><span style="color: #212121;margin-top: 1rem;display: inline-block !important"><i class="fas fa-sync fa-2x" style="text-align: left !important;"></i></span></p>            
+            <% }else if (notism[count].type === "important") {%>
+              <p style="text-align: left;"><span style="color: #212121;margin-top: 1rem;display: inline-block !important"><i class="fas fa-exclamation-circle fa-2x" style="text-align: left !important;"></i></span></p>            
+              <% } if (notism[count].type === "other") {%>
+                <p style="text-align: left;"><span style="color: #212121;margin-top: 1rem;display: inline-block !important"><i class="fa fa-envelope fa-2x" style="text-align: left !important;"></i></span></p>            
+                <% } else if (notism[count].type === "certifiedapproved") {%>
+                                <span class="img-align"></span><img src="https://media.discordapp.net/attachments/506425178822279168/582530229038481429/newicon.png" align="left" style="margin-top: 1rem;background-color: #0f0f0f" width="40px" height="40px">                                
+                <% }     else if (notism[count].type === "certifieddeclined") {%>
+                                <span class="img-align"></span><img src="https://media.discordapp.net/attachments/506425178822279168/582530229352923137/newicondeclined.png" align="left" style="margin-top: 1rem;background-color: #0f0f0f" width="40px" height="40px">                                
+                <% } else if (notism[count].type === "ccertifiedapproved") {%>
+                                <span class="img-align"></span><img src="https://media.discordapp.net/attachments/506425178822279168/582530809529892874/newiconapprovedunique.png" align="left" style="margin-top: 1rem;background-color: #0f0f0f" width="40px" height="40px">                                
+                <% } else if (notism[count].type === "certifieddeleted") {%>
+                                <span class="img-align"></span><img src="https://media.discordapp.net/attachments/506425178822279168/582530229352923137/newicondeclined.png" align="left" style="margin-top: 1rem;background-color: #0f0f0f" width="40px" height="40px">                                
+                <% }%>
+<p align="right" style="color: grey; margin-right: 1%;margin-top: 1%;" id="<%=count%>"></p> 
+<hr style="background-color: #2f2f2f;">
+<b><%=notism[count].subject%></b>
+<br><br>
+<p><%=notism[count].message%></p>
+</center>
+<script>document.getElementById("<%=count%>").innerHTML =  moment("<%=notism[count].date%>").fromNow()
+</script>
+      </div>
+  </div>
+  <br>
+      <%count++ }%>
+          </div></center>
+	</div>
+    </body>
+</html>
+

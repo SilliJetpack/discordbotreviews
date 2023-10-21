@@ -1,0 +1,68 @@
+<!doctype html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+    <% include ./partials/header.ejs %>
+    <% include ./partials/nav.ejs %>
+
+            <link rel="icon" type="image/jpg" href="https://media.discordapp.net/attachments/506425178822279168/507496898823847936/dbr.png">
+            <title>Search - Discord Bot Reviews</title>
+    </head>
+    <body>
+                  <noscript>
+                    <div class="alert alert-danger" role="alert">
+                        This website requires Javascript to work. Please enable Javascript or use a browser that supports Javascript.
+                    </div>
+                </noscript>
+            <div class="container">
+                <h1>Find a bot</h1>
+                <form id="searchform-2">
+                <label for="query">Bot to find:</label>
+                <input type="text" class="inputs" id="query-2" name="query" style="height:3rem;width:29rem;padding-left: 0.3em;" placeholder="Search for...">
+                <input type="hidden" name="page" value="1">
+                <input type="submit" value="Find" id="search-2" class="btn btn-primary hover-active-button">
+              <br><br>
+                </form><% if (req.query.query) { %> <h3>Results for <%= req.query.query %> (<%=bots.filter(r=> !bot.hidden.has(r.cli_id)).length%>)</h3> <hr><% } %>
+ <% if(bots === null) { %>
+Input a bot name to search for
+  <% } else {%>
+           <% var count = 0; bots = bots.filter(r=> !bot.hidden.has(r.cli_id)).map(r=> r); while(bots[count]) { %>
+	 <% if (bot.guilds.get("500658335217876997").members.get(bots[count].cli_id) && bot.guilds.get("500658335217876997").members.get(bots[count].cli_id).roles.has("511069587840827402")){ var veryunique2 = true; } else { var veryunique2 = false; }%>
+        <div class="card<%if(veryunique2){%> veryunique<%}%>" style="vertical-align:middle;width: 18rem;display:inline-block;margin-right:3rem;margin-bottom:3rem;height:600px;float:left;<% if (bot.certified.get(bots[count].submitter) && bot.certified.get(bots[count].submitter, "bots").includes(bots[count].cli_id)) { var veryunique = true;%> background-color: #ffb726 <% } else { var veryunique = false;%> background-color: #1f1f1f; <% } %>">
+          <img class="card-img-top avatarImg" style="width:18rem; height:18rem" src="<%= bot.users.get(bots[count].cli_id).avatarURL %>">
+          <div class="card-body" style="color:white">
+            <h5 class="card-title" style="color:<%if(veryunique){%>black<%}else{%>white<%}%>;display:inline-block"><%= bot.users.get(bots[count].cli_id).username %></h5> <span id="<%=bot.users.get(bots[count].cli_id).presence.status.toLowerCase()%>" style="color:black;display:inline-block;"></span> <span style="color:<%if(veryunique) {%>black<%} else {%>white<%}%>;">(<%if(bot.guilds.get("500658335217876997").members.get(bots[count].cli_id) && bot.calculated.has(bots[count].cli_id) && bot.calculated.get(bots[count].cli_id, "uptime") !== 0) {%><%=Math.round(Number(bot.uptimes.get(bots[count].cli_id, "uptime")) / Number(bot.calculated.get(bots[count].cli_id, "calculated")) * 100)%>%<%} else {%>???<%}%>)</span>      <% const asscrack2 = bot.guilds.get("500658335217876997").members.get(bots[count].cli_id);  if(asscrack2) {if(asscrack2.roles.has("500659906836168715")) {%><img src="https://cdn.discordapp.com/emojis/528968068957732865.png" width="35px" height="35px"><% }} %><% const asscrack = bot.guilds.get("500658335217876997").members.get(bots[count].cli_id);  if(asscrack) {if(asscrack.roles.has("507628704751419393")) {%> <img src="https://cdn.discordapp.com/emojis/507958292790902795.png" width="25px" height="25px"> <% } else if (asscrack.roles.has("511069587840827402")) { %> <img class="rounded" src="https://cdn.discordapp.com/emojis/508965618855444491.png" width="25px" height="25px"> <% }} %>
+            <br><span style="color:chartreuse"><% if (bot.reactions.get(bots[count].cli_id) && bot.reactions.get(bots[count].cli_id, "likes")) { %> <i class="fa fa-thumbs-up"></i> <%= bot.reactions.get(bots[count].cli_id) && bot.reactions.get(bots[count].cli_id, "likes").length %> <% } else { %> <i class="fa fa-thumbs-up"></i> 0 <% } %></span>&nbsp;&nbsp;<span style="color:red"><% if (bot.reactions.get(bots[count].cli_id) && bot.reactions.get(bots[count].cli_id, "dislikes")) { %> <i class="fa fa-thumbs-down"></i> <%= bot.reactions.get(bots[count].cli_id) && bot.reactions.get(bots[count].cli_id, "dislikes").length %> <% } else { %> <i class="fa fa-thumbs-down"></i> 0 <% } %></span>&nbsp;<span style="color:<%if(veryunique) {%>black<%} else {%>white<%}%>;"> (<%=Number(Number(bot.reactions.get(bots[count].cli_id, "likes").length) + Number(bot.reactions.get(bots[count].cli_id, "dislikes").length)) >0 ? Math.round(Number(bot.reactions.get(bots[count].cli_id, "likes").length / Number(bot.reactions.get(bots[count].cli_id, "likes").length + bot.reactions.get(bots[count].cli_id, "dislikes").length) * 100)) + "%" : "---"%>)</span><br><br>
+            <% if(bot.stats.has(bots[count].cli_id)) { %>
+              Servers: <code><%=numberWithCommas(bot.stats.get(bots[count].cli_id, "server_count"))%></code> <br>
+              <% }  %>         
+ <p class="card-text"><%= bots[count].short_description %></p>
+            <a href="/bot/<%= bots[count].cli_id %>" class="btn btn-primary hover-active-button">Go to page</a>
+            <script>
+            var status = document.getElementsByClassName("status").innerText.toLowerCase()
+            switch (status) {
+              case "online":
+                document.getElementsByClassName("status").setAttribute("style", "display:inline-block;color:chartreuse")
+                break;
+              case "idle":
+                document.getElementsByClassName("status").setAttribute("style", "display:inline-block;color:yellow")
+                break;
+              case "dnd":
+                document.getElementsByClassName("status").setAttribute("style", "display:inline-block;color:red")
+                break;
+              case "offline":
+                document.getElementsByClassName("status").setAttribute("style", "display:inline-block;color:silver")
+                break;
+          }
+          </script>
+          </div>
+        </div>
+      <% count++; } %>
+      <% } %>
+              <br><br>
+            </div>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+        </body>
+</html>
+    

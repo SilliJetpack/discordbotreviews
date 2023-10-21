@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Reports - ModPortal - DBR</title>
+    <% include ./partials/portalHeader.ejs %>
+  </head>
+  <body>
+    <% include ./partials/nav.ejs %>
+    <div class="container">
+    <h1>
+      Reports for bots (<span id="count"><%=bot.reports.filter(r=> r.reporter !== null).size%></span>)<hr>
+    </h1>
+    <% var i; var count = 0; while(bot.reports.filter(r=> r.target !== null).array()[count]) { try { var userid = bot.reports.array()[count].cli_id; var submitter = bot.users.get(bot.reports.array()[count].reporter).tag; var q = bot.reports.array()[count]; %>
+    <!-- Placeholder content -->
+    <img class="queue-img" src= "<%=bot.users.get(bot.reports.array()[count].target).avatarURL%>">
+      <span style="display:inline-block;"><h4><span class="botname"></span></h4>Report Target: <%= bot.users.get(bot.reports.array()[count].target).username %><br><span class="submitter">Reporter: <%=bot.users.get(bot.reports.array()[count].reporter).tag + " (" + bot.users.get(bot.reports.array()[count].reporter).id + ")" %></span><br>Reason: <%=bot.reports.array()[count].subreason%><br><a class="btn btn-primary" href="/bot/<%= bot.reports.array()[count].target %>">Bot page</a> &nbsp; <a class="btn btn-primary" href="/modportal/reportform?id=<%=bot.reports.array()[count].id%>">View report form</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-danger" href="/modportal/report/<%=bot.reports.array()[count].id%>/action">Take Action</a> </span>
+      <hr>
+    
+    <% } catch {}; count++; } %>
+  
+      </body>
+</html>

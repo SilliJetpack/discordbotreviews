@@ -1,0 +1,188 @@
+<!doctype html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+    <% include ./partials/header.ejs %>
+    <% include ./partials/nav.ejs %>
+    <link rel="icon" type="image/jpg" href="https://media.discordapp.net/attachments/506425178822279168/507496898823847936/dbr.png"/>
+    <title><%= bot.users.get(id).tag %> - Discord Bot Reviews</title>
+    </head>
+    <body>
+                  <noscript>
+                    <div class="alert alert-danger" role="alert">
+                        This website requires Javascript to work. Please enable Javascript or use a browser that supports Javascript.
+                    </div>
+                </noscript>
+           <% const lmfao2 = bot.guilds.get("500658335217876997").members.get(id)
+      if(lmfao2) {
+          if(lmfao2.roles.has("500658928602841099")) { %>
+      <script>
+        var hasAdmin = true
+      </script>
+      
+      <%  }else { %> 
+      <script>
+        var hasAdmin = false
+      </script>
+      <% }} %>
+      <% const lmfao = bot.guilds.get("500658335217876997").members.get(id)
+      if(lmfao) {
+          if(lmfao.roles.has("500662148561764352")) { %>
+      <script>
+        var hasMod = true
+      </script>
+      <%  }else { %> 
+      <script>
+        var hasMod = false
+      </script>
+      <% }} %>
+    <% const lmfaoa = bot.guilds.get("500658335217876997").members.get(id)
+      if(lmfaoa) {
+          if(lmfaoa.roles.has("507628349707911178")) { %>
+      <script>
+        var certified = true
+      </script>
+      <% }else { %> 
+      <script>
+        var certified = false
+      </script>
+      <% }} %>
+        <% const lmfaoaa = bot.guilds.get("500658335217876997").members.get(id)
+      if(lmfaoa) {
+          if(lmfaoaa.roles.has("637796644552835083")) { %>
+      <script>
+      var libc = true
+      </script>
+      <%} else {%>
+<script>
+      var libc = false
+      </script>
+      <%}}%>
+      </div>
+      <%if(bot.userinfo.has(id)) {
+        if(bot.userinfo.has(id, "custompulse")) {
+        if(bot.userinfo.get(id, "custompulse").length >0) {%>
+      <div class="banner" style="background-image: url(<%= bot.userinfo.get(id, "custompulse")%>);size:100%;animation-duration: <%if(bot.userinfo.has(id)) { if(bot.userinfo.has(id, "pulsetime")) { if(bot.userinfo.get(id, "pulsetime").length >0) {%> <%=bot.userinfo.get(id, "pulsetime")%>s <%}}}%>;background-repeat:space">
+      </div>
+<% } else {%>
+       <div class="banner2" style="background-image: url(https://cdn.discordapp.com/attachments/500710002491785217/516221544108916747/Screenshot_380.png);size:100%;">
+  </div>
+  <% } } else {%>
+  <div class="banner2" style="background-image: url(https://cdn.discordapp.com/attachments/500710002491785217/516221544108916747/Screenshot_380.png);size:100%;">
+  </div>
+  <% } } else {%>
+   <div class="banner2" style="background-image: url(https://cdn.discordapp.com/attachments/500710002491785217/516221544108916747/Screenshot_380.png);size:100%;">
+  </div>
+  <% } %>
+      <div class="container"><br><br><br>
+        <% if(bot.userinfo.has(id)) {
+          if(bot.userinfo.has(id, "pulsecolor")) {
+          if(bot.userinfo.get(id, "pulsecolor").length >1) {%>
+         <style>@keyframes moderator2 {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(<%=bot.userinfo.get(id, "pulsecolor")%>, 1);
+    box-shadow: 0 0 0 0 rgba(<%=bot.userinfo.get(id, "pulsecolor")%>, 0.9);
+  }
+  70% {
+      -moz-box-shadow: 0 0 0 20px rgba(<%=bot.userinfo.get(id, "pulsecolor")%>, 0.2);
+      box-shadow: 0 0 0 20px rgba(<%=bot.userinfo.get(id, "pulsecolor")%>, 0);
+  }
+  100% {
+      -moz-box-shadow: 0 0 0 0 rgba(<%=bot.userinfo.get(id, "pulsecolor")%>, 0.2);
+      box-shadow: 0 0 0 0 rgba(<%=bot.userinfo.get(id, "pulsecolor")%>, 0);
+  }
+           }</style>
+                 <center><img class="queue-img rounded-circle" style="
+ justify-content:flex-end;
+  transition: opacity 0.2s ease-in-out;
+  background-color: rgba(<%=bot.userinfo.get(id, "pulsecolor") %>); 
+  box-shadow: 0 0 16px rgba(<%=bot.userinfo.get(id, "pulsecolor") %>);
+  border-radius:50%;
+  object-fit: cover;
+  padding: 3px;
+  animation: moderator2 2s infinite;" id="avatar" src= "<%=bot.users.get(id).avatarURL || bot.users.get(id).defaultAvatarURL%>" title="Avatar Image" alt="Avatar Image"><br><br>
+              <% } else {%>
+        <center><img class="queue-img rounded-circle" id="avatar" src= "<%=bot.users.get(id).avatarURL || bot.users.get(id).defaultAvatarURL || async(function() {bot.fetchUser(id).then(e=>e.avatarURL)}) %>" title="Avatar Image" alt="Avatar Image"><br><br>
+          <% } } else {%>
+                  <center><img class="queue-img rounded-circle" id="avatar" src= "<%=bot.users.get(id).avatarURL || bot.users.get(id).defaultAvatarURL%>" title="Avatar Image" alt="Avatar Image"><br><br>
+<% }} %>
+      <span style="display:inline-block; "><h4 <%if(bot.userinfo.has(id) && bot.userinfo.get(id, "nametag") && bot.userinfo.get(id, "nametag").length >1) {%> style="color: rgb(<%=bot.userinfo.get(id, "nametag")%>)" <%}%>><b><%= bot.users.get(id).tag%></b></h4>
+        <br>
+        <% if(bot.userinfo.has(id)) { 
+          if(!bot.userinfo.get(id, "info") || bot.userinfo.get(id, "info").length <1) {
+          %>
+        <p <%if(bot.userinfo.has(id) && bot.userinfo.get(id, "nametag") && bot.userinfo.get(id, "nametag").length >1) {%> style="color:rgb(<%=bot.userinfo.get(id, "nametag")%>)"<% }%>>User has not set a biography.</p>
+        <% }%>
+        <p <%if(bot.userinfo.has(id) && bot.userinfo.get(id, "nametag") && bot.userinfo.get(id, "nametag").length >1) {%> style="color:rgb(<%=bot.userinfo.get(id, "nametag")%>)"<% }%>><%= bot.userinfo.get(id, "info") %></p>
+        <%} else { %>
+        <p<%if(bot.userinfo.has(id) && bot.userinfo.get(id, "nametag") && bot.userinfo.get(id, "nametag").length >1) {%> style="color:rgb(<%=bot.userinfo.get(id, "nametag")%>)"<% }%>>User has not set a biography.</p>
+        <% } %>
+        
+        <span id="badges"></span></span>
+          <br><br>
+                    <%if(bot.userinfo.has(id)) { if(bot.userinfo.has(id, "website")) { if(bot.userinfo.get(id, "website").length >1) { %> <a class="btn btn-primary" href="<%=bot.userinfo.get(id, "website")%>">Website</a><% }}}%>
+          <%if(req.user) {
+            if(req.user.id === id) { %>
+          <a href= "/user/<%=id%>/config" class="btn btn-primary" target="_blank">Edit profile</a>
+          <% } %>
+          <%
+          const lmfao = bot.guilds.get("500658335217876997").members.get(req.user.id)
+          if(lmfao) {
+          if(lmfao.roles.has("500662148561764352") || lmfao.roles.has("500658928602841099")) {
+            if(bot.userinfo.get(id, "info") || bot.userinfo.get(id, "website") || bot.userinfo.get(id, "custompulse") || bot.userinfo.get(id, "pulsecolor")){ %>
+          <a href= "/user/<%=id%>/moderate" class="btn btn-danger" target="_blank">Moderate</a>
+          <% }}}} %>
+        
+     <br><br><br><br></center><br><br><br><br>
+
+
+      <h3><%= bot.users.get(id).username%>'s Bots</h3><hr><br>
+      <div style="display:inline-block">
+      <% var count = 0; bots = bots.map(r=> r); while(bots[count]) { %>
+	<% if (bot.guilds.get("500658335217876997").members.get(bots[count].cli_id) && bot.guilds.get("500658335217876997").members.get(bots[count].cli_id).roles.has("511069587840827402")) { var veryunique2 = true; } else { var veryunique2 = false; }%>
+     <div class="card<%if(veryunique2){%> veryunique<%}%>" style="vertical-align:middle;width: 18rem;display:inline-block;margin-left:2rem;margin-bottom:1rem; <% if (bot.certified.get(bots[count].submitter) && bot.certified.get(bots[count].submitter, "bots").includes(bots[count].cli_id)) { var veryunique = true; %> background-color: #ffb726 <% } else { var veryunique = false; %> background-color: #1f1f1f; <% } %>">
+          <img class="card-img-top avatarImg" style="width:18rem; height:18rem">
+          <div class="card-body" style="color:white;">
+            <h5 class="card-title" style="color:<%if(veryunique){%>black<%}else{%>white<%}%>;display:inline-block"></h5> <span id="<%=bot.users.get(bots[count].cli_id).presence.status.toLowerCase()%>" style="color:black;display:inline-block;"></span>     <% const asscrack2 = bot.guilds.get("500658335217876997").members.get(bots[count].cli_id);  if(asscrack2) {if(asscrack2.roles.has("500659906836168715")) {%><img src="https://cdn.discordapp.com/emojis/528968068957732865.png" width="35px" height="35px"><% }} %><% const asscrack = bot.guilds.get("500658335217876997").members.get(bots[count].cli_id);  if(asscrack) {if(asscrack.roles.has("507628704751419393")) {%> <img src="https://cdn.discordapp.com/emojis/507958292790902795.png" width="25px" height="25px"> <% } else if (asscrack.roles.has("511069587840827402")) {%> <img class="rounded" src="https://cdn.discordapp.com/emojis/508965618855444491.png" width="25px" height="25px"> <% }} %>
+            <br> <span style="color:chartreuse"><% if (bot.reactions.get(bots[count].cli_id) && bot.reactions.get(bots[count].cli_id, "likes")) { %> <i class="fa fa-thumbs-up"></i> <%= bot.reactions.get(bots[count].cli_id) && bot.reactions.get(bots[count].cli_id, "likes").length %> <% } else { %> <i class="fa fa-thumbs-up"></i> 0 <% } %></span>&nbsp;&nbsp;<span style="color:red"><% if (bot.reactions.get(bots[count].cli_id) && bot.reactions.get(bots[count].cli_id, "dislikes")) { %> <i class="fa fa-thumbs-down"></i> <%= bot.reactions.get(bots[count].cli_id) && bot.reactions.get(bots[count].cli_id, "dislikes").length %> <% } else { %> <i class="fa fa-thumbs-down"></i> 0 <% } %></span><br><br>
+<% if(bot.stats.has(bots[count].cli_id)) { %>
+Servers: <code><%=numberWithCommas(bot.stats.get(bots[count].cli_id, "server_count"))%></code> <br>
+<% }  %>            
+<p class="card-text"><%= bots[count].short_description %></p>
+            <a href="/bot/<%= bots[count].cli_id %>" class="btn btn-primary hover-active-button">Go to page</a>
+          </div>
+        </div>
+        <script>
+            var avatarImg = document.getElementsByClassName("avatarImg")[<%= count %>]
+            var userinfo = JSON.parse(httpGet("/api/uservalidate?id=<%= bots[count].cli_id %>"))
+            avatarImg.setAttribute("src", userinfo.avatar_url)
+            var title = document.getElementsByClassName("card-title")[<%= count %>]
+            title.innerHTML = userinfo.tag
+          </script>
+      <%  count++; } %><br><br>
+
+      <%if(req.user) {
+        if(bot.submission.filter(r=> r.submitter === id).size >0 && req.user.id === id) {%>
+         <% var countt = 0; subbots = subbots.filter(r=> !bot.hidden.has(id)).map(r=> r); while(subbots[countt]) { %>
+           <hr>
+           <h2>Unverified bots</h2>
+           <br>
+           <div class="card" style="vertical-align:middle;width: 18rem;display:inline-block;margin-left:2rem;margin-bottom:1rem;background-color: #1f1f1f;">            
+             <img class="card-img-top avatarImg" style="width:18rem; height:18rem" src="<%=bot.users.get(subbots[countt].cli_id).avatarURL%>">
+             <div class="card-body" style="color:white;">
+               <h5 class="card-title" style="color:white;"><%=bot.users.get(subbots[countt].cli_id).username%></h5><span id="<%=bot.users.get(subbots[countt].cli_id).presence.status.toLowerCase()%>" style="color:black;display:inline-block;"></span>
+               <br> <span style="color:chartreuse"></span><br><br>
+   <% if(bot.stats.has(subbots[countt].cli_id)) { %>
+   Servers: <code><%=numberWithCommas(bot.stats.get(subbots[countt].cli_id, "server_count"))%></code> <br>
+   <% }  %>            
+   <p class="card-text"><%= subbots[countt].short_description %></p>
+               <a href="/bot/<%= subbots[countt].cli_id %>" class="btn btn-primary hover-active-button">Go to page</a>
+             </div>
+           </div>
+ <br><hr>
+        <%countt++}%>
+       <%}}%>
+        </div></div>
+        
+      <script src="/userbase.js" defer="defer"></script>
+  </body>
+</html>

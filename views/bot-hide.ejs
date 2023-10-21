@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title><%=action%> <%= bot.users.get(cli_id).username %>  - DBR</title>
+    <% include ./partials/portalHeader.ejs %>
+  </head>
+  <body>
+    <% include ./partials/nav.ejs %>
+    <div class="container">
+      <h1>
+       <%=action%> <%= bot.users.get(cli_id).username %>
+      </h1>
+      <hr><br>
+      <form action="/modportal/hidebot" method="POST" enctype="application/x-www-form-urlencoded">
+        <center>Are you really sure to <%=action === "Hide" ? "Hide" : "Remove hidden state for "%> <%= bot.users.get(cli_id).username %> <%if(action === "Hide") {%> From the bot pages? this will dissallow further users to see the bot page unless they have an URL.<%}%><div style="color:red;display:inline-block;margin-bottom:0.5rem;"></div><br></center>
+      <br><br>
+        <input type="hidden" name="cli_id" value="<%= cli_id %>">
+      <input type="hidden" name="hider" value="<%= req.user.id %>">
+      <center><input type="submit" class="btn btn-primary" title="Hide" value="<%if(action === "Hide") {%>Hide<%} else {%>Unhide<%}%>"></input>&nbsp;&nbsp;<a href="javascript:window.history.back()" class="btn btn-primary" title="Back">Cancel</a></center>
+      </form><br><br>
+  </body>
+</html>

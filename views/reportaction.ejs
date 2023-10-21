@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Reports - ModPortal - DBR</title>
+    <% include ./partials/portalHeader.ejs %>
+  </head>
+  <body>
+      <% include ./partials/nav.ejs %>
+    <br><br><br>
+<center>
+<h5>
+  What do you want to do with report against <%=bot.users.get(bot.reports.get(req.params["id"]).target).username%>, reported by <%=bot.users.get(bot.reports.get(req.params["id"]).reporter).tag%>?
+  
+  <br><br><br>
+  <select id="action" class="txtarea" style="width:250px;" onchange="change()">
+    <option value="none" selected disabled>Select one...</option>
+    <option value="banu">Ban Reporter</option>
+    <option value="clearr">Clear the bot's rating</option>
+        <option value="delb">Delete bot</option>
+        <option value="dismiss">Dismiss the report</option>
+  </select>
+  </h5>
+      </body>
+</html>
+  
+  <script>
+  function change() {
+    
+    if(document.getElementById("action").value == "delb") {
+       window.location.replace("/bot/<%=bot.reports.get(req.params["id"]).target%>/delete")
+
+  
+                        
+  } else   if(document.getElementById("action").value == "banu") {
+       window.location.replace("/user/<%=req.params["id"]%>/ban")
+
+  
+                               
+  }else   if(document.getElementById("action").value == "clearr") {
+       window.location.replace("/bot/<%=bot.reports.get(req.params["id"]).target%>/clearrating")
+
+  
+                               
+                               }else if(document.getElementById("action").value == "dismiss") {
+       window.location.replace("/modportal/report/<%=bot.reports.get(req.params["id"]).id%>/dismiss")
+
+  
+     
+  }
+    }
+  </script>

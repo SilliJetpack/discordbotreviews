@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title><%=m.username%> certification form - ModPortal - DBR</title>
+    <% include ./partials/portalHeader.ejs %>
+  </head>
+  <body>
+    <% include ./partials/nav.ejs %>
+    <div class="container">
+      <h1>
+        <%= m.username %>'s Certification Submission Info
+      </h1>
+      <br><br>
+        
+        <div class="card" width="100%" height="200px" style="color:black">
+        <div class="card-body">
+                    <h3 class="card-title">
+            How is it unique?
+          </h3>
+          <p class="card-text"><%= a.uniqueThings %></p>
+          </div>
+        </div>
+        <br><br>
+        <div class="card" width="100%" height="200px" style="color:black">
+        <div class="card-body">
+          <h3 class="card-title">Why does the bot owner thinks the above is unique?</h3>
+          <p class="card-text"><%= a.uniqueReason %></p>
+          </div>
+        </div><br><br>
+      <center><button class="btn btn-primary" onclick="history.back()">Go back</button></center>
+      </div>
+  </body>
+</html>

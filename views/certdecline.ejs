@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Decline a certification - ModPortal - DBR</title>
+    <% include ./partials/portalHeader.ejs %>
+  </head>
+  <body>
+    <% include ./partials/nav.ejs %>
+    <div class="container">
+      <h1>
+        <%= username %> - Decline
+      </h1>
+      <hr><br>
+      <form action="/modportal/certdecline" method="POST" enctype="application/x-www-form-urlencoded">
+      Why do you want to decline certification for this bot?<div style="color:red;display:inline-block;margin-bottom:0.5rem;">*</div><br>
+         Characters typed: <br>
+        <div id="charcount">
+          <code>0/1967</code>
+        </div>
+      <textarea class="txtarea" style="width:500px;height:400px" maxlength="1024" rows="30" id="longdesc" name="reason" required onkeyup="charc(this.value)"></textarea> 
+      <br><br>
+        <input type="hidden" name="cli_id" value="<%= cli_id %>">
+      <input type="hidden" name="decliner" value="<%= user.id %>">
+      <input type="submit" class="btn btn-warning" title="Decline" value="Decline"></input>&nbsp;&nbsp;<a href="/modportal/queue" class="btn btn-warning" title="Back">Back</a>
+      </form><br><br>
+        <script>
+    function charc(str) {
+	var lng = str.length;
+	document.getElementById("charcount").innerHTML = "<code>" + lng + '/1967</code>';
+    }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1555 @@
+var express = require('express')
+, app        = express()
+, http       = require('http')
+, session    = require('express-session')
+, passport   = require('passport')
+, Strategy   = require('./lib').Strategy
+, hljs       = require('highlight.js')
+, remarkable = require("remarkable") // Markdown support
+, md         = new remarkable({ highlight: function (str, lang) { if (lang && hljs.getLanguage(lang)) { try { return hljs.highlight(lang, str).value; } catch (err) {} } try { return hljs.highlightAuto(str).value; } catch (err) {} return ''; /* use external default escaping */ }})
+, cors       = require('cors')
+, Screenshot = require('capture-chrome')
+, fs         = require('fs')
+, middleware = require("./lib/dbrmiddleware.js")
+
+// set the view engine to ejs
+app.set('view engine', 'ejs');
+// app.set('views', './')
+app.set('views', './views')
+// Set Public folder (can be used by glitch console)
+app.use(express.static('public'))
+// Set dir for CSS file
+app.use(express.static('views'))
+// make express interpret forms
+app.use(express.json());
+app.use(express.urlencoded());
+
+setInterval(() => {
+  http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/ping`);
+}, 280000);
+
+// returns random key from Set or Map
+function getRandomKey(collection) {
+    let index = Math.floor(Math.random() * collection.size);
+    let cntr = 0;
+    for (let key of collection.keys()) {
+        if (cntr++ === index) {
+            return key;
+        }
+    }
+}
+
+ //------------------PASSPORT-DISCORD-OAUTH2------------------- // //------------------PASSPORT-DISCORD-OAUTH2------------------- // //------------------PASSPORT-DISCORD-OAUTH2------------------- //
+ //------------------PASSPORT-DISCORD-OAUTH2------------------- // //------------------PASSPORT-DISCORD-OAUTH2------------------- // //------------------PASSPORT-DISCORD-OAUTH2------------------- //
+ //------------------PASSPORT-DISCORD-OAUTH2------------------- // //------------------PASSPORT-DISCORD-OAUTH2------------------- // //------------------PASSPORT-DISCORD-OAUTH2------------------- //
+ //------------------PASSPORT-DISCORD-OAUTH2------------------- // //------------------PASSPORT-DISCORD-OAUTH2------------------- // //------------------PASSPORT-DISCORD-OAUTH2------------------- //
+ //------------------PASSPORT-DISCORD-OAUTH2------------------- // //------------------PASSPORT-DISCORD-OAUTH2------------------- // //------------------PASSPORT-DISCORD-OAUTH2------------------- //
+ //------------------PASSPORT-DISCORD-OAUTH2------------------- // //------------------PASSPORT-DISCORD-OAUTH2------------------- // //------------------PASSPORT-DISCORD-OAUTH2------------------- //
+ //------------------PASSPORT-DISCORD-OAUTH2------------------- // //------------------PASSPORT-DISCORD-OAUTH2------------------- // //------------------PASSPORT-DISCORD-OAUTH2------------------- //
+
+
+
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+passport.deserializeUser(function(obj, done) {
+  done(null, obj);
+});
+
+var scopes = ['identify' /* 'connections', (it is currently broken) */];
+
+passport.use(new Strategy({
+    clientID: ,
+    clientSecret: process.env.CLIENT_SECRET,
+    callbackURL: 'http://discordbotsreview.tk/callback',
+    scope: scopes
+}, function(accessToken, refreshToken, profile, done) {
+    process.nextTick(function() {
+        return done(null, profile);
+    });
+}));
+
+app.use(session({
+    secret: 'cat',
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.get('/auth',
+        passport.authenticate('discord', { scope: scopes }), function(req, res) {}
+       );
+app.get('/callback',
+    passport.authenticate('discord', { failureRedirect: '/404' }), function(req, res) { 
+  res.redirect('/info')
+  bot.fetchUser(req.user.id)
+  bot.channels.get("513512749662208041").send(req.user.username + "#" + req.user.discriminator + " (" + req.user.id + ")" + " logged in")
+} // auth success
+
+        
+);
+app.get('/logout', function(req, res) {
+    req.logout();
+    res.redirect('/');
+});
+app.get('/info', checkAuth, function(req, res) {
+    //console.log(req.user)
+    // res.json(req.user);
+  bot.userinfo.ensure(req.user.id, { info: null });
+
+  res.redirect('/');
+});
+
+
+function checkAuth(req, res, next) {
+    if (req.isAuthenticated()) return next();
+    res.send('not logged in :(');
+}
+
+ //------------------PASSPORT-DISCORD-OAUTH2------------------- // //------------------PASSPORT-DISCORD-OAUTH2------------------- // //------------------PASSPORT-DISCORD-OAUTH2------------------- //
+ //------------------PASSPORT-DISCORD-OAUTH2------------------- // //------------------PASSPORT-DISCORD-OAUTH2------------------- // //------------------PASSPORT-DISCORD-OAUTH2------------------- //
+ //------------------PASSPORT-DISCORD-OAUTH2------------------- // //------------------PASSPORT-DISCORD-OAUTH2------------------- // //------------------PASSPORT-DISCORD-OAUTH2------------------- //
+ //------------------PASSPORT-DISCORD-OAUTH2------------------- // //------------------PASSPORT-DISCORD-OAUTH2------------------- // //------------------PASSPORT-DISCORD-OAUTH2------------------- //
+ //------------------PASSPORT-DISCORD-OAUTH2------------------- // //------------------PASSPORT-DISCORD-OAUTH2------------------- // //------------------PASSPORT-DISCORD-OAUTH2------------------- //
+ //------------------PASSPORT-DISCORD-OAUTH2------------------- // //------------------PASSPORT-DISCORD-OAUTH2------------------- // //------------------PASSPORT-DISCORD-OAUTH2------------------- //
+ //------------------PASSPORT-DISCORD-OAUTH2------------------- // //------------------PASSPORT-DISCORD-OAUTH2------------------- // //------------------PASSPORT-DISCORD-OAUTH2------------------- //
+
+
+
+//------------------DISCORD-BOT-CODE------------------- // //------------------DISCORD-BOT-CODE------------------- // //------------------DISCORD-BOT-CODE------------------- //
+//------------------DISCORD-BOT-CODE------------------- // //------------------DISCORD-BOT-CODE------------------- // //------------------DISCORD-BOT-CODE------------------- //
+//------------------DISCORD-BOT-CODE------------------- // //------------------DISCORD-BOT-CODE------------------- // //------------------DISCORD-BOT-CODE------------------- //
+//------------------DISCORD-BOT-CODE------------------- // //------------------DISCORD-BOT-CODE------------------- // //------------------DISCORD-BOT-CODE------------------- //
+//------------------DISCORD-BOT-CODE------------------- // //------------------DISCORD-BOT-CODE------------------- // //------------------DISCORD-BOT-CODE------------------- //
+//------------------DISCORD-BOT-CODE------------------- // //------------------DISCORD-BOT-CODE------------------- // //------------------DISCORD-BOT-CODE------------------- //
+//------------------DISCORD-BOT-CODE------------------- // //------------------DISCORD-BOT-CODE------------------- // //------------------DISCORD-BOT-CODE------------------- //
+
+const Discord = require("discord.js");
+const bot = new Discord.Client({disableEveryone: true});     
+const token = process.env.BOTTOKEN;
+const util = require("util");
+const prefix = "dbr!";
+
+bot.on('ready', () => {
+  console.log("Logged in " + bot.user.tag);
+  bot.user.setActivity(bot.botinfo.size + " bots " + " || DBR Beta Release", { type: 0 }); 
+  let ass = bot.botinfo.map(r=> r.submitter); ass.forEach(async (cli_id, submitter) => { bot.fetchUser(cli_id); if(!bot.userinfo.get(cli_id)){bot.userinfo.set(cli_id, {info: null})}});
+  let ass2 = bot.botinfo.map(r=> r.cli_id); ass2.forEach(async (cli_id, submitter) => { bot.fetchUser(cli_id); if(!bot.reactions.get(cli_id)){bot.reactions.set(cli_id, {likes: Array(), dislikes: Array()});}});
+    let ass3 = bot.comments.map(r=> r.author); ass3.forEach(async (author, submitter) => { bot.fetchUser(author); });
+
+});
+
+bot.on('message', async message => {
+  if (message.author.bot) return;
+  const messageArray = message.content.split(" ");
+  const command = messageArray[0];
+  const args = messageArray.slice(1);
+  const params = message.content.split(" ").slice(1);
+
+  if (message.author.bot) return;
+  if (!message.content.startsWith(prefix)) return;
+
+
+if (message.content.toLowerCase().startsWith(prefix + "bots")) {
+ let owner = message.mentions.users.first() || bot.users.get(params[0]);
+ if (!owner) return message.channel.send("Please specify a user ID or a user mention.");
+
+ let getbots = bot.botinfo.filter(e=>e.submitter === owner.id);
+ if (owner.bot) return message.channel.send("Bots don't have their own bots.");
+ if (getbots.size < 1) return message.channel.send(`**${owner.tag}** has no bots.`);
+ const bots = new Discord.RichEmbed()
+   .setColor("#789cde")
+   .addField(owner.tag + " 's bots", getbots.map(r=> bot.certified.get(owner.id, "bots").includes(r.cli_id) === true ? "<@" + r.cli_id + ">" + " <:dbrunique:507958292790902795>" : "<@" + r.cli_id + ">"))
+  message.channel.send(bots)
+            
+};
+  if (message.content.toLowerCase().startsWith(prefix + "botinfo")) {
+     let botmention = message.mentions.users.first() || bot.users.get(params[0]);
+     if (!botmention) return message.channel.send("Please specify a bot ID or a bot mention.");
+    if (!bot.botinfo.has(botmention.id)) return message.channel.send("Bot not found")
+    const checker = bot.certified.get(bot.botinfo.get(botmention.id, "submitter"), "bots").includes(botmention.id) === true ? "<:dbrunique:507958292790902795>" : ""
+    const embed = new Discord.RichEmbed()
+    .setDescription(bot.users.get(botmention.id).tag + " 's info " + checker)
+     .setColor("#789cde")
+    .addField("Prefix", bot.botinfo.get(botmention.id, "prefix"))
+    .addField("Support Server", bot.botinfo.get(botmention.id, "support_url").length <1 === true ? "None" : "[Link]" + "(https://discord.gg/" + bot.botinfo.get(botmention.id, "support_url") + ")", true)
+    .addField("Invite link", "[Link](" + bot.botinfo.get(botmention.id, "invite_url") + ")", true)
+        .addField("Website", bot.botinfo.get(botmention.id, "websiteURL").length <1 === true ? "None" : "[Link]" + "(" + bot.botinfo.get(botmention.id, "websiteURL") + ")", true)
+    .addField("Short Description", bot.botinfo.get(botmention.id, "short_description"), true)
+    .addField("Owner", bot.users.get(bot.botinfo.get(botmention.id, "submitter")).tag + " (<@" + bot.botinfo.get(botmention.id, "submitter") + ">)")
+    .addField("Likes", bot.reactions.get(botmention.id, "likes").length, true)
+    .addField("Dislikes", bot.reactions.get(botmention.id, "dislikes").length, true)
+        .addField("Comments", bot.comments.filter(r=> r.bot === botmention.id).size, true)
+
+    message.channel.send(embed)
+  };
+if (message.content.toLowerCase().startsWith(prefix + "qbots")) {
+ let owner = message.mentions.users.first() || bot.users.get(params[0]);
+ if (!owner) return message.channel.send("Please specify a user ID or a user mention.");
+
+ let getbots = bot.submission.filter(e=>e.submitter === owner.id);
+ if (owner.bot) return message.channel.send("Bots don't have their own bots.");
+
+ if (getbots.size < 1) return message.channel.send(`**${owner.tag}** has no bots that are awaiting verification.`);
+ const bots = new Discord.RichEmbed()
+   .setColor("#789cde")
+   .addField(owner.tag + " 's bots that are waiting to be verified", getbots.map(r=> "<@" + r.cli_id + ">"))
+  message.channel.send(bots)
+            
+};
+
+
+if (message.content.toLowerCase().startsWith(prefix + "owner")) {
+ let botid = message.mentions.users.first() || bot.users.get(params[0]);
+ if (!botid) return message.channel.send("Input a bot mention or bot ID")
+if (!bot.botinfo.has(botid.id)) return message.channel.send("Bot not found")
+ let getowner = bot.botinfo.get(botid.id,"owner");
+ let getbot = bot.fetchUser(botid.id).then(e=>e.tag)
+
+ const owner = new Discord.RichEmbed()
+  .setColor("#789cde")
+ .addField("Owner of " + botid.tag + " is", "<@" + bot.botinfo.get(botid.id, "submitter") + ">")
+ message.channel.send(owner)
+};
+  
+if (message.content.startsWith(prefix + "eval")) {
+  if (message.author.id === "469716275786940416" || message.author.id === "324920582665928727" || message.author.id === "432400084706131989") {
+  const that = message.content.split(" ").slice(1);
+try {
+   let code = args.join(" ");
+   let evaled = eval(code);
+  
+   if (typeof evaled !== "string") {
+       evaled = require("util").inspect(evaled);
+   }
+  
+   const ss = new Discord.RichEmbed()
+     .setDescription("**EVAL**")
+     .setColor('GREEN')
+     .addField("INPUT", "```" +code + "```")
+     .addField("OUTPUT", "```" + (evaled) + "```")
+   message.channel.send(ss)
+
+} catch (e) {
+   console.log(e.stack);
+   
+  const err = new Discord.RichEmbed()
+     .setDescription("**ERROR**")
+     .setColor('RED')
+     .addField("Error:", e)
+  message.channel.send(err)
+  
+    }
+  }
+}
+   if (message.content.startsWith(prefix + "notifications") || message.content.startsWith(prefix + "notifications")) {
+     if(bot.notifications.has(message.author.id)) {
+      bot.notifications.delete(message.author.id)
+       message.channel.send("You have disabled notifications for commenting")
+     } else {
+      bot.notifications.set(message.author.id, null)
+       message.channel.send("You have enabled notifications for commenting")
+     }
+   }
+  if (message.content.startsWith(prefix + "leval") || message.content.startsWith(prefix + "le")) {
+  if (message.author.id === "469716275786940416" || message.author.id === "324920582665928727" || message.author.id === "432400084706131989") {
+  const that = message.content.split(" ").slice(1);
+try {
+   let code = args.join(" ");
+   let evaled = eval(code);
+  
+   if (typeof evaled !== "string") {
+       evaled = require("util").inspect(evaled);
+   }
+  
+   message.channel.send("```js\n" + evaled + "```")
+
+} catch (e) {
+   console.log(e.stack);
+   
+  const err = new Discord.RichEmbed()
+     .setDescription("**ERROR**")
+     .setColor('RED')
+     .addField("Error:", e)
+  message.channel.send(err)
+  
+    }
+  }
+}
+});
+
+bot.on('guildMemberAdd', member => {
+  if (member.user.bot) {
+    const botrole = member.guild.roles.find(r=> r.name === "Bot")
+    member.addRole(botrole.id)
+    
+};
+
+  let fuckze = bot.botinfo.filter(r=> r.submitter === member.user.id)
+  if (fuckze.size > 0) {
+    const devrole = member.guild.roles.find(r=> r.name === "Bot Dev")
+    member.addRole(devrole.id)
+  }
+});
+bot.on('guildBanAdd', (guild, member) => {
+  if(member.bot) return;
+  setTimeout(function () {
+  bot.users.delete(member.id)
+    if(bot.userinfo.has(member.id)) {
+       bot.userinfo.delete(member.id)
+  }
+  }, 1000)
+});
+bot.login(token)
+
+      const Enmap = require("enmap");
+      const SQLite = require("enmap-sqlite");
+  // Persistent providers load in an **async** fashion and provide a handy defer property:
+      bot.botinfo    = new Enmap({name: "botinfo", autoFetch: true});
+      bot.submission = new Enmap({name: "submission", autoFetch: true})
+      bot.queue      = new Enmap({name: "queue", autoFetch: true})
+      bot.userinfo   = new Enmap({name: "userinfo", autoFetch: true})
+      bot.reactions  = new Enmap({name: "reactions", autoFetch: true});
+      bot.certified  = new Enmap({name: "certified", autoFetch: true});
+     bot.comments  = new Enmap({name: "comments", autoFetch: true});
+   bot.notifications  = new Enmap({name: "notifications", autoFetch: true});
+//------------------DISCORD-BOT-CODE------------------- // //------------------DISCORD-BOT-CODE------------------- // //------------------DISCORD-BOT-CODE------------------- //
+//------------------DISCORD-BOT-CODE------------------- // //------------------DISCORD-BOT-CODE------------------- // //------------------DISCORD-BOT-CODE------------------- //
+//------------------DISCORD-BOT-CODE------------------- // //------------------DISCORD-BOT-CODE------------------- // //------------------DISCORD-BOT-CODE------------------- //
+//------------------DISCORD-BOT-CODE------------------- // //------------------DISCORD-BOT-CODE------------------- // //------------------DISCORD-BOT-CODE------------------- //
+//------------------DISCORD-BOT-CODE------------------- // //------------------DISCORD-BOT-CODE------------------- // //------------------DISCORD-BOT-CODE------------------- //
+//------------------DISCORD-BOT-CODE------------------- // //------------------DISCORD-BOT-CODE------------------- // //------------------DISCORD-BOT-CODE------------------- //
+//------------------DISCORD-BOT-CODE------------------- // //------------------DISCORD-BOT-CODE------------------- // //------------------DISCORD-BOT-CODE------------------- //
+
+
+
+
+//------------------WEBSITE-RENDER-CODE------------------- // //------------------WEBSITE-RENDER-CODE------------------- // //------------------WEBSITE-RENDER-CODE------------------- //
+//------------------WEBSITE-RENDER-CODE------------------- // //------------------WEBSITE-RENDER-CODE------------------- // //------------------WEBSITE-RENDER-CODE------------------- //
+//------------------WEBSITE-RENDER-CODE------------------- // //------------------WEBSITE-RENDER-CODE------------------- // //------------------WEBSITE-RENDER-CODE------------------- //
+//------------------WEBSITE-RENDER-CODE------------------- // //------------------WEBSITE-RENDER-CODE------------------- // //------------------WEBSITE-RENDER-CODE------------------- //
+//------------------WEBSITE-RENDER-CODE------------------- // //------------------WEBSITE-RENDER-CODE------------------- // //------------------WEBSITE-RENDER-CODE------------------- //
+//------------------WEBSITE-RENDER-CODE------------------- // //------------------WEBSITE-RENDER-CODE------------------- // //------------------WEBSITE-RENDER-CODE------------------- //
+
+
+app.use(middleware.banpage({bot: bot}));
+
+
+// index page 
+app.get('/', (req, res, next) => {
+     var forwardedIpsStr = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+   var IP = '';
+
+   if (forwardedIpsStr) {
+      IP = forwardedIps = forwardedIpsStr.split(',')[0];  
+   }
+  if(req.user) {
+    
+bot.channels.get("513512749662208041").send(req.user.username + "#" + req.user.discriminator + " (" + IP + ")" + " visited index page")
+  } else { if(IP === "63.143.42.249") return; bot.channels.get("513512749662208041").send(IP === "88.89.116.64" ? "RaZeFeiXX (Not logged in) visied the index page" : IP === "183.89.116.136" ? "SuperNiintendo (Not logged in) visited the index page" : IP === "63.143.42.249" ? "GLITCH" : IP + "  visited the index page") }
+  var c;
+  var list = new Set()
+  var usedKey = new Set()
+  for (c = 0; c < bot.botinfo.size && c < 8; c++) {
+    var key = getRandomKey(bot.botinfo)
+    if (usedKey.has(key)) {
+      var key = getRandomKey(bot.botinfo)
+      c--;
+    } else {
+      list.add(bot.botinfo.get(key))
+      usedKey.add(key)
+    }
+  }
+  var array = new Array()
+  list.forEach(function(m){array.push(m)})
+    res.render('index.ejs', {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req,
+       bots: array
+  });
+
+/* ---------------------------------------------- */ /* ---------------------------------------------- */ /* ---------------------------------------------- */ 
+/* ---------------------------------------------- */ /* ---------------------------------------------- */ /* ---------------------------------------------- */ 
+/* ---------------------------------------------- */ /* ---------------------------------------------- */ /* ---------------------------------------------- */ 
+/* ---------------------------------------------- */ /* ---------------------------------------------- */ /* ---------------------------------------------- */ 
+/* ---------------------------------------------- */ /* ---------------------------------------------- */ /* ---------------------------------------------- */ 
+
+});
+
+app.get("/ping", (req, res) => {
+    console.log(Date.now() + " Ping Received");
+    res.json({ping: true, time: Date.now()})
+});
+// FAQ page
+app.get('/faq', (req, res) => {
+  res.render('bot_aboutus.ejs', {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req
+  });
+});
+
+app.get('/commentrules', (req, res) => {
+  res.render('bot_commentrules.ejs', {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req
+  });
+});
+app.get('/browse', (req, res) => {
+  res.render('bot_browse.ejs', {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req,
+       bots: bot.botinfo
+  });
+});
+
+
+app.get('/submit', (req, res) => {
+      res.render('bot_submit.ejs', {
+       user: req.isAuthenticated() ? req.user :   res.redirect("/auth"),
+       bot: bot,
+       req: req
+  });
+      var forwardedIpsStr = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+   var IP = '';
+
+   if (forwardedIpsStr) {
+      IP = forwardedIps = forwardedIpsStr.split(',')[0];  
+   }
+  if(req.user) {
+    
+bot.channels.get("513512749662208041").send(req.user.username + "#" + req.user.discriminator + " (" + IP + ")" + " visited submit page")
+  } 
+});
+app.get('/certification/apply', (req, res) => {
+  if (!req.user) { res.redirect("/auth") }
+  if (bot.botinfo.filter(r=> r.submitter == req.user.id).size < 1) { res.redirect("/") }
+  res.render("applycertify.ejs", {
+        user: req.isAuthenticated() ? req.user : res.redirect("/auth"),
+       bot: bot,
+       req: req,
+       bots: bot.botinfo.filter(r=> !bot.certified.get(req.user.id, "bots").includes(r.cli_id) && r.submitter == req.user.id)
+  });
+      
+});
+app.get('/user/:id/config', (req, res) => {
+  var id = req.params["id"]
+  if(!req.user) {
+    res.redirect("/auth")
+  }
+  if(id === req.user.id) {
+    res.render('user_edit.ejs', {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req,
+       id: req.params['id'],
+       bots: bot.botinfo.filter(r=> r.submitter == req.params['id'])
+    });
+  } else {
+    res.status(403).render("403.ejs", {
+      user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req,
+    });
+  }
+});
+ app.post("/api/form/userconfig", (req, res) => {
+   if (!req.user) { res.redirect("/auth") }
+  var body = req.body
+  const lmfao = bot.guilds.get("500658335217876997").members.get(req.user.id)
+  if(lmfao) {
+    if(lmfao.roles.has("507628349707911178") || lmfao.roles.has("500662148561764352")) {
+  bot.userinfo.set(req.user.id, {info: body.biog, certbots: Array(), custompulse: body.pulse, pulsetime: body.pulse2.length <1 === true || body.pulse2.length >3 === true || isNaN(body.pulse2) ? "0" : body.pulse2, pulsecolor: body.pulsecolor.length <1 || body.pulsecolor.length >11=== true ? "0" : body.pulsecolor, website: body.website})
+    } else {
+       bot.userinfo.set(req.user.id, {info: body.biog, certbots: Array()})
+    }
+  } else {
+      bot.userinfo.set(req.user.id, {info: body.biog, certbots: Array()})
+  }
+  res.redirect("/user/" + req.user.id)
+});
+app.get('/user/:id', (req, res) => {
+  if (!bot.users.get(req.params['id']) || bot.users.get(req.params['id']).bot) {
+      res.status(404).render('404.ejs', {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req})
+  } else {
+    res.render('user_page.ejs', {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req,
+       id: req.params['id'],
+       bots: bot.botinfo.filter(r=> r.submitter == req.params['id'])
+    });
+  }
+})
+app.get("/api/bot/:id", cors(), (req, res) => {
+  var id = req.params['id']
+  var info = bot.botinfo.get(id)
+  if (!info) {
+    res.status(404).json({message: "NotFound"})
+  } else {
+    const asscrack = bot.guilds.get("500658335217876997").members.get(id);
+    if (asscrack) { 
+      if (asscrack.roles.has("507628704751419393")) { 
+        var verifiedUnique = true 
+      } else { 
+        var verifiedUnique = false 
+      }
+      if (asscrack.roles.has("511069587840827402")) {
+        var verifiedVeryUnique = true
+      } else {
+          var verifiedVeryUnique = false 
+      } } else { 
+        var verifiedUnique = false
+        var verifiedVeryUnique = false
+      }
+    var reactions = bot.reactions.get(id)
+    var n = bot.userinfo.get(info.submitter)
+    var m = Object()
+    if (n) { m.bio = n.info }
+    var certified = bot.certified.get(info.submitter)
+    if (certified && certified.length > 0) { m.certified = true; } else { m.certified = false; }
+    m.id = info.submitter
+    res.json({clientID: info.cli_id, prefix: info.prefix, invite_url: info.invite_url, support_url: info.support_url, short_description: info.short_description, long_description: info.long_description, owner: m, likes: reactions.likes.length, dislikes: reactions.dislikes.length, unique: verifiedUnique, veryUnique: verifiedVeryUnique});
+  }
+});
+app.get("/api/user/:id", cors(), (req, res) => {
+  var id = req.params['id']
+  var info = bot.userinfo.get(id)
+  if (!info) {
+    res.status(404).json({message: "NotFound"})
+  } else {
+    var g = bot.botinfo.filter(r=> r.submitter === id).map(function(r){
+    const asscrack = bot.guilds.get("500658335217876997").members.get(r.cli_id);
+    if (asscrack) { 
+      if (asscrack.roles.has("507628704751419393")) { 
+        var verifiedUnique = true 
+      } else { 
+        var verifiedUnique = false 
+      }
+      if (asscrack.roles.has("511069587840827402")) {
+        var verifiedVeryUnique = true
+      } else {
+          var verifiedVeryUnique = false 
+      } } else { 
+        var verifiedUnique = false
+        var verifiedVeryUnique = false
+      }
+      var reactions = bot.reactions.get(r.cli_id)
+      if (!reactions) { reactions = {likes: [], dislikes: []} }
+      return {clientID: r.cli_id, prefix: r.prefix, invite_url: r.invite_url, support_url: r.support_url, short_description: r.short_description, long_description: r.long_description, likes: reactions.likes.length, dislikes: reactions.dislikes.length, unique: verifiedUnique, veryUnique: verifiedVeryUnique}
+    })
+    var certified = bot.certified.get(id)
+    if (certified && certified.length > 0) { var c = true; } else { var c = false; }
+    res.json({"id": id, "bio": info.info, "certified": c, "bots": g})
+  }
+});
+app.get("/api/widget/:id/widget", cors(), async(req, res) => {
+  var id = req.params['id']
+  var info = bot.botinfo.get(id)
+  if (!info) {
+    res.status(404).send("Bot ID not found. Please make sure you typed in the correct ID.")
+  } else {
+    var user = await bot.fetchUser(id)
+    var owner = await bot.fetchUser(info.submitter)
+    res.render("widget.ejs", {bot: bot, q: info, u: user, owner: owner})
+  }
+});
+app.get("/api/widget/:id.png", cors(), (req, res) => {
+  Screenshot({
+  url: 'https://discordbotsreview.tk/api/widget/' + req.params.id + '/widget',
+  width: 400,
+  height: 170
+  }).then(screenshot => {
+  res.write(screenshot)
+  res.end()
+})
+});
+app.get('/search', (req, res) => {
+  res.render('bot_search.ejs', {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req,
+       bots: bot.botinfo
+  });
+});
+
+app.get('/browse/top', (req, res) => {
+  var array = Array()
+  var i = 0;
+  var sortable = [];
+  while (bot.botinfo.map(r=> r)[i]) {
+      var d = bot.reactions.get(bot.botinfo.map(r=> r.cli_id)[i], "likes")
+      var w = bot.reactions.get(bot.botinfo.map(r=> r.cli_id)[i], "dislikes")
+      if (!d) { continue; }
+      sortable.push([bot.botinfo.map(r=> r.cli_id)[i], d.length - w.length]);
+      i++;
+  }
+  var sortable = sortable.sort(function(a, b) {
+    return a[1] - b[1];
+  });
+  i = 0;
+  while (sortable[i]) {
+    var p = bot.botinfo.get(sortable[i][0])
+    array.push(p)
+    i++;
+  }
+  res.render('bot_browse_topvoted.ejs', {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req,
+       bots: array.reverse()
+  });
+});
+app.get('/browse/unique', (req, res) => {
+  res.render('bot_browse_certified.ejs', {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req,
+       bots: bot.botinfo.filter(r=> bot.certified.get(r.submitter) && bot.certified.get(r.submitter, "bots").includes(r.cli_id))
+  });
+});
+app.get('/browse/new', (req, res) => {
+  res.render('bot_browse_new.ejs', {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req,
+       bots: bot.botinfo.map(r=> r).reverse()
+  });
+});
+
+
+app.get('/badges', (req, res) => {
+  res.render('badges.ejs', {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req
+  });
+});
+
+
+app.get('/certification', (req, res) => {
+  res.render('certification.ejs', {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req
+  });
+  
+});
+app.get('/api/docs', (req, res) => {
+  res.render('api.ejs', {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req
+  });
+});
+app.get('/api', (req, res) => {
+  res.redirect("/api/docs")
+});
+
+app.get('/bot/:id/edit', (req,res) => {
+if(!req.user) {
+  res.redirect("/auth")
+} else {
+  var id = req.params["id"]
+  var sexygirly = bot.botinfo.get(id, "submitter")
+  console.log(bot.botinfo.get(id, "submitter"))
+if(req.user.id === sexygirly) {
+  res.render("bot_edit.ejs", {
+     user: req.isAuthenticated() ? req.user : res.redirect("/auth"),
+       bot: bot,
+       req: req,
+    botid: id
+  });
+   } else {
+     res.status(403).render("403.ejs", {
+         user: req.isAuthenticated() ? req.user : res.redirect("/auth"),
+       bot: bot,
+       req: req
+     });
+   }
+}
+});
+app.post("/api/form/edit", (req, res) => {
+  if (!req.user) { res.redirect("/auth") }
+  var body = req.body
+  if (body.vanityurl) { var l = body.vanityurl.replace(" ", "_"); } else { var l = null }
+  if (!bot.certified.get(req.user.id, "bots").includes(body.botid) && !body.vanityurl == '') { res.status(400).send("Cannot edit bot. Please go back."); return }
+  if (body.vanityurl && bot.botinfo.filter(r=> r.vanityurl == body.vanityurl).size > 0 && bot.botinfo.get(body.botid, "vanityurl") !== body.vanityurl) { res.send("Vanity URL already taken."); return }
+  bot.botinfo.set(body.botid, {cli_id: body.botid, prefix: body.prefix, invite_url: body.invite_url.length <1 === true ? "https://discordapp.com/oauth2/authorize?client_id=" + body.cli_id + "&scope=bot&permissions=0" : body.invite_url ,support_url : body.support, short_description: body.shortdesc, long_description: body.longdesc, submitter: req.user.id, verified: false, vanityurl: l, websiteURL: body.website})
+
+  // put send code here
+  bot.fetchUser(body.botid)
+  .then(r=> {
+  bot.channels.find(r=> r.id === "505765871663317024").send("📝  <@" + req.user.id + ">" + " edited bot " + "`" + r.username + "` "+ "(<@" + r.id + ">) " + "\n" + "https://discordbotsreview.tk" + "/" + "bot" + "/" + body.botid)
+ 
+  res.redirect("/bot/" + body.botid)
+  });
+  
+});
+app.get('/modportal', (req, res) => {
+  if (!req.user) {
+    res.redirect('/auth')
+  }else{
+  var userlol = bot.guilds.get("500658335217876997").members.get(req.user.id)
+  if (!userlol.roles.has("500662148561764352")) {
+    res.status(403).render('403.ejs', { 
+       user: req.isAuthenticated() ? req.user : res.redirect("/auth"),
+       bot: bot,
+       req: req
+  }); } else {
+  res.render("modportal.ejs", {
+       user: req.isAuthenticated() ? req.user : res.redirect("/auth"),
+       bot: bot,
+       req: req
+      })
+    }
+  }
+});
+
+app.get("/modportal/queue", (req, res) => {
+  if (!req.user) {
+    res.redirect('/auth')
+  }
+  var userlol = bot.guilds.get("500658335217876997").members.get(req.user.id)
+  if (!userlol.roles.has("500662148561764352")) {
+    res.status(403).render('403.ejs', { 
+       user: req.isAuthenticated() ? req.user : res.redirect("/auth"),
+       bot: bot,
+       req: req
+  }); } else {
+  res.render("queue.ejs", {
+       user: req.isAuthenticated() ? req.user : res.redirect("/auth"),
+       bot: bot,
+       req: req
+  });
+  }
+});
+app.get("/modportal/cert", (req, res) => {
+  if (!req.user) {
+    res.redirect('/auth')
+  }
+  var userlol = bot.guilds.get("500658335217876997").members.get(req.user.id)
+  if (!userlol.roles.has("500658928602841099")) {
+    res.status(403).render('403.ejs', { 
+       user: req.isAuthenticated() ? req.user : res.redirect("/auth"),
+       bot: bot,
+       req: req
+  }); } else {
+  res.render("certqueue.ejs", {
+       user: req.isAuthenticated() ? req.user : res.redirect("/auth"),
+       bot: bot,
+       req: req
+  });
+  }
+});
+app.post("/api/form/submit", (req, res) => {
+  var body = req.body
+  if(!req.user){res.redirect("/auth")}
+  if(bot.submission.has(body.cli_id) || bot.botinfo.has(body.cli_id)) return res.redirect("/submit")
+  if (!bot.certified.get(req.user.id)) { bot.certified.set(req.user.id, {bots: Array()}) }
+  bot.submission.set(body.cli_id, {cli_id: body.cli_id, prefix: body.prefix, invite_url: body.invite_url.length <1 === true ? "https://discordapp.com/oauth2/authorize?client_id=" + body.cli_id + "&scope=bot&permissions=0" : body.invite_url ,support_url : body.support, short_description: body.shortdesc, long_description: body.longdesc, submitter: req.user.id, verified: false, vanityURL: null, websiteURL: body.website})
+  // put send code here
+  bot.fetchUser(body.cli_id)
+  .then(r=> {
+  bot.channels.find(r=> r.id === "505765871663317024").send("➕ <@" + req.user.id + ">" + " submitted bot " + "`" + r.username + "` "+ "(<@" + body.cli_id + ">) <@&515591820583895060>" + "\n" + "https://discordbotsreview.tk" + "/" + "bot" + "/" + body.cli_id)
+  let fuckass = bot.users.get(req.user.id)
+  if(fuckass) fuckass.send("➕ Your bot " + "`" + r.username + "` "+ "(<@" + body.cli_id + ">) was added to queue. Please be patient")
+ 
+  res.redirect("/")
+  });
+  
+});
+app.get("/api/uservalidate", cors({origin: "http://discordbotsreview.tk"}), async(req, res) => {
+  var params = req.query
+  try  {
+    var user = await bot.fetchUser(params['id'])
+    res.json({bot: user.bot, tag: user.username, name: user.username, id: user.id, avatar_url: user.avatarURL, status: user.presence.status})
+  } catch {
+    res.json({bot: false, tag: null, name: null, id: null, avatar_url: null, status: null})
+}
+});
+app.post("/api/form/certsubmit", (req, res) => {
+  if (!req.user) { res.redirect("/auth") }
+  var body = req.body
+  var bass = bot.botinfo.filter(r=> r.cli_id === body.bot_id)
+  if((bot.certified.get(req.user.id)) && bot.certified.get(req.user.id, "bots").includes(body.bot_id) || bot.queue.has(body.bot_id)) { res.redirect("/") }
+  var d = bass.map(r=> r)[0]
+  d.uniqueThings = body.uniqueThings
+  d.uniqueReason = body.uniqueReason
+  bot.queue.set(bass.map(r=> r.cli_id) [0], d)
+  // put send code here
+  bot.fetchUser(body.bot_id)
+  .then(r=> {
+  bot.channels.find(r=> r.id === "505765871663317024").send("<:dbrunique:507958292790902795> <@" + req.user.id + ">" + " applied " + "`" + r.username + "` for certification <@&515591912800124929>"+ " (<@" + r.id + ">)")
+  let fuckass = bot.users.get(req.user.id)
+  if(fuckass) fuckass.send("<:dbrunique:507958292790902795> You have applied " + "<@" + r.id + ">" + " for certification, note that it may take up to 2 weeks till we make a review")
+ 
+  res.redirect("/")
+  });
+  
+});
+app.get("/bot/:id/certinfo", async(req, res) => {
+   if(!req.user) {
+     res.redirect("/auth")
+   }
+  var id = req.params['id']
+  if(!bot.queue.has(id) || !bot.botinfo.has(id)) {
+   res.status(404).render("404.ejs", {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req 
+   });
+  } else {
+    if(bot.guilds.get("500658335217876997").members.get(req.user.id) && bot.guilds.get("500658335217876997").members.get(req.user.id).roles.has("500658928602841099")) {
+      var m = await bot.fetchUser(id)
+      res.render("certview.ejs", { 
+      user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req ,
+       m: m,
+      a: bot.queue.get(id)
+  });
+    } else {
+    res.status(403).render("403.ejs", {
+        user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req 
+     });
+    }
+  }
+});
+app.get("/bot/:id/applycert", async(req, res) => {
+   if(!req.user) {
+     res.redirect("/auth")
+   }
+  var id = req.params['id']
+  if(!bot.botinfo.has(id)) {
+   res.status(404).render("404.ejs", {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req 
+   });
+  } else {
+    if(req.user.id === bot.botinfo.get(id, "submitter")) {
+         res.render("certform.ejs", { 
+      user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req ,
+     botid: id
+  });
+    } else {
+    res.status(403).render("403.ejs", {
+        user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req 
+     });
+    }
+  }
+});
+app.get("/bot/:id/verify", async(req, res) => {
+  if(!req.user) {
+     res.redirect("/auth")
+   }
+      var userlol = bot.guilds.get("500658335217876997").members.get(req.user.id)
+  if (!userlol.roles.has("500662148561764352")) {
+    res.status(403).render('403.ejs', { 
+       user: req.isAuthenticated() ? req.user : res.redirect("/auth"),
+       bot: bot,
+       req: req
+  }); } else {
+     var id = req.params['id']
+     var bass = bot.submission.filter(r=> r.cli_id == id)
+     var owner = await bot.fetchUser(bass.map(r=> r.submitter) [0])
+     if (bass.size == 0) {
+    res.status(404).render("404.ejs", {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req
+      });
+     }
+   bot.fetchUser(id)
+      .then(r=> {
+     let fucksend = bot.users.get(bass.map(r=> r.submitter) [0])
+     if(fucksend) {
+       fucksend.send("✅  Your bot " + "`" + r.username + "` "+ "(<@" + id + ">)" + " was verified by " + `<@${req.user.id}>` + "\n" + "https://discordbotsreview.tk" + "/" + "bot" + "/" + id)
+     }
+    bot.channels.find(r=> r.id === "505765871663317024").send("✅ <@" + req.user.id + "> verified bot "  + "`" + r.username + "` "+ "(<@" + id + ">)" + " which was owned by " + "<@" + bass.map(r=> r.submitter) [0] + ">" + "\n" + "https://discordbotsreview.tk" + "/" + "bot" + "/" + id)
+     const myassbutt = bot.guilds.get("500658335217876997").members.get(bass.map(r=> r.submitter)[0])
+     const asscrack = bot.guilds.get("500658335217876997").roles.get("500710035438043160")
+     if(myassbutt) {
+       myassbutt.addRole(asscrack)
+     }
+   bot.fetchUser(id)
+.then(r=> {
+     bot.fetchUser(bass.map(r=> r.submitter) [0])
+     .then(re=> {
+      bot.botinfo.set(bass.map(r=> r.cli_id) [0], bass.map(r=> r)[0])
+      bot.submission.delete(bass.map(r=> r.cli_id) [0])
+      if(!bot.certified.get(bass.map(r=> r.submitter)[0])) { bot.certified.set(bass.map(r=> r.submitter), Array()) }
+      var cli_id = bass.map(r=> r.cli_id)[0]
+      if(!bot.reactions.get(cli_id)){bot.reactions.set(cli_id, {likes: Array(), dislikes: Array()});}
+      res.redirect("/modportal/queue")
+      });
+    });
+   });
+    }
+          
+  });
+ app.get("/bot/:id/delete", async(req,res) => {
+   if(!req.user) {
+     res.redirect("/auth")
+   }
+ 
+  var userlol = bot.guilds.get("500658335217876997").members.get(req.user.id)
+     var id = req.params['id']
+     var bass = bot.botinfo.filter(r=> r.cli_id == id)
+     var owner = await bot.fetchUser(bass.map(r=> r.submitter) [0])
+     if (bass.size == 0) {
+    res.status(404).render("404.ejs", {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req
+      });
+     }
+     if(req.user.id === bot.botinfo.get(id, "submitter")) {
+        res.render("selfdelete.ejs", {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req,
+       username: await bot.fetchUser(bass.map(r=> r.cli_id)[0]).then(r=> r.username),
+       cli_id: bass.map(r=> r.cli_id)[0]
+      });
+   } else if (userlol.roles.has("500662148561764352")){
+    res.render("delete.ejs", {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req,
+       username: await bot.fetchUser(bass.map(r=> r.cli_id)[0]).then(r=> r.username),
+       cli_id: bass.map(r=> r.cli_id)[0]
+      });
+     } else {
+       res.status(403).render('403.ejs', { 
+       user: req.isAuthenticated() ? req.user : res.redirect("/auth"),
+       bot: bot,
+       req: req
+      });
+   }
+ });
+app.get("/user/:id/bio-delete", async(req, res) => {
+  if (!req.user) {
+    res.redirect('/auth')
+  }
+  var userlol = bot.guilds.get("500658335217876997").members.get(req.user.id)
+  var id = req.params['id']
+  if (userlol.roles.has("500662148561764352") || req.user.id === id) {
+    res.render("biodel.ejs", {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req,
+       username: await bot.fetchUser(id).then(r=> r.username),
+       cli_id: id
+      });
+  } else {
+    res.status(403).render('403.ejs', { 
+       user: req.isAuthenticated() ? req.user : res.redirect("/auth"),
+       bot: bot,
+       req: req
+     });
+  }
+});
+app.post("/modportal/biodelete", async(req, res) => {
+  if (!req.user) {
+    res.redirect("/auth")
+  }
+  var biodeleted = req.body.cli_id
+  bot.userinfo.delete(biodeleted, "info")
+  res.redirect("/")
+});
+app.post("/modportal/selfdelete", async(req, res) => {
+     if(!req.user) {
+     res.redirect("/auth")
+   }
+  if(req.user.id === bot.botinfo.get(req.body.cli_id, "submitter")) {
+   
+     var bass = bot.botinfo.filter(r=> r.cli_id == req.body.cli_id)
+     var user = await bot.fetchUser(req.body.cli_id)
+       bot.channels.find(r=> r.id === "505765871663317024").send("🗑️  <@" + req.user.id + "> deleted bot `" + user.username + "` " + "(<@" + req.body.cli_id + ">)")
+
+                    bot.botinfo.delete(bass.map(r=> r.cli_id) [0])
+     bot.reactions.delete(bass.map(r=> r.cli_id)[0])
+       const assfuck = bot.guilds.get("500658335217876997").members.get(bass.map(r=> r.cli_id) [0])
+       if(assfuck) {
+        assfuck.kick("Bot Deleted") 
+       }
+       const assfuck2 = bot.guilds.get("500658335217876997").members.get(bass.map(r=> r.submitter) [0])
+       if(assfuck2) {
+        const assfuck3 = bot.botinfo.filter(r=> r.submitter === bass.map(r=> r.submitter) [0]) 
+        if(assfuck3.size <1) {
+          const assrole = bot.guilds.get("500658335217876997").roles.get("500710035438043160")
+        assfuck2.removeRole(assrole)
+          if (bot.certified.get(req.user.id)) { bot.certified.delete(req.user.id) }
+       }
+       }
+      res.redirect("/")
+    
+ 
+} else {
+  res.status(403).render("403.ejs", {
+     user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req,
+  });
+}
+});
+app.post("/modportal/deleteact", (req, res) => {
+     if(!req.user) {
+     res.redirect("/auth")
+   }
+      var userlol = bot.guilds.get("500658335217876997").members.get(req.user.id)
+  if (!userlol.roles.has("500662148561764352")) {
+    res.status(403).render('403.ejs', { 
+       user: req.isAuthenticated() ? req.user : res.redirect("/auth"),
+       bot: bot,
+       req: req
+  }); } else {
+  var bass = bot.botinfo.filter(r=> r.cli_id == req.body.cli_id)
+  var id = req.body.cli_id
+  bot.fetchUser(id)
+  .then(r=> {
+  let fucksend = bot.users.get(bass.map(r=> r.submitter) [0])
+  if(fucksend) {
+  fucksend.send("🗑️ Your bot " + "`" + r.username + "` " +"(<@" + id + ">)" + " was deleted by " + `<@${req.user.id}>` + "\n" +"Reason: " + req.body.reason)
+  }
+       bot.channels.find(r=> r.id === "505765871663317024").send("🗑️  <@" + req.user.id + "> deleted bot `" + r.username + "` " + "(<@" + id + ">)" + " which was owned by " + "<@" + bass.map(r=> r.submitter) [0] + ">" + "\n" + "Reason: " + req.body.reason)
+   bot.fetchUser(id)
+.then(r=> {
+     bot.fetchUser(bass.map(r=> r.submitter) [0])
+     .then(re=> {
+      const quickdecline = new Discord.RichEmbed()
+      .setDescription("🗑️  Bot Deleted 🗑️ ")
+      .addField("Bot", r.tag + " (<@" + id + ">)")
+        .setColor("#789cde")
+      .addField("Deleted By", req.user.username + "#" + req.user.discriminator)
+      .addField("Bot was owned by", re.tag + " (" + "<@"  + re.id + ">" +")")
+      .addField("Reason", req.body.reason)
+      bot.channels.find(r=> r.id === "505765886594908160").send(quickdecline) // Any trouble you facing??
+                    bot.botinfo.delete(bass.map(r=> r.cli_id) [0])
+       bot.reactions.delete(bass.map(r=> r.cli_id)[0])
+       const assfuck = bot.guilds.get("500658335217876997").members.get(bass.map(r=> r.cli_id) [0])
+       if(assfuck) {
+        assfuck.kick("Bot Deleted") 
+       }
+       const assfuck2 = bot.guilds.get("500658335217876997").members.get(bass.map(r=> r.submitter) [0])
+       if(assfuck2) {
+        const assfuck3 = bot.botinfo.filter(r=> r.submitter === bass.map(r=> r.submitter) [0]) 
+        if(assfuck3.size <1) {
+          const assrole = bot.guilds.get("500658335217876997").roles.get("500710035438043160")
+        assfuck2.removeRole(assrole)
+          if (bot.certified.get(re.id)) { bot.certified.delete(re.id) }
+       }
+       }
+      res.redirect("/")
+    
+      });
+    });
+  });
+    }
+});
+  app.get("/bot/:id/cdecline", async(req,res) => {
+   if(!req.user) {
+     res.redirect("/auth")
+   }
+      var userlol = bot.guilds.get("500658335217876997").members.get(req.user.id)
+  if (!userlol.roles.has("500658928602841099")) {
+    res.status(403).render('403.ejs', { 
+       user: req.isAuthenticated() ? req.user : res.redirect("/auth"),
+       bot: bot,
+       req: req
+  }); } else {
+     var id = req.params['id']
+     var bass = bot.queue.filter(r=> r.cli_id == id)
+     var owner = await bot.fetchUser(bass.map(r=> r.submitter) [0])
+     if (bass.size == 0) {
+    res.status(404).render("404.ejs", {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req
+      });
+     }
+   
+    res.render("certdecline.ejs", {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req,
+       username: await bot.fetchUser(bass.map(r=> r.cli_id)[0]).then(r=> r.username),
+       cli_id: bass.map(r=> r.cli_id)[0]
+      });
+     }
+  });
+  app.get("/bot/:id/cdelete", async(req,res) => {
+   if(!req.user) {
+     res.redirect("/auth")
+   }
+      var userlol = bot.guilds.get("500658335217876997").members.get(req.user.id)
+  if (!userlol.roles.has("500658928602841099")) {
+    res.status(403).render('403.ejs', { 
+       user: req.isAuthenticated() ? req.user : res.redirect("/auth"),
+       bot: bot,
+       req: req
+  }); } else {
+     var id = req.params['id']
+     var bass = bot.certified.filter(r=> r.bots.includes(id))
+     
+     if (bass.size == 0) {
+    res.status(404).render("404.ejs", {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req
+      });
+     }
+   
+    res.render("certdelete.ejs", {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req,
+       username: await bot.fetchUser(id).then(r=> r.username),
+       cli_id: id
+      });
+     }
+  });
+  app.get("/bot/:id/cverify", async(req,res) => {
+   if(!req.user) {
+     res.redirect("/auth")
+   }
+      var userlol = bot.guilds.get("500658335217876997").members.get(req.user.id)
+  if (!userlol.roles.has("500658928602841099")) {
+    res.status(403).render('403.ejs', { 
+       user: req.isAuthenticated() ? req.user : res.redirect("/auth"),
+       bot: bot,
+       req: req
+  }); } else {
+     var id = req.params['id']
+     var bass = bot.queue.filter(r=> r.cli_id == id)
+     var owner = await bot.fetchUser(bass.map(r=> r.submitter) [0])
+     if (bass.size == 0) {
+    res.status(404).render("404.ejs", {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req
+      });
+     }
+   
+    res.render("certdverify.ejs", {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req,
+       username: await bot.fetchUser(bass.map(r=> r.cli_id)[0]).then(r=> r.username),
+       cli_id: bass.map(r=> r.cli_id)[0]
+      });
+     }
+  });
+app.get("/bot/:id/cverify1", async(req, res) => {
+  if(!req.user) {
+     res.redirect("/auth")
+   }
+      var userlol = bot.guilds.get("500658335217876997").members.get(req.user.id)
+  if (!userlol.roles.has("500658928602841099")) {
+    res.status(403).render('403.ejs', { 
+       user: req.isAuthenticated() ? req.user : res.redirect("/auth"),
+       bot: bot,
+       req: req
+  }); } else {
+     var id = req.params['id']
+     var bass = bot.queue.filter(r=> r.cli_id == id)
+     var owner = await bot.fetchUser(bass.map(r=> r.submitter) [0])
+     if (bass.size == 0) {
+    res.status(404).render("404.ejs", {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req
+      });
+     }
+   bot.fetchUser(id)
+      .then(r=> {
+     let fucksend = bot.users.get(bass.map(r=> r.submitter) [0])
+     if(fucksend) {
+       fucksend.send("<:dbrunique:507958292790902795> Your bot " + "`" + r.username + "` "+ "(<@" + id + ">)" + " was certified by " + `<@${req.user.id}>`)
+     }
+  
+    bot.channels.find(r=> r.id === "505765871663317024").send("<:dbrunique:507958292790902795> <@" + req.user.id + "> certified bot "  + "`" + r.username + "` "+ "(<@" + id + ">)")
+     const myassbutt = bot.guilds.get("500658335217876997").members.get(bass.map(r=> r.submitter)[0])
+     const asscrack = bot.guilds.get("500658335217876997").roles.get("500710035438043160")
+     if(myassbutt) {
+       myassbutt.addRole("507628349707911178")
+     }
+      const myassbutt2 = bot.guilds.get("500658335217876997").members.get(bass.map(r=> r.cli_id)[0])
+     const asscrack2 = bot.guilds.get("500658335217876997").roles.get("507628704751419393")
+     if(myassbutt2) {
+       myassbutt2.addRole("507628704751419393")
+     }
+   });
+    }
+  bot.certified.push(owner.id, id, "bots")
+    bot.queue.delete(id)
+          res.redirect("/modportal")
+  });
+
+app.post("/modportal/certdelete", (req, res) => {
+     if(!req.user) {
+     res.redirect("/auth")
+   }
+      var userlol = bot.guilds.get("500658335217876997").members.get(req.user.id)
+  if (!userlol.roles.has("500658928602841099")) {
+    res.status(403).render('403.ejs', { 
+       user: req.isAuthenticated() ? req.user : res.redirect("/auth"),
+       bot: bot,
+       req: req
+  }); } else {
+  var id = req.body.cli_id
+  var bass = bot.certified.filter(r=> r == id)
+  var owner = bot.botinfo.get(id, "submitter")
+  bot.fetchUser(id)
+  .then(r=> {
+  let fucksend = bot.users.get(owner)
+  if(fucksend) {
+    fucksend.send("<:dbrcertdeclined:510418056917417994> Your bot " + "`" + r.username + "` " +"(<@" + id + ">)" + " was uncertified by " + `<@${req.user.id}>` + "\n" +"Reason: " + req.body.reason)
+  }
+       bot.channels.find(r=> r.id === "505765871663317024").send("<:dbrcertdeclined:510418056917417994> <@" + req.user.id + "> uncertified bot `" + r.username + "` " + "(<@" + id + ">)"  + "\n" + "Reason: " + req.body.reason)
+      res.redirect("/modportal/cert")
+      bot.certified.remove(bot.botinfo.get(id, "submitter"), id, "bots")
+    bot.botinfo.set(id, null, "vanityurl")
+    const asshole11 = bot.guilds.get("500658335217876997").members.get(id)
+    if(asshole11) {
+     if(asshole11.roles.has("507628704751419393") || asshole11.roles.has("511069587840827402")){
+       asshole11.removeRole("507628704751419393")
+       asshole11.removeRole("511069587840827402")
+        const asshole12 = bot.guilds.get("500658335217876997").members.get(owner)
+        if(asshole12) {
+          if(asshole12.roles.has("507628349707911178")) {
+             if(bot.certified.get(owner, "bots").length <1) {
+            asshole12.removeRole("507628349707911178")
+             }
+          }
+        }
+     }
+    }
+      });
+    }
+});
+app.get("/bot/:id/cverify2", async(req, res) => {
+  if(!req.user) {
+     res.redirect("/auth")
+   }
+      var userlol = bot.guilds.get("500658335217876997").members.get(req.user.id)
+  if (!userlol.roles.has("500658928602841099")) {
+    res.status(403).render('403.ejs', { 
+       user: req.isAuthenticated() ? req.user : res.redirect("/auth"),
+       bot: bot,
+       req: req
+  }); } else {
+     var id = req.params['id']
+     var bass = bot.queue.filter(r=> r.cli_id == id)
+     var owner = await bot.fetchUser(bass.map(r=> r.submitter) [0])
+     if (bass.size == 0) {
+    res.status(404).render("404.ejs", {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req
+      });
+     }
+   bot.fetchUser(id)
+      .then(r=> {
+     let fucksend = bot.users.get(bass.map(r=> r.submitter) [0])
+     if(fucksend) {
+       fucksend.send("<:dbrveryunique:508965618855444491> Your bot " + "`" + r.username + "` "+ "(<@" + id + ">)" + " was certified by " + `<@${req.user.id}>`)
+     }
+    bot.channels.find(r=> r.id === "505765871663317024").send("<:dbrunique:507958292790902795> <@" + req.user.id + "> certified bot "  + "`" + r.username + "` "+ "(<@" + id + ">)")
+     const myassbutt = bot.guilds.get("500658335217876997").members.get(bass.map(r=> r.submitter)[0])
+     const asscrack = bot.guilds.get("500658335217876997").roles.get("500710035438043160")
+     if(myassbutt) {
+       myassbutt.addRole("507628349707911178")
+     }
+      const myassbutt2 = bot.guilds.get("500658335217876997").members.get(bass.map(r=> r.cli_id)[0])
+     const asscrack2 = bot.guilds.get("500658335217876997").roles.get("507628704751419393")
+     if(myassbutt2) {
+       myassbutt2.addRole("511069587840827402")
+     }
+           bot.certified.push(owner.id, id, "bots")
+    bot.queue.delete(id)
+   });
+    }
+          res.redirect("/modportal")
+  });
+app.post("/modportal/certdecline", (req, res) => {
+     if(!req.user) {
+     res.redirect("/auth")
+   }
+      var userlol = bot.guilds.get("500658335217876997").members.get(req.user.id)
+  if (!userlol.roles.has("500658928602841099")) {
+    res.status(403).render('403.ejs', { 
+       user: req.isAuthenticated() ? req.user : res.redirect("/auth"),
+       bot: bot,
+       req: req
+  }); } else {
+  var bass = bot.queue.filter(r=> r.cli_id == req.body.cli_id)
+  var id = req.body.cli_id
+  bot.fetchUser(id)
+  .then(r=> {
+  let fucksend = bot.users.get(bass.map(r=> r.submitter) [0])
+  if(fucksend) {
+    fucksend.send("<:dbrcertdeclined:510418056917417994> Your application for certifying " + "`" + r.username + "` " +"(<@" + id + ">)" + " was declined by " + `<@${req.user.id}>` + "\n" +"Reason: " + req.body.reason)
+  }
+       bot.channels.find(r=> r.id === "505765871663317024").send("<:dbrcertdeclined:510418056917417994> <@" + req.user.id + "> declined application for certifying `" + r.username + "` " + "(<@" + id + ">)"  + "\n" + "Reason: " + req.body.reason)
+      res.redirect("/modportal/cert")
+      bot.queue.delete(id)
+      });
+    }
+});
+  app.get("/bot/:id/decline", async(req,res) => {
+   if(!req.user) {
+     res.redirect("/auth")
+   }
+      var userlol = bot.guilds.get("500658335217876997").members.get(req.user.id)
+  if (!userlol.roles.has("500662148561764352")) {
+    res.status(403).render('403.ejs', { 
+       user: req.isAuthenticated() ? req.user : res.redirect("/auth"),
+       bot: bot,
+       req: req
+  }); } else {
+     var id = req.params['id']
+     var bass = bot.submission.filter(r=> r.cli_id == id)
+     var owner = await bot.fetchUser(bass.map(r=> r.submitter) [0])
+     if (bass.size == 0) {
+    res.status(404).render("404.ejs", {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req
+      });
+     }
+   
+    res.render("decline.ejs", {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req,
+       username: await bot.fetchUser(bass.map(r=> r.cli_id)[0]).then(r=> r.username),
+       cli_id: bass.map(r=> r.cli_id)[0]
+      });
+     }
+  });
+app.post("/modportal/declineact", (req, res) => {
+     if(!req.user) {
+     res.redirect("/auth")
+   }
+      var userlol = bot.guilds.get("500658335217876997").members.get(req.user.id)
+  if (!userlol.roles.has("500662148561764352")) {
+    res.status(403).render('403.ejs', { 
+       user: req.isAuthenticated() ? req.user : res.redirect("/auth"),
+       bot: bot,
+       req: req
+  }); } else {
+  var bass = bot.submission.filter(r=> r.cli_id == req.body.cli_id)
+  var id = req.body.cli_id
+  bot.fetchUser(id)
+  .then(r=> {
+  let fucksend = bot.users.get(bass.map(r=> r.submitter) [0])
+  if(fucksend) {
+    fucksend.send("❌ Your bot " + "`" + r.username + "` " +"(<@" + id + ">)" + " was declined by " + `<@${req.user.id}>` + "\n" +"Reason: " + req.body.reason)
+  }
+       bot.channels.find(r=> r.id === "505765871663317024").send("❌ <@" + req.user.id + "> declined bot `" + r.username + "` " + "(<@" + id + ">)" + " which was owned by " + "<@" + bass.map(r=> r.submitter) [0] + ">" + "\n" + "Reason: " + req.body.reason)
+   bot.fetchUser(id)
+.then(r=> {
+     bot.fetchUser(bass.map(r=> r.submitter) [0])
+     .then(re=> {
+      const quickdecline = new Discord.RichEmbed()
+      .setDescription("❌ Bot Declined ❌")
+      .addField("Bot", r.tag + " (<@" + id + ">)")
+        .setColor("#789cde")
+      .addField("Declined By", req.user.username + "#" + req.user.discriminator)
+      .addField("Bot was owned by", re.tag + " (" + "<@"  + re.id + ">" +")")
+      .addField("Reason", req.body.reason)
+      bot.channels.find(r=> r.id === "505765886594908160").send(quickdecline) // Any trouble you facing??
+                    bot.submission.delete(bass.map(r=> r.cli_id) [0])
+      res.redirect("/modportal/queue")
+    
+      });
+    });
+  });
+    }
+});
+app.get("/bot/:id/react", (req, res) => {
+  var id = req.params['id']
+  if (!req.user) { res.redirect("/auth") }
+  var reactorID = req.user.id
+  var action = req.query['action']
+  if (action == "like") {
+    if(!bot.reactions.get(id, "likes").includes(reactorID)) {
+      bot.reactions.push(id, reactorID, "likes")
+    } 
+    if (bot.reactions.get(id, "dislikes").includes(reactorID)) {
+      bot.reactions.remove(id, reactorID, "dislikes")
+    }
+  } else if (action == "dislike") {
+    if(!bot.reactions.get(id, "dislikes").includes(reactorID)) {
+      bot.reactions.push(id, reactorID, "dislikes")
+    } 
+    if (bot.reactions.get(id, "likes").includes(reactorID)) {
+      bot.reactions.remove(id, reactorID, "likes")
+    }
+  } else if (action == "rmlike") {
+    if(bot.reactions.get(id, "likes").includes(reactorID)) {
+      bot.reactions.remove(id, reactorID ,"likes")
+    } else if (!bot.reactions.get(id, "likes").includes(reactorID)) {
+      res.status(400).send("Uhh, you know that you can't remove a like when you did not like the bot, right?")
+    }
+  } else if (action == "rmdislike") {
+    if(bot.reactions.get(id, "dislikes").includes(reactorID)) {
+      bot.reactions.remove(id, reactorID ,"dislikes")
+    } else if (!bot.reactions.get(id, "likes").includes(reactorID)) {
+      res.status(400).send("Uhh, you know that you can't remove a dislike when you did not dislike the bot, right?")
+    }
+  }
+  res.redirect("/bot/" + id)
+});
+app.post("/api/form/postcomment", async(req, res) => {
+   if (!req.user) { res.redirect("/auth") }
+  var body = req.body
+  if(body.comment.length >600) return res.send("Your comment must be less than 600 characters")
+    if(body.comment.length <1) return res.send("Please provide a comment")
+bot.comments.set(bot.comments.size, {id: bot.comments.size, author: req.user.id, bot: body.bot,  comment: body.comment, time: (new Date()).toISOString()})
+  if(bot.notifications.has(bot.botinfo.get(body.bot, "submitter"))) {
+            bot.channels.get("517065299355369473").send(req.user.username + "#" + req.user.discriminator + " (" + req.user.id + ")" + " posted a comment on " +  body.bot + "\n"+ "Comment content: " + body.comment)
+
+    bot.fetchUser(req.user.id)
+    .then(r=> {
+      bot.fetchUser(body.bot)
+      .then(re=> {
+        if(bot.botinfo.get(body.bot, "submitter") === req.user.id) return;
+     bot.users.get(bot.botinfo.get(body.bot, "submitter")).send("<@" + r.id + ">"+ " `" + r.tag + "`" + " Commented on your bot " + "`" + re.tag + "`" + "<@" + re.id + ">" + "\n" + "Comment: " + body.comment)
+      });
+    });
+  var m = body.comment.split(" ")
+  var count = 0
+  while (m[count]) {
+    if (m[count].startsWith("@")) {
+      var ll = bot.users.filter(r=> r.tag == m[count].substr(1) || r.username == m[count].substr(1))
+      if (ll.size == 0) { count++; continue; }
+      var u = Array()
+      ll.forEach((p) => {u.push(p)})
+      var p = await bot.fetchUser(u[0].id)
+       bot.fetchUser(body.bot)
+      .then(re=> {
+      p.send(req.user.username + "#" + req.user.discriminator + " (" + req.user.id + ")" + " mentioned you in a comment.\n" + "Bot: " + re.tag + " (" + "<@" + re.id + ">" + ")"+ "\n" + body.comment)
+       });
+    }
+    count++
+  } 
+  }
+  res.redirect("/bot/" + body.bot)
+});
+app.post("/api/form/deletecomment", (req, res) => {
+  if (!req.user) { res.redirect("/auth") }
+  var body = req.body
+  if (req.user.id == bot.comments.get(body.commentID).author || bot.guilds.get("500658335217876997").members.get(req.user.id).roles.has("500662148561764352")) {
+        bot.channels.get("517065299355369473").send(req.user.username + "#" + req.user.discriminator + " (" + req.user.id + ")" + " deleted a comment which was written by " +  bot.comments.get(body.commentID, "author") + " " + "on bot " + body.bot+  "\n" + "Comment content: " + bot.comments.get(body.commentID, "comment"))
+
+    bot.comments.set(body.commentID, {author: null, bot: null, comment: null})
+    res.redirect("/bot/" + body.bot)
+  } else {
+    res.status(403).render('403.ejs', { 
+         user: req.isAuthenticated() ? req.user : null,
+         bot: bot,
+         req: req });
+  }
+});
+app.get("/bot/:id", async(req, res) => {
+  var id = req.params['id']
+
+  var b = bot.botinfo.filter(r=> r.cli_id == id)
+  if (b.size == 0) {
+    var b = bot.submission.filter(r=> r.cli_id == id)
+    if (!b.size == 0) {
+      if(!req.user) {
+        res.status(403).render('403.ejs', { 
+         user: req.isAuthenticated() ? req.user : null,
+         bot: bot,
+         req: req });
+      } else if (!bot.guilds.get("500658335217876997").members.get(req.user.id).roles.has("500662148561764352")) {
+        res.status(403).render('403.ejs', { 
+          user: req.isAuthenticated() ? req.user : null,
+          bot: bot,
+          req: req
+        });
+      }
+    }
+  }
+
+  if (b.size == 0) {
+    var b = bot.botinfo.filter(r=> r.vanityurl == id)
+    if (b.size == 0) {
+      res.status(404).render("404.ejs", {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req
+      });
+    } else {
+        var user = await bot.fetchUser(b.map(r=> r.cli_id)[0])
+        var owner = await bot.fetchUser(b.map(r=> r.submitter)[0])
+           bot.guilds.find(r=> r.id === "500658335217876997").fetchBans()
+  .then(r=> {
+       res.render("bot_page.ejs", {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req,
+       l: user,
+       b: b,
+       owner: owner,
+       md: md,
+        bots: bot.comments.map(r=> r).reverse(),
+         banned: r
+      });
+           });
+  }
+  }
+      
+  if(bot.botinfo.get(id)) {
+  if (bot.botinfo.get(id).vanityurl) {
+    res.redirect("/bot/" + bot.botinfo.get(id).vanityurl)
+  } }else {}
+  var user = await bot.fetchUser(b.map(r=> r.cli_id)[0])
+  var owner = await bot.fetchUser(b.map(r=> r.submitter)[0])
+    bot.guilds.find(r=> r.id === "500658335217876997").fetchBans()
+  .then(r=> {
+  res.render("bot_page.ejs", {
+       user: req.isAuthenticated() ? req.user : null,
+       bot: bot,
+       req: req,
+       l: user,
+       b: b,
+       owner: owner,
+       md: md,
+        bots: bot.comments.map(r=> r).reverse(),
+    banned: r
+  });
+  
+});
+});
+// DONT PUT ANY RENDER CODE AFTER THIS LINE!!!
+app.use(middleware.notfound({bot: bot}));
+
+
+
+app.listen(8080);
+
+
+//------------------WEBSITE-RENDER-CODE------------------- // //------------------WEBSITE-RENDER-CODE------------------- // //------------------WEBSITE-RENDER-CODE------------------- //
+//------------------WEBSITE-RENDER-CODE------------------- // //------------------WEBSITE-RENDER-CODE------------------- // //------------------WEBSITE-RENDER-CODE------------------- //
+//------------------WEBSITE-RENDER-CODE------------------- // //------------------WEBSITE-RENDER-CODE------------------- // //------------------WEBSITE-RENDER-CODE------------------- //
+//------------------WEBSITE-RENDER-CODE------------------- // //------------------WEBSITE-RENDER-CODE------------------- // //------------------WEBSITE-RENDER-CODE------------------- //
+//------------------WEBSITE-RENDER-CODE------------------- // //------------------WEBSITE-RENDER-CODE------------------- // //------------------WEBSITE-RENDER-CODE------------------- //
+//------------------WEBSITE-RENDER-CODE------------------- // //------------------WEBSITE-RENDER-CODE------------------- // //------------------WEBSITE-RENDER-CODE------------------- //

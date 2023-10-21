@@ -1,0 +1,88 @@
+<!doctype html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+    <% include ./partials/header.ejs %>
+    <% include ./partials/nav.ejs %>
+            <link rel="icon" type="image/jpg" href="https://media.discordapp.net/attachments/506425178822279168/507496898823847936/dbr.png">
+            <title>Report Bot - Discord Bot Reviews</title>
+    </head>
+    <body>
+        <noscript>
+          <div class="alert alert-danger" role="alert">
+            This website requires Javascript to work. Please enable Javascript or use a browser that supports Javascript.
+          </div>
+          </noscript>
+        <div class="container">
+          <div class="card shadow-lg" style="width:auto;height:auto;background-color: #1f1f1f;">
+	  <center><h2>Report <%=bot.users.get(botid).username%></h2><br>
+    Enter reason for reporting <%=bot.users.get(botid).username%>
+    <br>
+    <%if(req.user.id === bot.botinfo.get(botid, "submitter")) {%>
+      <br>
+      <p style="color: red;">It turns out that you are reporting your own bot. Doing so will result in a ban. So think twice before doing it.</p>
+      <% } else {%>
+        <br>
+        Note: please do not submit fake reports or report bots because you hate them. <br>ONLY report bots if you believe/or is violating the requirements & rules
+        <br>
+      If you are reporting the owner of this bot or any of this bot's comments please join our <a href="https://discord.gg/A2BYrj8">discord server</a> and let us know there.
+      <p style="color: red;">SUBMITTING FAKE REPORTS WILL RESULT IN A BAN!!!</p>
+        <% } %>
+    <br>
+          <form action="/api/form/reportbot" method="POST" id="form" enctype="application/x-www-form-urlencoded"><br><br>
+            Reason <br>
+    <select id="reason" name="reason" class="txtarea" style="width:250px;" onchange="lol()">
+      <option value="none" selected disabled>Select reason..</option>
+      <option value="Malicious Bot">Malicious Bot</option>
+      <option value="NSFW in non-NSFW">NSFW in non-NSFW channels</option>
+      <option value="Bot was deleted">Bot was deleted/invalid invite</option>
+      <option value="Bot is a clone">Clone or modified clone of another bot</option>
+      <option value="Open eval">Open eval</option>
+      <option value="Broken">Broken</option>
+      <option value="Not english">Not english</option>         
+      <option value="Other">Other</option>
+      
+    </select>
+    
+    <div id="lol">
+<br>
+    </div>
+    <br><br><br>Extra information (maximum 600 characters)<br>
+    <textarea class="txtarea" style="width:480px;height:180px" rows="5" maxlength="10000" id="reportform" name="reportform"></textarea>
+    <input type="hidden" name="botid"value="<%=botid%>"><br><br>
+    <button class="btn btn-danger">Report</button>
+    <br><br><br>
+    </form>
+    </center>
+    <br><br><br>
+    </div>
+  </div>
+    </body>
+</html>
+<script>
+  function lol() {
+if(document.getElementById('reason').value == "Malicious Bot") {
+  document.getElementById("lol").innerHTML = "<br /> This includes: <br /> 1. Has nuked or did damage to a server or your server. <br /> 2. Has something illegal <br /><br /> This does not include: <br /> 1. Bot has a command to kick/ban all members OR delete all roles/channels. <br /> <br /> Please include a screenshot of audit-log and proof that the bot did it by itself and not command-done."
+} else if(document.getElementById('reason').value == "NSFW in non-NSFW") {
+  document.getElementById("lol").innerHTML = "<br /> This includes: <br /> 1. Has a command/or has a feature that posts NSFW images/GIF in non-NSFW channels. <br /> 2. Randomly posting NSFW images/GIF due to leaked token/or owner feels like it. <br /><br /> This does not include: <br /> 1. Bot has a 'urban' command. <br /> 2. The NSFW was triggered by a custom command (this includes global tag commands)"
+
+} else if(document.getElementById('reason').value == "Bot was deleted") {
+  document.getElementById("lol").innerHTML = "<br /> This includes: <br /> 1. Getting the 'UNKNOWN ERROR' when trying to add the bot. <br /> 2. The invite button does not take you to the discord OUATH page. <br /> 3. Bot is discontinued. <br /><br /> This does not include: <br /> 1. Href link does not start with 'discordapp.com' (Some bots have custom invites) "
+
+} else if(document.getElementById('reason').value == "Bot is a clone") {
+  document.getElementById("lol").innerHTML = "<br /> This includes: <br /> 1. Bot is a clone of another bot  <br /><br /> Please give us link to the source for the bot you believe is cloned."
+
+} else if(document.getElementById('reason').value == "Other") {
+  document.getElementById("lol").innerHTML = "<br /> Other reason that is not mentioned above. <br /> Please provide us detailed information. <br /> <br /> Other reasons can be: NSFW avatar or image in description, description is spam/junk, etc..."
+
+} else if(document.getElementById('reason').value == "Open eval") {
+  document.getElementById("lol").innerHTML = "<br /> This includes: <br /> 1. Has eval command that is completely open and usable by anyone and can execute any sort of code/script. <br /> <br /> This does not include: <br /> 1. Has a sandboxed eval command. "
+
+} else if(document.getElementById('reason').value == "Broken") {
+  document.getElementById("lol").innerHTML = "<br /> This includes: <br /> 1. Bot is completely broken, unusable and doesn't work at all. <br /> <br /> This does not include: <br /> 1. Bot only has a few commands/features that do not work. <br /> <br /> Note: It is highly recommended to contact the developer for this reason, however if bot does not have a support server or owner is unreachable you may proceed to report."
+
+} else if(document.getElementById('reason').value == "Not english") {
+  document.getElementById("lol").innerHTML = "<br /> This includes: <br /> 1. Bot does not support English language at all. <br /> <br /> This does not include: <br /> 1. Bot has English as an optional language <br /> 2. Description has areas of non-english"
+
+}
+  }
+</script>

@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Certify Bot - ModPortal - DBR</title>
+    <% include ./partials/portalHeader.ejs %>
+  </head>
+  <body>
+    <% include ./partials/nav.ejs %>
+    <div class="container">
+      <h1>
+        <%= username %> - Certify
+      </h1>
+      <hr><br>
+      <form action="/modportal/certdecline" method="POST" enctype="application/x-www-form-urlencoded">
+      Unique or Very Unique?<div style="color:red;display:inline-block;margin-bottom:0.5rem;">*</div><br>
+      <br><br>
+        <input type="hidden" name="cli_id" value="<%= cli_id %>">
+      <input type="hidden" name="decliner" value="<%= user.id %>">
+<a href="/bot/<%=cli_id%>/cverify1" class="btn btn-warning" title="Certify Unique">Certify Unique</a><a href="/bot/<%=cli_id%>/cverify2" class="btn btn-warning" title="Certify Unique">Certify Very Unique</a>
+      </form><br><br>
+  </body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Blacklist IP - ModPortal - DBR</title>
+    <% include ./partials/portalHeader.ejs %>
+  </head>
+  <body>
+    <% include ./partials/nav.ejs %>
+    <div class="container">
+      <h1>
+   Add IP to blacklist
+      </h1>
+      <hr><br>
+      <form action="/modportal/ipbans/ban" method="POST" enctype="application/x-www-form-urlencoded">
+        <center>
+IP <br>
+ <input class="txtarea" name="ip" style="width:250px;">
+          <br><br><br>
+          Reason for ban<br>
+          <textarea class="txtarea" name="reason" style="width:800px; height:200px;"></textarea>
+          <br>
+          <br>
+          Ban duration
+          <br>
+          <select class="txtarea" style="width:200px;" name="expiration">
+            <option value="forever" selected disabled>Select one...</option>
+            <option value="<%=moment(new Date(), "DD/MM/YYYY").add("minutes", "10")%>">10 Minutes</option>
+            <option value="<%=moment(new Date(), "DD/MM/YYYY").add("hours", "1")%>">1 Hour</option>
+            <option value="<%=moment(new Date(), "DD/MM/YYYY").add("days", "1")%>">1 Day</option>
+            <option value="<%=moment(new Date(), "DD/MM/YYYY").add("days", "2")%>">2 Days</option>
+            <option value="<%=moment(new Date(), "DD/MM/YYYY").add("days", "3")%>">3 Days</option>
+            <option value="<%=moment(new Date(), "DD/MM/YYYY").add("days", "7")%>">1 Week</option>
+            <option value="<%=moment(new Date(), "DD/MM/YYYY").add("days", "14")%>">2 Weeks</option>
+            <option value="<%=moment(new Date(), "DD/MM/YYYY").add("months", "1")%>">1 Month</option>
+            <option value="<%=moment(new Date(), "DD/MM/YYYY").add("months", "2")%>">2 Months</option>
+            <option value="<%=moment(new Date(), "DD/MM/YYYY").add("months", "3")%>">3 Months</option>
+            <option value="<%=moment(new Date(), "DD/MM/YYYY").add("years", "1")%>">1 Year</option>
+            <option value="forever">Permanent</option>
+          </select>
+          <br><br><br>
+          <button class="btn btn-danger">
+            Ban
+          </button>
+        </center>
+      </form><br><br><br><br><br><br>
+  </body>
+</html>

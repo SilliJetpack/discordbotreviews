@@ -1,0 +1,80 @@
+<html prefix="og: http://ogp.me/ns#">
+
+<head>
+    <% include ./partials/header.ejs %>
+    <% include ./partials/nav.ejs %>
+
+    <title>Browse Tags - Discord Bot Reviews</title>
+    <link rel="icon" type="image/jpg" href="https://media.discordapp.net/attachments/506425178822279168/507496898823847936/dbr.png">
+</head>
+
+<body>
+    <noscript>
+            <div class="alert alert-danger" role="alert">
+                This website requires Javascript to work. Please enable Javascript or use a browser that supports Javascript.
+            </div>
+  </noscript>
+  <div class="container">
+        <h1 align="center" style="color:#97cafd;">Browse Tags</h1>
+    <center>
+   <button class="btn btn-primary" id="all" onclick="window.location.replace('/browse')"> All bots</button>
+      <button class="btn btn-primary" name="options" id="unique" onclick="window.location.replace('/browse/unique')"> Unique bots</button>
+      <button class="btn btn-primary" type="radio" name="options" id="topliked" onclick="window.location.replace('/browse/top')"> Top Voted bots</button>
+      <button class="btn btn-primary" type="radio" name="options" id="topliked" onclick="window.location.replace('/browse/new')"> New</button>
+      <button class="btn btn-primary active" type="radio" name="options" id="tags" onclick="window.location.replace('/browse/tags')"> Browse Tags</button><br><br>
+    <h2>Common Tags</h2>
+      Tags that people mostly search for
+      <br><br>
+ <a class="btn btn-primary" href="/browse/tag/moderation"><li class="fa fa-gavel" style="color:black;">&nbsp;</li> Moderation</a>
+ <a class="btn btn-primary" href="/browse/tag/music"><li class="fa fa-music" style="color:black;">&nbsp;</li> Music</a>
+ <a class="btn btn-primary" href="/browse/tag/logging"><li class="fa fa-file" style="color:black;">&nbsp;</li> Logging</a>
+ <a class="btn btn-primary" href="/browse/tag/fun"><li class="fa fa-beer" style="color:black;">&nbsp;</li> Fun</a>
+ <a class="btn btn-primary" href="/browse/tag/multipurpose"><li class="fa fa-tasks" style="color:black;">&nbsp;</li> Multi Purpose</a>
+ <a class="btn btn-primary" href="/browse/tag/stats"><li class="fa fa-signal" style="color:black;">&nbsp;</li> Stats</a>
+ <a class="btn btn-primary" href="/browse/tag/gaming"><li class="fa fa-gamepad" style="color:black;">&nbsp;</li> Gaming</a>
+ <a class="btn btn-primary" href="/browse/tag/dashboard"><li class="fa fa-cloud" style="color:black;">&nbsp;</li> Dashboard</a>
+ <a class="btn btn-primary" href="/browse/tag/multilanguage"><li class="fa fa-globe" style="color:black;">&nbsp;</li> Multi Language</a>
+ <a class="btn btn-primary" href="/browse/tag/nsfw"><li class="fa fa-heart" style="color:black;">&nbsp;</li> NSFW</a>
+ <a class="btn btn-primary" href="/browse/tag/imagemanipulation"><li class="fa fa-image" style="color:black;">&nbsp;</li> Image Manipulation</a>
+ <a class="btn btn-primary" href="/browse/tag/sync"><li class="fa fa-spinner" style="color:black;">&nbsp;</li> Sync</a>
+ <a class="btn btn-primary" href="/browse/tag/roleplay"><li class="fa fa-star" style="color:black;">&nbsp;</li> Roleplay</a>
+ <a class="btn btn-primary" href="/browse/tag/configuration"><li class="fa fa-wrench" style="color:black;">&nbsp;</li> Configuration/Management</a>
+ <a class="btn btn-primary" href="/browse/tag/welcoming"><li class="fa fa-user-plus" style="color:black;">&nbsp;</li> Welcoming</a>
+       <a class="btn btn-primary" href="/browse/tag/utility"><li class="fa fa-wrench" style="color:black;">&nbsp;</li> Utility</a>
+ <a class="btn btn-primary" href="/browse/tag/economy"><li class="fa fa-money" style="color:black;">&nbsp;</li> Economy</a>
+       <a class="btn btn-primary" href="/browse/tag/anime"><li class="fa fa-color" style="color:black;">&nbsp;</li> Anime</a>
+       <a class="btn btn-primary" href="/browse/tag/memes"><li class="fa fa-color" style="color:black;">&nbsp;</li> Memes</a>
+
+
+ <br><hr><br>
+      <h2>
+        Game Tags
+      </h2>
+      Tags for some games
+      <br><br>
+      
+             <a class="btn btn-primary" href="/browse/tag/fortnite"><li class="fa fa-gamepad" style="color:black;">&nbsp;</li> Fortnite</a>
+             <a class="btn btn-primary" href="/browse/tag/pubg"><li class="fa fa-gamepad" style="color:black;">&nbsp;</li> PUBG</a>
+             <a class="btn btn-primary" href="/browse/tag/minecraft"><li class="fa fa-gamepad" style="color:black;">&nbsp;</li> Minecraft</a>
+
+      <br><hr><br>
+ <h2>Custom Tags</h2>
+      Can't find the tag you exactly need? Try looking for it specificaly.
+      <br><br>
+ <input id="searchinputbar" class="form-control" placeholder="Search bots with tag" style="width:250px;"></input>
+ <br>
+ <button class="btn btn-primary" onclick="fuckoff()">search for bots</button>
+    </center>
+    <script>
+        function fuckoff() {
+          console.log("NO U")
+          window.location.replace("/browse/tag/" + document.getElementById("searchinputbar").value.toLowerCase())
+        }
+        </script>
+    <br><br><br>
+    <!--
+    <button id="searchnow" class="btn btn-primary btn-md my-2 my-sm-0 ml-3" style="display:inline-block" onclick="javascript:alert('Test passed')" type="submit">All Bots</button>
+        <button id="searchnow" class="btn btn-primary btn-md my-2 my-sm-0 ml-3" style="display:inline-block" onclick="javascript:alert('Test passed')" type="submit">Unique Bots</button>
+        <button id="searchnow" class="btn btn-primary btn-md my-2 my-sm-0 ml-3" style="display:inline-block" onclick="javascript:alert('Test passed')" type="submit">New Bots</button> -->
+  </div>
+  </body>

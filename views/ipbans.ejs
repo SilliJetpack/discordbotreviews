@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>IP bans - ModPortal - DBR</title>
+    <% include ./partials/portalHeader.ejs %>
+  </head>
+  <body>
+    <% include ./partials/nav.ejs %>
+    <div class="container">
+    <h1>
+      IP bans (<%=bot.ipbans.size%>)
+      <br>
+       <a class="btn btn-primary" href="/modportal/ipbans/addip">Add IP</a>
+      <hr>
+    </h1>
+    <!-- Placeholder content -->
+    <% var i; var count = 0; while(bot.ipbans.array()[count]) {%>
+      <div class="card" style="background-color: #2f2f2f;">
+      IP: <%=bot.ipbans.array()[count].ip%>
+        <br>
+        Reason: <%=bot.ipbans.array()[count].reason%>
+        <br>
+        Date Banned: <%=moment(bot.ipbans.array()[count].time).format("DD/MM/YYYY HH:mm:ss")%>
+        <br>
+        Banned by: <%=bot.ipbans.array()[count].moderator%>
+        <br>
+        Banned till: <%if(bot.ipbans.array()[count].expiration === "forever") {%>Forever<% } else { %><%=moment(bot.ipbans.array()[count].expiration).format("DD/MM/YYYY HH:mm:ss") %><%}%>
+        <br><br>
+        <a class="btn btn-primary" href="/modportal/ipbans/unban?ip=<%=bot.ipbans.array()[count].ip%>" style="width:10%;">Unban</a>
+      </div>
+      <br>
+
+<% count++}%>
+      <hr>
+
+      </body>
+</html>
